@@ -102,7 +102,7 @@
       "evidence": [
         "scripts/verify.mjs",
         ".github/workflows/ci.yml",
-        "tests/verify.test.mjs"
+        "tests/verify-preflight.test.mjs"
       ]
     },
     {
