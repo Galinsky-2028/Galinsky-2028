@@ -17,7 +17,7 @@ async function identity(owner=false){const id=randomUUID(),token=randomToken(),h
 try{
  for(const name of ['001_foundation','004_fundraising_reconciliation','009_treasurer_vault_admin_rbac','016_staff_passkeys','017_staff_roles','019_operations','020_treasury_exports'])await pool.query(await readFile('db/migrations/'+name+'.sql','utf8'));
  const owner=await identity(true),member=await identity(),guideId=prefix+'-guide';
- await pool.query("INSERT INTO g28.materials(id,revision,status,audience,record) VALUES($1,1,'published','volunteer',$2)",[guideId,{id:guideId,title:'Synthetic operations guide',body:'Synthetic training only.',revision:1,status:'published',audience:'volunteer',review:{approvedBy:'synthetic-review',revision:1}}]);
+ await pool.query("INSERT INTO g28.materials(id,revision,status,audience,record) VALUES($1,1,'published','volunteer',$2)",[guideId,{id:guideId,title:'Synthetic operations guide',body:'Synthetic training only.',revision:1,status:'published',audience:'volunteer',author:'synthetic-operations-author',review:{approvedBy:'synthetic-review',revision:1,at:'2026-10-10T00:00:00Z'}}]);
  await pool.query("INSERT INTO g28.financial_provider_events(provider,event_id,payment_id,event_digest,event_kind,amount_cents,occurred_at) VALUES($1,$2,$3,$4,'captured',1700,'2021-01-18T12:00:00Z')",[prefix,randomUUID(),randomUUID(),'a'.repeat(64)]);
  await app.listen({host:'127.0.0.1',port:4452});
  for(const [name,engine]of Object.entries({chromium,firefox,webkit})){
