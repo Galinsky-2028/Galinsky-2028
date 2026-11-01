@@ -34,6 +34,8 @@ try{
   assert.equal(await page.locator('#preview-workspace').count(),0);
   assert.equal(await page.locator('#preview-download').count(),0);
   assert.equal(await page.locator('.role-grid a[data-role-id]').count(),12);
+  assert.equal(await page.locator('.role-tile').first().evaluate(card=>getComputedStyle(card.querySelector('a'),'::after').position),'absolute',
+    'Public role tile must be clickable across the whole card, not just link text');
   assert.equal(await page.locator('.role-grid a[data-role-id="13"]').getAttribute('href'),
     'https://galinsky-2028-volunteer-portal.onrender.com/roles?role=skills');
   await page.locator('#role-pref').selectOption('skills');
@@ -50,6 +52,15 @@ try{
   await page.goto(portalOrigin+'/roles?role=ballot');
   assert.equal(await page.getByLabel('What would you enjoy?').inputValue(),'ballot');
   await page.getByText('Authorization required before the activity.').waitFor();
+  // A click on card padding (not the text link) must navigate to a real role detail route.
+  await page.locator('article.role-card').filter({has:page.getByRole('heading',{name:'Skills and Operations'})}).click({position:{x:8,y:8}});
+  assert.match(page.url(),/\/roles\/skills$/);
+  await page.getByRole('heading',{name:'Skills and Operations',exact:true}).waitFor();
+  await page.getByRole('link',{name:/Join the team/}).waitFor();
+  await page.goto(portalOrigin+'/roles');
+  await page.locator('article.role-card').filter({has:page.getByRole('heading',{name:'Ballot-Access Petition Volunteer'})}).click({position:{x:8,y:8}});
+  assert.match(page.url(),/\/roles\/ballot$/);
+  await page.getByText('requires current, activity-specific authorization').waitFor();
   const roleResponse=await context.request.get(portalOrigin+'/api/roles');
   assert.equal(roleResponse.status(),200);
   assert.equal((await roleResponse.json()).roles.length,12);
@@ -59,6 +70,11 @@ try{
   await page.goto(portalOrigin+'/join');await page.getByLabel('Email address').fill(name+'@example.test');await page.getByRole('checkbox').first().check();await page.getByRole('button',{name:/Email my sign-in link/}).click();await page.getByText(/When delivery is available/).waitFor();
   const queued=store.outbox.findLast(job=>job.kind==='account_login'&&openDelivery(job.envelope,cfg.deliveryKey).email===name+'@example.test');assert(queued,'The accepted request queued its login message');const mail=openDelivery(queued.envelope,cfg.deliveryKey);assert.equal(mail.email,name+'@example.test');await page.goto(mail.url);await page.getByRole('button',{name:'Continue to my workspace'}).click();await page.getByRole('button',{name:'Sign out'}).waitFor();
   // Real role preferences are saved behind the volunteer session and persist.
+  await page.goto(portalOrigin+'/roles');
+  await page.locator('article.role-card').filter({has:page.getByRole('heading',{name:'Digital Ambassador'})}).click({position:{x:8,y:8}});
+  assert.match(page.url(),/\/roles\/digital$/);
+  await page.getByRole('link',{name:/Start orientation/}).waitFor();
+  await page.getByRole('link',{name:/Read approved guides/}).waitFor();
   await page.goto(portalOrigin+'/roles');
   await page.getByLabel('What would you enjoy?').selectOption('skills');
   await page.getByRole('button',{name:'Save role preference'}).click();
