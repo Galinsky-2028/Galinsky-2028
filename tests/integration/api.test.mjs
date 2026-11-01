@@ -2,9 +2,29 @@ import test from 'node:test';import assert from 'node:assert/strict';import {ran
 import {createApp} from '../../apps/api/src/app.mjs';import {MemoryStore} from '../../apps/api/src/memory-store.mjs';import {loadConfig} from '../../apps/api/src/config.mjs';import {openDelivery} from '../../packages/core/auth.mjs';
 const config=loadConfig({MAIL_PROVIDER:'resend',RESEND_API_KEY:'ci-fixture-not-a-key',MAIL_FROM:'campaign@example.test',SIGNUP_ENABLED:'true',DELIVERY_KEY:randomBytes(32).toString('base64'),LOGIN_PEPPER:'ci-fixture-pepper-with-more-than-thirty-two-characters'});
 const headers={origin:config.portalOrigin,'content-type':'application/json','sec-fetch-site':'same-origin'};
-const material={id:'test-guide',title:'Synthetic test guide',description:'Fixture',body:'This is a synthetic guide.',category:'start',status:'published',audience:'volunteer',revision:1,review:{approvedBy:'fixture-reviewer',revision:1}};
+const material={id:'test-guide',title:'Synthetic test guide',description:'Fixture',body:'This is a synthetic guide.',category:'start',status:'published',audience:'volunteer',author:'fixture-author',revision:1,review:{approvedBy:'fixture-reviewer',revision:1,at:'2026-10-10T00:00:00Z'}};
 async function setup(){const store=new MemoryStore({materials:[structuredClone(material),{...structuredClone(material),id:'archive',status:'unreviewed'}]});const app=createApp({store,config});return{app,store};}
 async function login(app,store){const r=await app.inject({method:'POST',url:'/api/auth/request',headers,payload:{email:'volunteer@example.test',termsAccepted:true,marketing:false}});assert.equal(r.statusCode,202);const binding=r.headers['set-cookie'].split(';')[0];const job=store.outbox.at(-1);const token=new URL(openDelivery(job.envelope,config.deliveryKey).url).hash.slice(7);const v=await app.inject({method:'POST',url:'/api/auth/verify',headers:{...headers,cookie:binding},payload:{token}});assert.equal(v.statusCode,200);const cookie=v.headers['set-cookie'][0].split(';')[0];const s=await app.inject({url:'/api/session',headers:{cookie}});assert.equal(s.statusCode,200);return{cookie,csrf:s.json().csrf,binding,token};}
+test('invalid approval metadata is excluded consistently from authenticated material surfaces',async()=>{
+ const{app,store}=await setup();
+ try{
+  const user=await login(app,store);
+  const mutations=[m=>{delete m.author;},m=>{m.review.approvedBy=m.author;},m=>{delete m.review.at;},m=>{m.review.at='invalid';},m=>{m.review.revision=2;}];
+  for(const mutate of mutations){
+   const broken=structuredClone(material);mutate(broken);store.materials=[broken];
+   const list=await app.inject({url:'/api/materials',headers:{cookie:user.cookie}});
+   assert.equal(list.statusCode,200);assert.deepEqual(list.json().materials,[]);
+   for(const url of ['/api/materials/test-guide','/api/materials/test-guide/download']){
+    const response=await app.inject({url,headers:{cookie:user.cookie}});
+    assert.equal(response.statusCode,404);assert(!response.body.includes(material.body));
+   }
+   for(const [path,payload]of [['bookmark',{saved:true}],['reading',{revision:1,acknowledged:true}]]){
+    const response=await app.inject({method:'POST',url:'/api/materials/test-guide/'+path,headers:{...headers,cookie:user.cookie,'x-csrf-token':user.csrf},payload});
+    assert.equal(response.statusCode,404);
+   }
+  }
+ }finally{await app.close();}
+});
 test('published activity readiness shows only non-sensitive current-version prerequisites',async()=>{
  const{app,store}=await setup();
  try{
@@ -145,7 +165,7 @@ test('stale, unreviewed and forged material acknowledgments fail closed',async()
  assert.equal(store.materialReading.size,0);
  const r=await app.inject({method:'POST',url:'/api/materials/test-guide/reading',headers:auth,payload:{revision:1,acknowledged:true}});
  assert.equal(r.statusCode,200);
- store.materials[0].body='A newly reviewed edition';store.materials[0].revision=2;store.materials[0].review={approvedBy:'different-reviewer',revision:2};
+ store.materials[0].body='A newly reviewed edition';store.materials[0].revision=2;store.materials[0].review={approvedBy:'different-reviewer',revision:2,at:'2026-10-11T00:00:00Z'};
  const changed=await app.inject({url:'/api/materials/test-guide',headers:{cookie}});
  assert.equal(changed.json().acknowledged,false,'Previous revision acknowledgment must never silently carry over');
  await app.close();
