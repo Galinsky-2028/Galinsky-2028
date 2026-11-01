@@ -62,10 +62,7 @@
       "id": "volunteer-email",
       "kind": "provider-delivery",
       "status": "adapter-implemented-live-unverified",
-      "sourcePaths": [
-        "apps/api/src/worker.mjs",
-        "packages/core/auth.mjs"
-      ],
+      "sourcePaths": ["apps/api/src/worker.mjs", "packages/core/auth.mjs"],
       "scope": "Server-decryptable provider delivery envelopes and consent; provider processes destination",
       "e2ee": "not-claimed-server-readable"
     },
@@ -85,10 +82,7 @@
       "id": "local-worksheets",
       "kind": "local-user-controlled",
       "status": "implemented-preview-code",
-      "sourcePaths": [
-        "packages/core/forms.mjs",
-        "apps/portal/src/main.tsx"
-      ],
+      "sourcePaths": ["packages/core/forms.mjs", "apps/portal/src/main.tsx"],
       "scope": "Local on-device planning and explicit downloads; no report submission",
       "e2ee": "not-applicable-local"
     },
@@ -165,10 +159,7 @@
       "id": "service-health",
       "kind": "operations-metadata",
       "status": "implemented-preview",
-      "sourcePaths": [
-        "packages/core/ops-health.mjs",
-        "apps/api/src/app.mjs"
-      ],
+      "sourcePaths": ["packages/core/ops-health.mjs", "apps/api/src/app.mjs"],
       "scope": "Health, deployment, error handling; no raw personal records in diagnostics",
       "e2ee": "not-claimed-business-metadata"
     },
@@ -533,5 +524,11 @@
     "Public disclosures, account provider delivery, approved staff processing, and payment-provider card handling intentionally do not claim private E2EE.",
     "Recipient/device key enrollment, protected incidents, encrypted attachments and replies remain blocked until the selected protocol/profile is implemented and substantively AI-reviewed with interoperability/adversarial verification; outside human review is deferred.",
     "Absence of a source-bound E2EE conformance artifact must never downgrade a protected-content release gate or be presented as E2EESA implementation complete."
-  ]
+  ],
+  "sourceContract": {
+    "path": "security/source-flow-contract.json",
+    "scope": "Checked-in executable source and migration field coverage with explicit flow/recipient/retention decisions; not runtime coverage or upstream schema 0.2 conformance",
+    "validation": "tests/security-contract.test.mjs",
+    "productionE2eeClaim": false
+  }
 }
