@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "repository": "neophilism/Galinsky-2028",
-  "sourceCommit": "4be888089106a0e36acc238ae7d1d8713059a2a6",
+  "sourceCommit": "72af3e41d0e4d8b969e52d8bf84e2b04b5a78473",
   "standard": {
     "repository": "neophilism/End-To-End-Everywhere-Security-Architecture-Standard",
     "commit": "8441335f359c6e446f9bfe8b959f9606ce341409",
@@ -297,14 +297,29 @@
       "componentId": "analytics"
     },
     {
+      "path": "apps/portal/src/api.ts",
+      "blobSha": "887930ea7253972788f68cef9d89998d5512d5c1",
+      "componentId": "identity"
+    },
+    {
       "path": "apps/portal/src/Coordination.tsx",
       "blobSha": "3c7308fcb01f4e9a58f3e9208dd2aca2d08de666",
       "componentId": "coordination"
     },
     {
+      "path": "apps/portal/src/env.d.ts",
+      "blobSha": "11f02fe2a0061d6e6e1f271b21da95423b448b32",
+      "componentId": "shared"
+    },
+    {
       "path": "apps/portal/src/HelpCenter.tsx",
       "blobSha": "0e912240df12e5df73a3ea0aef7fe43d15b1fc56",
       "componentId": "help"
+    },
+    {
+      "path": "apps/portal/src/main.tsx",
+      "blobSha": "808780b6c26e4e641e5701055a957175e9c32b75",
+      "componentId": "identity"
     },
     {
       "path": "apps/portal/src/Operations.tsx",
@@ -325,21 +340,6 @@
       "path": "apps/portal/src/TreasuryExport.tsx",
       "blobSha": "8d9b7a62f5f7c3a9b21003dd7a6862d404a0a37c",
       "componentId": "finance"
-    },
-    {
-      "path": "apps/portal/src/api.ts",
-      "blobSha": "887930ea7253972788f68cef9d89998d5512d5c1",
-      "componentId": "identity"
-    },
-    {
-      "path": "apps/portal/src/env.d.ts",
-      "blobSha": "11f02fe2a0061d6e6e1f271b21da95423b448b32",
-      "componentId": "shared"
-    },
-    {
-      "path": "apps/portal/src/main.tsx",
-      "blobSha": "a1493405765b64a10b89eb122355a6c90cee3549",
-      "componentId": "identity"
     },
     {
       "path": "apps/portal/vite.config.ts",
@@ -422,13 +422,13 @@
       "componentId": "preview"
     },
     {
-      "path": "apps/web/src/pages/404.astro",
-      "blobSha": "958888f8a371f971a1a2e311ca22169fc7de2f04",
+      "path": "apps/web/src/pages/[...route].astro",
+      "blobSha": "b1eaf087982431060ae7b3893f49e77ef5013605",
       "componentId": "public"
     },
     {
-      "path": "apps/web/src/pages/[...route].astro",
-      "blobSha": "b1eaf087982431060ae7b3893f49e77ef5013605",
+      "path": "apps/web/src/pages/404.astro",
+      "blobSha": "958888f8a371f971a1a2e311ca22169fc7de2f04",
       "componentId": "public"
     },
     {
@@ -618,7 +618,7 @@
     },
     {
       "path": "packages/core/campaign-image.mjs",
-      "blobSha": "82f66ef3d543afebcb98a0393d30265ee479d43b",
+      "blobSha": "9753a7e873c7b8ce45700fd63bc98a304f4abcac",
       "componentId": "editorial"
     },
     {
@@ -638,7 +638,7 @@
     },
     {
       "path": "packages/core/content.mjs",
-      "blobSha": "44bf20265c95c681750fe31323b878c35c7bcdfd",
+      "blobSha": "b4210ba643decb0e971f8712ce714e2172f0b9c4",
       "componentId": "materials"
     },
     {
@@ -697,13 +697,18 @@
       "componentId": "shared"
     },
     {
+      "path": "packages/core/material-approval.mjs",
+      "blobSha": "db1aa1558393c8f46e2f4c75401c5533eb30754a",
+      "componentId": "materials"
+    },
+    {
       "path": "packages/core/material-outline.mjs",
       "blobSha": "cdcb895bce2845490bf01b382bbfa724812cac6e",
       "componentId": "materials"
     },
     {
       "path": "packages/core/material-publication.mjs",
-      "blobSha": "f67a6ae529d1e9462a68a93576008939f65c7f79",
+      "blobSha": "1cf92a846971e5ac4314a64b603b31a9f0d558f4",
       "componentId": "materials"
     },
     {
@@ -728,7 +733,7 @@
     },
     {
       "path": "packages/core/policy-documents.mjs",
-      "blobSha": "982c919667ed9c0c7b6b0096ebfcfc9e0ea38876",
+      "blobSha": "309fe2756873ddacb6895c5ecf83bbd47780b435",
       "componentId": "public"
     },
     {
@@ -748,7 +753,7 @@
     },
     {
       "path": "packages/core/safe-policy-document.mjs",
-      "blobSha": "332287579831dc5958271131ea7118d3c1f00b90",
+      "blobSha": "e20cfbdbd33ee7ae322d0821cffa1588f9b99087",
       "componentId": "public"
     },
     {
@@ -763,7 +768,7 @@
     },
     {
       "path": "packages/core/staff-review.mjs",
-      "blobSha": "087d28e142a9cce35608e6875fce69bb8d5ad977",
+      "blobSha": "c6026013c75a4e6b9ae42aca60c004e5647f447f",
       "componentId": "shared"
     },
     {
@@ -883,7 +888,7 @@
     },
     {
       "path": "scripts/publish-materials.mjs",
-      "blobSha": "86579589358efad8b819421c95f997f35ee70555",
+      "blobSha": "f2028dd238b4e55ad844a5f8a1b24142b951cb66",
       "componentId": "operator"
     },
     {
@@ -947,6 +952,11 @@
       "componentId": "operator"
     },
     {
+      "path": "scripts/validate_e2eesa_status.py",
+      "blobSha": "42057c0eaa93ca40f945aa46f7c7c0bf85932ca9",
+      "componentId": "operator"
+    },
+    {
       "path": "scripts/validate-pr-registry.mjs",
       "blobSha": "2d7d068e7d6abda9ffcea499f1618937df6a6c3b",
       "componentId": "operator"
@@ -954,11 +964,6 @@
     {
       "path": "scripts/validate.mjs",
       "blobSha": "426017bef9c0981be2cb98b348090c15fa1dd55c",
-      "componentId": "operator"
-    },
-    {
-      "path": "scripts/validate_e2eesa_status.py",
-      "blobSha": "42057c0eaa93ca40f945aa46f7c7c0bf85932ca9",
       "componentId": "operator"
     },
     {
@@ -978,7 +983,7 @@
     },
     {
       "path": "scripts/verify.mjs",
-      "blobSha": "95ccfca8bedc2aa6e23c64074048301071d2be4e",
+      "blobSha": "9991f545560b6f9f38043fb576f5ce2f9796ee2e",
       "componentId": "operator"
     },
     {
@@ -990,8 +995,14 @@
   "storage": [
     {
       "id": "g28.account_bookmarks",
-      "columns": ["account_id", "created_at", "material_id"],
-      "paths": ["db/migrations/006_account_bookmarks.sql"],
+      "columns": [
+        "account_id",
+        "created_at",
+        "material_id"
+      ],
+      "paths": [
+        "db/migrations/006_account_bookmarks.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "materials",
       "classification": "restricted-material",
@@ -1001,8 +1012,13 @@
     },
     {
       "id": "g28.account_notice_keys",
-      "columns": ["account_id", "event_key"],
-      "paths": ["db/migrations/018_mail_delivery.sql"],
+      "columns": [
+        "account_id",
+        "event_key"
+      ],
+      "paths": [
+        "db/migrations/018_mail_delivery.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "mail",
       "classification": "identity-metadata",
@@ -1021,7 +1037,9 @@
         "terms_version",
         "verified_at"
       ],
-      "paths": ["db/migrations/001_foundation.sql"],
+      "paths": [
+        "db/migrations/001_foundation.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "identity",
       "classification": "identity-metadata",
@@ -1031,8 +1049,14 @@
     },
     {
       "id": "g28.activity_modules",
-      "columns": ["id", "record", "revision"],
-      "paths": ["db/migrations/001_foundation.sql"],
+      "columns": [
+        "id",
+        "record",
+        "revision"
+      ],
+      "paths": [
+        "db/migrations/001_foundation.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "coordination",
       "classification": "operational-metadata",
@@ -1050,7 +1074,9 @@
         "revoked_at",
         "role"
       ],
-      "paths": ["db/migrations/009_treasurer_vault_admin_rbac.sql"],
+      "paths": [
+        "db/migrations/009_treasurer_vault_admin_rbac.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "staff",
       "classification": "identity-metadata",
@@ -1068,7 +1094,9 @@
         "object_id",
         "result"
       ],
-      "paths": ["db/migrations/001_foundation.sql"],
+      "paths": [
+        "db/migrations/001_foundation.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "schema",
       "classification": "operational-metadata",
@@ -1088,7 +1116,9 @@
         "revision",
         "state"
       ],
-      "paths": ["db/migrations/001_foundation.sql"],
+      "paths": [
+        "db/migrations/001_foundation.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "editorial",
       "classification": "operational-metadata",
@@ -1098,8 +1128,14 @@
     },
     {
       "id": "g28.coordination_teams",
-      "columns": ["id", "record", "updated_at"],
-      "paths": ["db/migrations/014_volunteer_coordination.sql"],
+      "columns": [
+        "id",
+        "record",
+        "updated_at"
+      ],
+      "paths": [
+        "db/migrations/014_volunteer_coordination.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "coordination",
       "classification": "operational-metadata",
@@ -1117,7 +1153,9 @@
         "provider_id",
         "signal"
       ],
-      "paths": ["db/migrations/007_donation_rotation.sql"],
+      "paths": [
+        "db/migrations/007_donation_rotation.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "finance",
       "classification": "financial",
@@ -1134,7 +1172,9 @@
         "status",
         "updated_at"
       ],
-      "paths": ["db/migrations/007_donation_rotation.sql"],
+      "paths": [
+        "db/migrations/007_donation_rotation.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "finance",
       "classification": "financial",
@@ -1144,8 +1184,14 @@
     },
     {
       "id": "g28.donation_route_selections",
-      "columns": ["id", "provider_id", "selected_at"],
-      "paths": ["db/migrations/007_donation_rotation.sql"],
+      "columns": [
+        "id",
+        "provider_id",
+        "selected_at"
+      ],
+      "paths": [
+        "db/migrations/007_donation_rotation.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "finance",
       "classification": "financial",
@@ -1163,7 +1209,9 @@
         "profile_pin",
         "recipient_manifest_hash"
       ],
-      "paths": ["db/migrations/001_foundation.sql"],
+      "paths": [
+        "db/migrations/001_foundation.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "protected",
       "classification": "protected",
@@ -1183,7 +1231,9 @@
         "provider",
         "received_at"
       ],
-      "paths": ["db/migrations/004_fundraising_reconciliation.sql"],
+      "paths": [
+        "db/migrations/004_fundraising_reconciliation.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "finance",
       "classification": "financial",
@@ -1202,7 +1252,9 @@
         "status",
         "updated_at"
       ],
-      "paths": ["db/migrations/015_structured_help_requests.sql"],
+      "paths": [
+        "db/migrations/015_structured_help_requests.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "help",
       "classification": "operational-metadata",
@@ -1222,7 +1274,9 @@
         "terms_version",
         "token_hash"
       ],
-      "paths": ["db/migrations/001_foundation.sql"],
+      "paths": [
+        "db/migrations/001_foundation.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "identity",
       "classification": "identity-metadata",
@@ -1240,7 +1294,9 @@
         "provider_email_id",
         "received_at"
       ],
-      "paths": ["db/migrations/018_mail_delivery.sql"],
+      "paths": [
+        "db/migrations/018_mail_delivery.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "mail",
       "classification": "identity-metadata",
@@ -1250,8 +1306,14 @@
     },
     {
       "id": "g28.mail_suppressions",
-      "columns": ["created_at", "reason", "subject_key"],
-      "paths": ["db/migrations/018_mail_delivery.sql"],
+      "columns": [
+        "created_at",
+        "reason",
+        "subject_key"
+      ],
+      "paths": [
+        "db/migrations/018_mail_delivery.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "mail",
       "classification": "identity-metadata",
@@ -1268,7 +1330,9 @@
         "material_id",
         "revision"
       ],
-      "paths": ["db/migrations/003_material_reading.sql"],
+      "paths": [
+        "db/migrations/003_material_reading.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "materials",
       "classification": "restricted-material",
@@ -1286,7 +1350,9 @@
         "status",
         "updated_at"
       ],
-      "paths": ["db/migrations/001_foundation.sql"],
+      "paths": [
+        "db/migrations/001_foundation.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "materials",
       "classification": "restricted-material",
@@ -1296,8 +1362,16 @@
     },
     {
       "id": "g28.operation_claim_history",
-      "columns": ["account_id", "created_at", "id", "record", "task_id"],
-      "paths": ["db/migrations/019_operations.sql"],
+      "columns": [
+        "account_id",
+        "created_at",
+        "id",
+        "record",
+        "task_id"
+      ],
+      "paths": [
+        "db/migrations/019_operations.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "coordination",
       "classification": "operational-metadata",
@@ -1307,8 +1381,14 @@
     },
     {
       "id": "g28.operation_claims",
-      "columns": ["account_id", "record", "task_id"],
-      "paths": ["db/migrations/019_operations.sql"],
+      "columns": [
+        "account_id",
+        "record",
+        "task_id"
+      ],
+      "paths": [
+        "db/migrations/019_operations.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "coordination",
       "classification": "operational-metadata",
@@ -1318,8 +1398,15 @@
     },
     {
       "id": "g28.operation_definitions",
-      "columns": ["id", "kind", "record", "revision"],
-      "paths": ["db/migrations/019_operations.sql"],
+      "columns": [
+        "id",
+        "kind",
+        "record",
+        "revision"
+      ],
+      "paths": [
+        "db/migrations/019_operations.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "coordination",
       "classification": "operational-metadata",
@@ -1366,7 +1453,9 @@
         "target",
         "view_id"
       ],
-      "paths": ["db/migrations/20261018_visitor_interactions.sql"],
+      "paths": [
+        "db/migrations/20261018_visitor_interactions.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "analytics",
       "classification": "operational-metadata",
@@ -1376,8 +1465,13 @@
     },
     {
       "id": "g28.page_visit_retention",
-      "columns": ["id", "last_pruned"],
-      "paths": ["db/migrations/20261017_visitor_analytics.sql"],
+      "columns": [
+        "id",
+        "last_pruned"
+      ],
+      "paths": [
+        "db/migrations/20261017_visitor_analytics.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "analytics",
       "classification": "operational-metadata",
@@ -1395,7 +1489,9 @@
         "view_id",
         "visible_seconds"
       ],
-      "paths": ["db/migrations/20261017_visitor_analytics.sql"],
+      "paths": [
+        "db/migrations/20261017_visitor_analytics.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "analytics",
       "classification": "operational-metadata",
@@ -1405,8 +1501,14 @@
     },
     {
       "id": "g28.rate_buckets",
-      "columns": ["count", "expires_at", "key"],
-      "paths": ["db/migrations/001_foundation.sql"],
+      "columns": [
+        "count",
+        "expires_at",
+        "key"
+      ],
+      "paths": [
+        "db/migrations/001_foundation.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "identity",
       "classification": "identity-metadata",
@@ -1416,8 +1518,13 @@
     },
     {
       "id": "g28.schema_migrations",
-      "columns": ["applied_at", "version"],
-      "paths": ["db/migrations/001_foundation.sql"],
+      "columns": [
+        "applied_at",
+        "version"
+      ],
+      "paths": [
+        "db/migrations/001_foundation.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "schema",
       "classification": "operational-metadata",
@@ -1434,7 +1541,9 @@
         "expires_at",
         "token_hash"
       ],
-      "paths": ["db/migrations/001_foundation.sql"],
+      "paths": [
+        "db/migrations/001_foundation.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "identity",
       "classification": "identity-metadata",
@@ -1444,8 +1553,14 @@
     },
     {
       "id": "g28.staff_security",
-      "columns": ["account_id", "record", "updated_at"],
-      "paths": ["db/migrations/016_staff_passkeys.sql"],
+      "columns": [
+        "account_id",
+        "record",
+        "updated_at"
+      ],
+      "paths": [
+        "db/migrations/016_staff_passkeys.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "staff",
       "classification": "identity-metadata",
@@ -1490,7 +1605,9 @@
         "received_at",
         "session_id"
       ],
-      "paths": ["db/migrations/010_stripe_sandbox_ledger.sql"],
+      "paths": [
+        "db/migrations/010_stripe_sandbox_ledger.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "finance",
       "classification": "financial",
@@ -1500,8 +1617,14 @@
     },
     {
       "id": "g28.task_progress",
-      "columns": ["account_id", "completed_at", "task_id"],
-      "paths": ["db/migrations/002_self_reported_task_progress.sql"],
+      "columns": [
+        "account_id",
+        "completed_at",
+        "task_id"
+      ],
+      "paths": [
+        "db/migrations/002_self_reported_task_progress.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "coordination",
       "classification": "operational-metadata",
@@ -1511,8 +1634,15 @@
     },
     {
       "id": "g28.tool_consents",
-      "columns": ["account_id", "allowed", "revision", "tool_id"],
-      "paths": ["db/migrations/019_operations.sql"],
+      "columns": [
+        "account_id",
+        "allowed",
+        "revision",
+        "tool_id"
+      ],
+      "paths": [
+        "db/migrations/019_operations.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "coordination",
       "classification": "operational-metadata",
@@ -1522,8 +1652,14 @@
     },
     {
       "id": "g28.training_attestations",
-      "columns": ["account_id", "record", "training_id"],
-      "paths": ["db/migrations/019_operations.sql"],
+      "columns": [
+        "account_id",
+        "record",
+        "training_id"
+      ],
+      "paths": [
+        "db/migrations/019_operations.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "coordination",
       "classification": "operational-metadata",
@@ -1533,8 +1669,16 @@
     },
     {
       "id": "g28.treasury_audit",
-      "columns": ["action", "actor_id", "created_at", "id", "subject"],
-      "paths": ["db/migrations/009_treasurer_vault_admin_rbac.sql"],
+      "columns": [
+        "action",
+        "actor_id",
+        "created_at",
+        "id",
+        "subject"
+      ],
+      "paths": [
+        "db/migrations/009_treasurer_vault_admin_rbac.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "finance",
       "classification": "financial",
@@ -1555,7 +1699,9 @@
         "row_count",
         "sha256"
       ],
-      "paths": ["db/migrations/020_treasury_exports.sql"],
+      "paths": [
+        "db/migrations/020_treasury_exports.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "finance",
       "classification": "financial",
@@ -1572,7 +1718,9 @@
         "slot",
         "updated_at"
       ],
-      "paths": ["db/migrations/009_treasurer_vault_admin_rbac.sql"],
+      "paths": [
+        "db/migrations/009_treasurer_vault_admin_rbac.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "finance",
       "classification": "financial",
@@ -1589,7 +1737,9 @@
         "updated_at",
         "willing_to_train"
       ],
-      "paths": ["db/migrations/005_volunteer_role_preferences.sql"],
+      "paths": [
+        "db/migrations/005_volunteer_role_preferences.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "coordination",
       "classification": "operational-metadata",
@@ -1614,7 +1764,9 @@
         "updatedAt",
         "userId"
       ],
-      "paths": ["db/migrations/011_private_review_accounts.sql"],
+      "paths": [
+        "db/migrations/011_private_review_accounts.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "preview",
       "classification": "identity-metadata",
@@ -1624,8 +1776,16 @@
     },
     {
       "id": "public.g28_review_audit",
-      "columns": ["action", "actor_id", "created_at", "id", "subject_id"],
-      "paths": ["db/migrations/011_private_review_accounts.sql"],
+      "columns": [
+        "action",
+        "actor_id",
+        "created_at",
+        "id",
+        "subject_id"
+      ],
+      "paths": [
+        "db/migrations/011_private_review_accounts.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "preview",
       "classification": "identity-metadata",
@@ -1635,8 +1795,15 @@
     },
     {
       "id": "public.g28_review_rate_limit",
-      "columns": ["count", "id", "key", "lastRequest"],
-      "paths": ["db/migrations/011_private_review_accounts.sql"],
+      "columns": [
+        "count",
+        "id",
+        "key",
+        "lastRequest"
+      ],
+      "paths": [
+        "db/migrations/011_private_review_accounts.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "preview",
       "classification": "identity-metadata",
@@ -1657,7 +1824,9 @@
         "userAgent",
         "userId"
       ],
-      "paths": ["db/migrations/011_private_review_accounts.sql"],
+      "paths": [
+        "db/migrations/011_private_review_accounts.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "preview",
       "classification": "identity-metadata",
@@ -1667,8 +1836,14 @@
     },
     {
       "id": "public.g28_review_setup",
-      "columns": ["id", "state", "updated_at"],
-      "paths": ["db/migrations/011_private_review_accounts.sql"],
+      "columns": [
+        "id",
+        "state",
+        "updated_at"
+      ],
+      "paths": [
+        "db/migrations/011_private_review_accounts.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "preview",
       "classification": "identity-metadata",
@@ -1715,7 +1890,9 @@
         "updatedAt",
         "value"
       ],
-      "paths": ["db/migrations/011_private_review_accounts.sql"],
+      "paths": [
+        "db/migrations/011_private_review_accounts.sql"
+      ],
       "kind": "postgres-table",
       "componentId": "preview",
       "classification": "identity-metadata",
@@ -1751,7 +1928,9 @@
         "GCM tag",
         "restore target"
       ],
-      "paths": ["scripts/database-recovery.mjs"],
+      "paths": [
+        "scripts/database-recovery.mjs"
+      ],
       "classification": "identity-metadata",
       "authority": "Operator with separately held recovery key and isolated restore authorization",
       "retention": "No automatic archive expiry proved; archive schedule, custody and disposal require operator policy",
@@ -1801,7 +1980,10 @@
         "indexed URLs",
         "rights-approved sharing card"
       ],
-      "paths": ["scripts/public-renderer.mjs", "apps/web/campaign-runtime.mjs"],
+      "paths": [
+        "scripts/public-renderer.mjs",
+        "apps/web/campaign-runtime.mjs"
+      ],
       "classification": "public",
       "authority": "Explicit approved publication; unapproved source is not public authority",
       "retention": "Public release/cache/download lifetime; withdrawal cannot recall third-party copies",
@@ -1841,7 +2023,10 @@
         "public visitors",
         "YouTube only after play; user-selected external destinations"
       ],
-      "storage": ["public-artifacts", "public-projections"],
+      "storage": [
+        "public-artifacts",
+        "public-projections"
+      ],
       "egress": [
         "same-origin public assets",
         "YouTube privacy-enhanced iframe only after play",
@@ -1883,7 +2068,9 @@
         "g28.rate_buckets",
         "g28.sessions"
       ],
-      "egress": ["configured same-origin account routes"],
+      "egress": [
+        "configured same-origin account routes"
+      ],
       "authorization": "Browser-bound one-use explicit POST login; exact origin/CSRF for writes; export is scoped and no-store; closure refuses administrator shortcut",
       "retention": "15-minute login validity, session expiry and cleanup; account until closure; no cryptographic recipient recovery",
       "evidence": [
@@ -1977,12 +2164,21 @@
         "explicit CSV/print output"
       ],
       "from": "volunteer device",
-      "recipients": ["same device user; explicit user file recipient"],
-      "storage": ["browser-local"],
-      "egress": ["none; explicit print/download under user control"],
+      "recipients": [
+        "same device user; explicit user file recipient"
+      ],
+      "storage": [
+        "browser-local"
+      ],
+      "egress": [
+        "none; explicit print/download under user control"
+      ],
       "authorization": "No submission endpoint; no supporter lists, sensitive narratives or automatic upload",
       "retention": "Memory until unload; downloaded files persist under user control",
-      "evidence": ["packages/core/forms.mjs", "apps/portal/src/main.tsx"],
+      "evidence": [
+        "packages/core/forms.mjs",
+        "apps/portal/src/main.tsx"
+      ],
       "profileDecision": "local",
       "blocked": false,
       "plaintextFallback": false
@@ -1999,7 +2195,10 @@
         "tool consent revision"
       ],
       "from": "authenticated volunteer / scoped staff",
-      "recipients": ["own account", "authorized team/staff roles"],
+      "recipients": [
+        "own account",
+        "authorized team/staff roles"
+      ],
       "storage": [
         "g28.activity_modules",
         "g28.coordination_teams",
@@ -2043,8 +2242,12 @@
         "request owner",
         "owner staff sees identity-free category projection"
       ],
-      "storage": ["g28.help_requests"],
-      "egress": ["same-origin API only"],
+      "storage": [
+        "g28.help_requests"
+      ],
+      "egress": [
+        "same-origin API only"
+      ],
       "authorization": "Exact input keys reject free text/attachments; own-account reads and withdraw; staff acknowledge/resolve with step-up",
       "retention": "Withdrawal retains status history; account deletion cascades; account export remains available when feature disabled",
       "evidence": [
@@ -2067,9 +2270,16 @@
         "step-up timestamp"
       ],
       "from": "provisioned staff authenticator",
-      "recipients": ["scoped server authorization layer"],
-      "storage": ["g28.admin_grants", "g28.staff_security"],
-      "egress": ["same-origin WebAuthn ceremony"],
+      "recipients": [
+        "scoped server authorization layer"
+      ],
+      "storage": [
+        "g28.admin_grants",
+        "g28.staff_security"
+      ],
+      "egress": [
+        "same-origin WebAuthn ceremony"
+      ],
       "authorization": "Exact origin/RP, challenge expiry and verified current grant; no authenticator private key stored; volunteer/reviewer session cannot imply staff",
       "retention": "Revocation denies future authority; key/device change is not recovered from email; admin offboarding is distinct",
       "evidence": [
@@ -2096,8 +2306,13 @@
         "authorized editor",
         "public only after explicit current publication"
       ],
-      "storage": ["g28.content_revisions", "public-projections"],
-      "egress": ["approved public projection and user download only"],
+      "storage": [
+        "g28.content_revisions",
+        "public-projections"
+      ],
+      "egress": [
+        "approved public projection and user download only"
+      ],
       "authorization": "Exact role/fresh passkey/CSRF; immutable revision checks; source validation and explicit rights publication; sanitize uploads",
       "retention": "Immutable draft/media history remains; withdrawal removes current public projection but cannot recall public copies",
       "evidence": [
@@ -2175,7 +2390,9 @@
         "g28.page_visit_retention",
         "g28.page_visits"
       ],
-      "egress": ["same-origin analytics routes only"],
+      "egress": [
+        "same-origin analytics routes only"
+      ],
       "authorization": "Opt-in activates scripts; SQL security-definer validation, allowlists and restricted execute role; no fingerprint/cross-page identity",
       "retention": "30-day prune triggered by subsequent starts, cascade events; idle database cleanup and platform logs require deployment evidence",
       "evidence": [
@@ -2213,10 +2430,15 @@
         "public.g28_review_user",
         "public.g28_review_verification"
       ],
-      "egress": ["same-origin private preview authentication only"],
+      "egress": [
+        "same-origin private preview authentication only"
+      ],
       "authorization": "Better Auth isolated realm/role; individual expiry/revocation; cannot grant volunteer/staff/treasury access; do not infer real current IP/UA persistence from nullable schema alone",
       "retention": "Expiry/revocation enforced; full account/audit/metadata retention has no global automatic policy proved",
-      "evidence": ["apps/web/review-auth.mjs", "apps/web/private-preview.mjs"],
+      "evidence": [
+        "apps/web/review-auth.mjs",
+        "apps/web/private-preview.mjs"
+      ],
       "profileDecision": "server",
       "blocked": false,
       "plaintextFallback": false
@@ -2230,9 +2452,15 @@
         "approved source document bytes"
       ],
       "from": "server allowlisted private GitHub source",
-      "recipients": ["authenticated preview document requester"],
-      "storage": ["policy-source-memory"],
-      "egress": ["https://api.github.com allowlisted source repositories"],
+      "recipients": [
+        "authenticated preview document requester"
+      ],
+      "storage": [
+        "policy-source-memory"
+      ],
+      "egress": [
+        "https://api.github.com allowlisted source repositories"
+      ],
       "authorization": "Server-held credential never reaches browser; allowlisted repository and safe document transform; no public publication authority",
       "retention": "Repository source and explicit downloaded copies persist; request cache lifecycle is not end-to-end secrecy",
       "evidence": [
@@ -2256,11 +2484,18 @@
       "recipients": [
         "exact independently authenticated intended recipient/device"
       ],
-      "storage": ["none"],
-      "egress": ["none; protected service unavailable"],
+      "storage": [
+        "none"
+      ],
+      "egress": [
+        "none; protected service unavailable"
+      ],
       "authorization": "Reject before body parsing; startup rejects PROTECTED_CONTENT_ENABLED=true. Future account login/email recovery must not restore recipient keys or expand access",
       "retention": "No protected retention/recovery/export authorization exists; production use stays off; revocation cannot recall previously decrypted recipient copies",
-      "evidence": ["apps/api/src/app.mjs", "apps/api/src/config.mjs"],
+      "evidence": [
+        "apps/api/src/app.mjs",
+        "apps/api/src/config.mjs"
+      ],
       "profileDecision": "protected",
       "blocked": true,
       "plaintextFallback": false
@@ -2275,12 +2510,21 @@
         "profile pin"
       ],
       "from": "future authorized endpoint/device",
-      "recipients": ["specific named safety recipients authorized by sender"],
-      "storage": ["g28.encrypted_records"],
-      "egress": ["none; protected service unavailable"],
+      "recipients": [
+        "specific named safety recipients authorized by sender"
+      ],
+      "storage": [
+        "g28.encrypted_records"
+      ],
+      "egress": [
+        "none; protected service unavailable"
+      ],
       "authorization": "Reject before body parsing; startup rejects PROTECTED_CONTENT_ENABLED=true. Future account login/email recovery must not restore recipient keys or expand access",
       "retention": "No protected retention/recovery/export authorization exists; production use stays off; revocation cannot recall previously decrypted recipient copies",
-      "evidence": ["apps/api/src/app.mjs", "apps/api/src/config.mjs"],
+      "evidence": [
+        "apps/api/src/app.mjs",
+        "apps/api/src/config.mjs"
+      ],
       "profileDecision": "protected",
       "blocked": true,
       "plaintextFallback": false
@@ -2295,12 +2539,21 @@
         "recipient-bound key reference"
       ],
       "from": "future authorized endpoint/device",
-      "recipients": ["same exact authorized report recipient devices"],
-      "storage": ["none"],
-      "egress": ["none; protected service unavailable"],
+      "recipients": [
+        "same exact authorized report recipient devices"
+      ],
+      "storage": [
+        "none"
+      ],
+      "egress": [
+        "none; protected service unavailable"
+      ],
       "authorization": "Reject before body parsing; startup rejects PROTECTED_CONTENT_ENABLED=true. Future account login/email recovery must not restore recipient keys or expand access",
       "retention": "No protected retention/recovery/export authorization exists; production use stays off; revocation cannot recall previously decrypted recipient copies",
-      "evidence": ["apps/api/src/app.mjs", "apps/api/src/config.mjs"],
+      "evidence": [
+        "apps/api/src/app.mjs",
+        "apps/api/src/config.mjs"
+      ],
       "profileDecision": "protected",
       "blocked": true,
       "plaintextFallback": false
@@ -2318,11 +2571,18 @@
       "recipients": [
         "explicitly reauthorized recipient device, never generic account service"
       ],
-      "storage": ["none"],
-      "egress": ["none; protected service unavailable"],
+      "storage": [
+        "none"
+      ],
+      "egress": [
+        "none; protected service unavailable"
+      ],
       "authorization": "Reject before body parsing; startup rejects PROTECTED_CONTENT_ENABLED=true. Future account login/email recovery must not restore recipient keys or expand access",
       "retention": "No protected retention/recovery/export authorization exists; production use stays off; revocation cannot recall previously decrypted recipient copies",
-      "evidence": ["apps/api/src/app.mjs", "apps/api/src/config.mjs"],
+      "evidence": [
+        "apps/api/src/app.mjs",
+        "apps/api/src/config.mjs"
+      ],
       "profileDecision": "protected",
       "blocked": true,
       "plaintextFallback": false
@@ -2340,11 +2600,18 @@
       "recipients": [
         "explicit named export recipient with current cryptographic authority"
       ],
-      "storage": ["none"],
-      "egress": ["none; protected service unavailable"],
+      "storage": [
+        "none"
+      ],
+      "egress": [
+        "none; protected service unavailable"
+      ],
       "authorization": "Reject before body parsing; startup rejects PROTECTED_CONTENT_ENABLED=true. Future account login/email recovery must not restore recipient keys or expand access",
       "retention": "No protected retention/recovery/export authorization exists; production use stays off; revocation cannot recall previously decrypted recipient copies",
-      "evidence": ["apps/api/src/app.mjs", "apps/api/src/config.mjs"],
+      "evidence": [
+        "apps/api/src/app.mjs",
+        "apps/api/src/config.mjs"
+      ],
       "profileDecision": "protected",
       "blocked": true,
       "plaintextFallback": false
@@ -2359,14 +2626,20 @@
         "separately held recovery key never in archive/log"
       ],
       "from": "authorized backup operator",
-      "recipients": ["authorized isolated restore operator"],
-      "storage": ["operator-backup"],
+      "recipients": [
+        "authorized isolated restore operator"
+      ],
+      "storage": [
+        "operator-backup"
+      ],
       "egress": [
         "explicit operator archive destination; no automatic upload authority"
       ],
       "authorization": "Authenticated encryption, restrictive output permissions and isolated restore; wrong key/corruption must fail before import. Not recipient E2EE",
       "retention": "Operator schedule/custody/expiry unobserved; archives may retain previously deleted records; restore must repeat deletion/access reconciliation",
-      "evidence": ["scripts/database-recovery.mjs"],
+      "evidence": [
+        "scripts/database-recovery.mjs"
+      ],
       "profileDecision": "server",
       "blocked": false,
       "plaintextFallback": false
@@ -2380,9 +2653,16 @@
         "bounded actor/action/object/result audit metadata"
       ],
       "from": "migration/runtime authority",
-      "recipients": ["least-privilege application or migration role"],
-      "storage": ["g28.audit_events", "g28.schema_migrations"],
-      "egress": ["same database; no public raw table access"],
+      "recipients": [
+        "least-privilege application or migration role"
+      ],
+      "storage": [
+        "g28.audit_events",
+        "g28.schema_migrations"
+      ],
+      "egress": [
+        "same database; no public raw table access"
+      ],
       "authorization": "Separate owner/migration role from runtime; execute-only/read-projection grants; no secrets or payloads in audit fields",
       "retention": "No global audit/migration purge; restricted operational lifecycle",
       "evidence": [
@@ -2409,7 +2689,9 @@
         "platform log service",
         "explicit release destination"
       ],
-      "storage": ["diagnostic-output"],
+      "storage": [
+        "diagnostic-output"
+      ],
       "egress": [
         "explicit approved deploy/source/provider APIs under operator authority"
       ],
@@ -2429,14 +2711,24 @@
       "id": "shared-library-processing",
       "componentId": "shared",
       "classification": "operational-metadata",
-      "fields": ["bounded validated values and presentation data"],
+      "fields": [
+        "bounded validated values and presentation data"
+      ],
       "from": "invoking application component",
-      "recipients": ["same invoking component"],
-      "storage": ["none"],
-      "egress": ["none"],
+      "recipients": [
+        "same invoking component"
+      ],
+      "storage": [
+        "none"
+      ],
+      "egress": [
+        "none"
+      ],
       "authorization": "No standalone recipient authority; exact keys/bounds and caller access control required",
       "retention": "Caller lifecycle; no independent persistence or egress",
-      "evidence": ["packages/core/validation.mjs"],
+      "evidence": [
+        "packages/core/validation.mjs"
+      ],
       "profileDecision": "server",
       "blocked": false,
       "plaintextFallback": false
