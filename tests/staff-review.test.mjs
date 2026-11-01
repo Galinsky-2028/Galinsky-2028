@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {generateKeyPairSync} from 'node:crypto';
+import {generateKeyPairSync,createHash,sign} from 'node:crypto';
 import {materialDigest,signStaffApproval,validateSignedMaterialRelease} from '../packages/core/staff-review.mjs';
 const author=generateKeyPairSync('ed25519');
 const reviewer=generateKeyPairSync('ed25519');
@@ -26,6 +26,31 @@ test('tampering, revision changes, status changes or unsigned documents fail clo
   const changed=structuredClone(m);changed[field]=value;assert.throws(()=>validateSignedMaterialRelease([changed],registry()),field);
  }
  const missing=record();delete missing.approvals.reviewer;assert.throws(()=>validateSignedMaterialRelease([missing],registry()));
+});
+test('signed V2 publication binds every displayed or routing metadata field',()=>{
+ const m=record();m.description='Reviewed description';m.category='start';m.youtubeId='AbcdefG123_';
+ const at=m.review.at;
+ m.approvals.author=signStaffApproval(m,{role:'author',keyId:'staff-author-a',privateKeyPem:privatePem(author),signedAt:at});
+ m.approvals.reviewer=signStaffApproval(m,{role:'reviewer',keyId:'staff-reviewer-b',privateKeyPem:privatePem(reviewer),signedAt:at});
+ assert.equal(validateSignedMaterialRelease([m],registry()).length,1);
+ for(const [field,value]of [['description','Unsigned changed description'],['category','unsigned-category'],['youtubeId','XbcdefG123_'],['author','different-author']]){
+  const changed=structuredClone(m);changed[field]=value;
+  assert.throws(()=>validateSignedMaterialRelease([changed],registry()),field);
+ }
+ for(const field of ['description','category','youtubeId']){
+  const changed=structuredClone(m);delete changed[field];
+  assert.throws(()=>validateSignedMaterialRelease([changed],registry()),'Deletion of '+field);
+ }
+});
+test('legacy V1 signatures cannot authorize metadata that was outside their signed payload',()=>{
+ const m=record(),at=m.review.at;
+ const payload=Object.fromEntries(['id','revision','title','body','audience','status'].map(k=>[k,m[k]]));
+ const digest=createHash('sha256').update(JSON.stringify(payload)).digest('hex');
+ for(const [role,key,keyId]of [['author',author,'staff-author-a'],['reviewer',reviewer,'staff-reviewer-b']]){
+  const statement=Buffer.from(['G28-SIGNED-MATERIAL-V1',role,keyId,at,digest,''].join('\n'));
+  m.approvals[role]={keyId,signedAt:at,signature:sign(null,statement,key.privateKey).toString('base64')};
+ }
+ assert.throws(()=>validateSignedMaterialRelease([m],registry()),/signature did not match/);
 });
 test('self-approval, revoked keys, mismatched identities and reused signatures fail',()=>{
  const m=record();m.author=m.review.approvedBy;assert.throws(()=>validateSignedMaterialRelease([m],registry()));
