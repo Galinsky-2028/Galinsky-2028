@@ -2,6 +2,7 @@ import test from 'node:test';import assert from 'node:assert/strict';
 import {mkdtempSync,mkdirSync,writeFileSync,rmSync} from 'node:fs';
 import {tmpdir} from 'node:os';import {join} from 'node:path';import {createHash} from 'node:crypto';
 import {publishedPolicyDocuments,policyDocumentSection} from '../packages/core/policy-documents.mjs';
+import {renderSafePolicyHtml} from '../packages/core/safe-policy-document.mjs';
 import {renderPage,site} from '../scripts/public-renderer.mjs';
 function fixture(fn){
  const dir=mkdtempSync(join(tmpdir(),'g28-policy-assets-'));mkdirSync(join(dir,'documents'));
@@ -47,7 +48,7 @@ test('asset hashes, independent review and safe paths are mandatory',()=>fixture
 test('only safe generated standalone HTML files can be linked',()=>fixture(({dir,record})=>{
  const htmlPath='/documents/kirk-evers-summary-v1.html';
  const file=join(dir,'documents','kirk-evers-summary-v1.html');
- const safe='<!doctype html><html lang="en"><head><meta name="generator" content="g28-safe-document-v1"><meta http-equiv="Content-Security-Policy" content="default-src \\u0027none\\u0027"></head><body><main><h1>Summary</h1></main></body></html>';
+ const safe=renderSafePolicyHtml({title:'Summary',source:'# Summary\n\nSynthetic reviewed content.'});
  writeFileSync(file,safe);
  const item={...record,id:'summary-1',kind:'summary',path:htmlPath,sha256:createHash('sha256').update(safe).digest('hex')};
  assert.equal(publishedPolicyDocuments('kirk-evers',[item],dir).length,1);
@@ -58,3 +59,4 @@ test('production social sharing has exactly one OG image, not duplicates',()=>{
  const page=renderPage('kirk-evers',{site:{...site,mode:'production',canonicalOrigin:'https://campaign.example'}});
  assert.equal((page.match(/<meta property="og:image"/g)||[]).length,1);
 });
+
