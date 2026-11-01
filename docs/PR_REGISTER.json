@@ -2,14 +2,14 @@
   "schema_version": 1,
   "project": "Galinsky 2028",
   "repository": "neophilism/Galinsky-2028",
-  "plan_version": "1.2",
+  "plan_version": "1.3",
   "plan_status": "implementation_started",
   "design_status": "approved_with_issue_video_amendment",
   "planned_work_packages": 72,
-  "implemented_packages": 58,
-  "merged_packages": 8,
-  "deployed_packages": 7,
-  "note": "See individual software implementation reviews. Full-scope completion is separate from implemented code, accepted PR merges and external production activation.",
+  "implemented_packages": 59,
+  "merged_packages": 13,
+  "deployed_packages": 12,
+  "note": "59 of 72 reviewed source software packages implemented; 13 of 72 separately have full-scope acceptance. The currently protected previews are live on 6d6c7aab464f89bc716e7a18cdd2227771285c59; public launch remains gated.",
   "packages": [
     {
       "id": "G28-01",
@@ -70,8 +70,10 @@
       "depends_on": [
         "G28-01"
       ],
-      "status": "implemented",
-      "github_prs": [],
+      "status": "completed",
+      "github_prs": [
+        142
+      ],
       "scope": "Set up Astro marketing, React/TypeScript portal, Fastify API/static portal host, shared UI/contracts/content/security packages, pnpm workspace and pinned supported Node/tool versions. Add formatting, lint, type checks, unit/integration/browser test runners, secret scanning, dependency review, branch rules and PR templates. Keep pending features behind server-side flags.",
       "acceptance": "A clean checkout installs reproducibly and passes the documented verification command. CI tests the merge candidate; no production secret is available to untrusted PRs. Empty test suites and skipped security gates cannot be reported as passing implementation evidence.",
       "evidence": "Lockfile, CI configuration, green bootstrap run and documented local setup.",
@@ -86,10 +88,19 @@
         96
       ],
       "acceptance_review": {
-        "status": "implemented",
-        "reviewed_source_sha": "0e70c5cee4b34e5de78aea3b304cbe7aa73c3228",
-        "report": "docs/evidence/CURRENT_IMPLEMENTATION_REVIEW.md",
-        "blocker": "Verify the tested revision in its intended release; no additional activation input identified."
+        "status": "completed",
+        "reviewed_source_sha": "6d6c7aab464f89bc716e7a18cdd2227771285c59",
+        "report": "docs/evidence/ROADMAP_RECONCILIATION_20261101.md",
+        "blocker": "Verify the tested revision in its intended release; no additional activation input identified.",
+        "completed_at": "2026-11-01T23:06:20.000Z",
+        "ci_run_id": 41359919156,
+        "evidence_paths": [
+          "scripts/verify.mjs",
+          ".github/workflows/ci.yml",
+          "tests/verify.test.mjs"
+        ],
+        "scoped_deployed": true,
+        "scope_note": "Private preview evidence; public activation not asserted."
       },
       "implementation_review": {
         "implementation": "implemented",
@@ -116,8 +127,10 @@
       "depends_on": [
         "G28-02"
       ],
-      "status": "implemented",
-      "github_prs": [],
+      "status": "completed",
+      "github_prs": [
+        143
+      ],
       "scope": "Extract the approved color, spacing, typography, button, card, form, sidebar, footer, responsive navigation and layout tokens. Preserve the original flag mark, white canvas and portrait-led visual hierarchy. Provide accessible focus, errors, loading, success and empty states. Use source CSS as the baseline rather than substituting a generic component theme.",
       "acceptance": "Header/footer and representative components match approved desktop/mobile references. Keyboard navigation, skip link, menu state and focus restoration work. Legal text remains readable; an accessibility fix may improve a tiny prototype label without changing the design direction.",
       "evidence": "Component gallery, screenshot baselines and keyboard/accessibility component tests.",
@@ -129,10 +142,19 @@
         35
       ],
       "acceptance_review": {
-        "status": "implemented",
-        "reviewed_source_sha": "0e70c5cee4b34e5de78aea3b304cbe7aa73c3228",
-        "report": "docs/evidence/CURRENT_IMPLEMENTATION_REVIEW.md",
-        "blocker": "Verify the tested revision in its intended release; no additional activation input identified."
+        "status": "completed",
+        "reviewed_source_sha": "6d6c7aab464f89bc716e7a18cdd2227771285c59",
+        "report": "docs/evidence/ROADMAP_RECONCILIATION_20261101.md",
+        "blocker": "Verify the tested revision in its intended release; no additional activation input identified.",
+        "completed_at": "2026-11-01T23:06:20.000Z",
+        "ci_run_id": 41359919156,
+        "evidence_paths": [
+          "apps/portal/src/main.tsx",
+          "apps/portal/src/portal.css",
+          "tests/browser/journeys.mjs"
+        ],
+        "scoped_deployed": true,
+        "scope_note": "Private preview evidence; public activation not asserted."
       },
       "implementation_review": {
         "implementation": "implemented",
@@ -217,8 +239,10 @@
         "G28-01",
         "G28-02"
       ],
-      "status": "in_progress",
-      "github_prs": [],
+      "status": "completed",
+      "github_prs": [
+        144
+      ],
       "scope": "Inventory every component, data field, recipient, integration, export, log and storage path. Pin the reviewed E2EESA source basis and identify the exact applicable profiles and upstream remediation/review dependencies. Write threat model, privacy/retention matrix, browser trust boundary, account-versus-key recovery behavior and security claims register. Separate public content, restricted training, protected volunteer content, identity metadata and intentionally disclosed financial processing.",
       "acceptance": "No TLS-only or provider-managed encryption is called E2EE. The build can identify every protected flow and its intended recipients. Missing upstream production evidence blocks protected production use but not public UI development. Unknown capabilities fail closed instead of selecting a weaker fallback.",
       "evidence": "Component/data-flow inventory, profile decision record, egress matrix, release-gate specification and reviewer handoff requirements.",
@@ -229,10 +253,20 @@
         66
       ],
       "acceptance_review": {
-        "status": "in_progress",
-        "reviewed_source_sha": "0e70c5cee4b34e5de78aea3b304cbe7aa73c3228",
-        "report": "docs/evidence/CURRENT_IMPLEMENTATION_REVIEW.md",
-        "blocker": "Finish the complete component/profile coverage review, including protected-flow obligations; preliminary inventory is not full coverage."
+        "status": "completed",
+        "reviewed_source_sha": "6d6c7aab464f89bc716e7a18cdd2227771285c59",
+        "report": "docs/evidence/ROADMAP_RECONCILIATION_20261101.md",
+        "blocker": "Finish the complete component/profile coverage review, including protected-flow obligations; preliminary inventory is not full coverage.",
+        "completed_at": "2026-11-01T23:06:20.000Z",
+        "ci_run_id": 41359919156,
+        "evidence_paths": [
+          "security/source-flow-contract.json",
+          "scripts/security-contract.mjs",
+          "tests/security-contract.test.mjs",
+          "docs/security/SOURCE_FLOW_CONTRACT.md"
+        ],
+        "scoped_deployed": true,
+        "scope_note": "Only fail-closed source-bound security contract, not protected E2EE certification."
       },
       "implementation_review": {
         "implementation": "remaining_implementation",
@@ -256,8 +290,10 @@
         "G28-04",
         "G28-05"
       ],
-      "status": "implemented",
-      "github_prs": [],
+      "status": "completed",
+      "github_prs": [
+        145
+      ],
       "scope": "Add schemas and persistence for campaign copy, issues, videos, documents, approved links, legal copy, media and content releases. Use sanitized Markdown/structured blocks, not executable author-supplied MDX. Implement draft/review/approved/published/superseded/withdrawn states with immutable versions, role-scoped approvals and rollback. A published immutable release feeds the static site; repository exports preserve approved public content for handoff.",
       "acceptance": "Unapproved documents cannot enter a public release or volunteer current-materials view. Publishing is atomic; stale edits cannot overwrite newer versions. A failed build leaves the previous public release live. No second manual copy of policy definitions is needed for volunteer summaries.",
       "evidence": "Schema tests, publication state-machine tests, rollback fixture and source-to-release traceability.",
@@ -269,10 +305,20 @@
         16
       ],
       "acceptance_review": {
-        "status": "implemented",
-        "reviewed_source_sha": "0e70c5cee4b34e5de78aea3b304cbe7aa73c3228",
-        "report": "docs/evidence/CURRENT_IMPLEMENTATION_REVIEW.md",
-        "blocker": "Verify the tested revision in its intended release; no additional activation input identified."
+        "status": "completed",
+        "reviewed_source_sha": "6d6c7aab464f89bc716e7a18cdd2227771285c59",
+        "report": "docs/evidence/ROADMAP_RECONCILIATION_20261101.md",
+        "blocker": "Verify the tested revision in its intended release; no additional activation input identified.",
+        "completed_at": "2026-11-01T23:06:20.000Z",
+        "ci_run_id": 41359919156,
+        "evidence_paths": [
+          "packages/core/content.mjs",
+          "packages/core/material-approval.mjs",
+          "packages/core/material-publication.mjs",
+          "tests/material-publication.test.mjs"
+        ],
+        "scoped_deployed": true,
+        "scope_note": "Private preview evidence; public activation not asserted."
       },
       "implementation_review": {
         "implementation": "implemented",
@@ -300,8 +346,10 @@
         "G28-03",
         "G28-06"
       ],
-      "status": "implemented",
-      "github_prs": [],
+      "status": "completed",
+      "github_prs": [
+        146
+      ],
       "scope": "Add portrait derivatives, local concept illustrations, responsive image sizes, focal points, asset rights/consent fields, alt text, upload limits and content hashes. Split public assets from authenticated or encrypted objects. Scan and sanitize public editorial uploads; reject active SVG/HTML and deceptive MIME types. Retain original sources with explicit publication status.",
       "acceptance": "The real candidate likeness and pointing pose are preserved. No public asset or ZIP exposes restricted source materials or metadata. Every displayed/downloadable asset has a rights record, correct content type and accessible alternative. Portrait and illustration loading does not shift layout.",
       "evidence": "Asset register, malicious-upload tests, image comparison and download authorization tests.",
@@ -314,10 +362,20 @@
         96
       ],
       "acceptance_review": {
-        "status": "implemented",
-        "reviewed_source_sha": "0e70c5cee4b34e5de78aea3b304cbe7aa73c3228",
-        "report": "docs/evidence/CURRENT_IMPLEMENTATION_REVIEW.md",
-        "blocker": "Verify the tested revision in its intended release; no additional activation input identified."
+        "status": "completed",
+        "reviewed_source_sha": "6d6c7aab464f89bc716e7a18cdd2227771285c59",
+        "report": "docs/evidence/ROADMAP_RECONCILIATION_20261101.md",
+        "blocker": "Verify the tested revision in its intended release; no additional activation input identified.",
+        "completed_at": "2026-11-01T23:06:20.000Z",
+        "ci_run_id": 41359919156,
+        "evidence_paths": [
+          "packages/core/campaign-image.mjs",
+          "packages/core/safe-policy-document.mjs",
+          "packages/core/policy-documents.mjs",
+          "tests/campaign-image.test.mjs"
+        ],
+        "scoped_deployed": true,
+        "scope_note": "Private preview evidence; public activation not asserted."
       },
       "implementation_review": {
         "implementation": "implemented",
@@ -3357,8 +3415,8 @@
       }
     }
   ],
-  "progress_evidence_note": "Software implementation is reviewed unit by unit in implementationReview. Implemented code, accepted PRs, deployment and external activation are distinct facts. Historical in_progress labels are not a count of partially written PRs.",
-  "accepted_pull_requests": 122,
-  "accepted_prs_observed_at": "2026-10-19T00:44:00.971Z",
+  "progress_evidence_note": "Source-reviewed software implementation: 59/72; distinct fully scoped, release-evidenced accepted packages: 13/72. PR acceptance uses mergedAt for all 134 merged PRs. Yellow depicts accepted contributions to packages without full-scope acceptance, not unwritten software. Open production and protected-data gates remain separate. See docs/evidence/ROADMAP_RECONCILIATION_20261101.md.",
+  "accepted_pull_requests": 134,
+  "accepted_prs_observed_at": "2026-11-01T23:31:02.606Z",
   "pull_request_acceptance_rule": "Every real GitHub PR with a verified merged_at is accepted; no further package review is required to accept that PR. Fully complete planned work packages are counted separately."
 }
