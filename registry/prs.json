@@ -9,10 +9,10 @@
     ".exechub/approved-pr-mapping.json",
     "docs/PR_REGISTER.json"
   ],
-  "progressEvidenceNote": "Software implementation is reviewed unit by unit in implementationReview. Implemented code, accepted PRs, deployment and external activation are distinct facts. Historical in_progress labels are not a count of partially written PRs.",
+  "progressEvidenceNote": "Source-reviewed software implementation: 59/72; distinct fully scoped, release-evidenced accepted packages: 13/72. PR acceptance uses mergedAt for all 134 merged PRs. Yellow depicts accepted contributions to packages without full-scope acceptance, not unwritten software. Open production and protected-data gates remain separate. See docs/evidence/ROADMAP_RECONCILIATION_20261101.md.",
   "schemaVersion": 1,
-  "roadmapVersion": 6,
-  "observedAt": "2026-10-19T00:44:00.971Z",
+  "roadmapVersion": 7,
+  "observedAt": "2026-11-01T23:31:02.606Z",
   "units": [
     {
       "id": "G28-001",
@@ -63,7 +63,9 @@
       "id": "G28-002",
       "title": "Create the monorepo and mandatory CI",
       "origin": "original",
-      "prs": [],
+      "prs": [
+        142
+      ],
       "contributingPrs": [
         1,
         6,
@@ -75,12 +77,11 @@
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "implemented",
-      "acceptanceReport": "docs/evidence/PUBLIC_QUALITY_20261016.md",
-      "acceptanceBlocker": "Verify the tested revision in its intended release; no additional activation input identified.",
+      "status": "completed",
+      "acceptanceReport": "docs/evidence/ROADMAP_RECONCILIATION_20261101.md",
       "implementationReview": {
         "implementation": "implemented",
-        "reviewedAt": "2026-10-19T01:13:13.691Z",
+        "reviewedAt": "2026-11-01T23:06:20.000Z",
         "sourceFiles": [
           {
             "path": "scripts/verify.mjs",
@@ -92,29 +93,39 @@
           }
         ],
         "softwareGap": null,
-        "activationRequirement": "Verify the tested revision in its intended release; no additional activation input identified.",
-        "verification": "Current branch source review; final hosted checks and accepted merge are recorded separately."
-      }
+        "activationRequirement": "Full package verified in existing protected preview; live external release inputs are separately gated.",
+        "verification": "Merged dedicated PR #142; combined CI 41359919156 success; both password-protected Render preview deployments are live on 6d6c7aab464f89bc716e7a18cdd2227771285c59. This is not a public production activation."
+      },
+      "acceptedAt": "2026-11-01T23:06:20.000Z",
+      "reviewedSourceSha": "6d6c7aab464f89bc716e7a18cdd2227771285c59",
+      "acceptanceSummary": "Pinned reproducible full build, source-bound checks and no-skipped-gate CI successfully verified in run 41359919156 and deployed in the two existing previews.",
+      "evidence": [
+        "scripts/verify.mjs",
+        ".github/workflows/ci.yml",
+        "tests/verify.test.mjs"
+      ]
     },
     {
       "id": "G28-003",
       "title": "Build the exact design system and shared navigation",
       "origin": "original",
-      "prs": [],
+      "prs": [
+        143
+      ],
       "contributingPrs": [
         1,
         10,
-        35
+        35,
+        147
       ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "implemented",
-      "acceptanceBlocker": "Verify the tested revision in its intended release; no additional activation input identified.",
-      "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
+      "status": "completed",
+      "acceptanceReport": "docs/evidence/ROADMAP_RECONCILIATION_20261101.md",
       "implementationReview": {
         "implementation": "implemented",
-        "reviewedAt": "2026-10-19T01:42:15.765Z",
+        "reviewedAt": "2026-11-01T23:06:20.000Z",
         "sourceFiles": [
           {
             "path": "apps/web/public/assets/site.css",
@@ -126,9 +137,17 @@
           }
         ],
         "softwareGap": null,
-        "activationRequirement": "Verify the tested revision in its intended release; no additional activation input identified.",
-        "verification": "Current branch source review; final hosted checks and accepted merge are recorded separately."
-      }
+        "activationRequirement": "Full package verified in existing protected preview; live external release inputs are separately gated.",
+        "verification": "Merged dedicated PR #143; combined CI 41359919156 success; both password-protected Render preview deployments are live on 6d6c7aab464f89bc716e7a18cdd2227771285c59. This is not a public production activation."
+      },
+      "acceptedAt": "2026-11-01T23:06:20.000Z",
+      "reviewedSourceSha": "6d6c7aab464f89bc716e7a18cdd2227771285c59",
+      "acceptanceSummary": "Responsive shared navigation, focus states, and full-card role navigation passed three-browser real HTTP journeys and deployed on both preview services.",
+      "evidence": [
+        "apps/portal/src/main.tsx",
+        "apps/portal/src/portal.css",
+        "tests/browser/journeys.mjs"
+      ]
     },
     {
       "id": "G28-004",
@@ -182,7 +201,9 @@
       "id": "G28-005",
       "title": "Define the E2EESA security and privacy contract",
       "origin": "original",
-      "prs": [],
+      "prs": [
+        144
+      ],
       "contributingPrs": [
         16,
         66
@@ -190,28 +211,38 @@
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "in_progress",
-      "acceptanceBlocker": "Finish the complete component/profile coverage review, including protected-flow obligations; preliminary inventory is not full coverage.",
-      "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
+      "status": "completed",
+      "acceptanceReport": "docs/evidence/ROADMAP_RECONCILIATION_20261101.md",
       "implementationReview": {
-        "implementation": "remaining_implementation",
-        "reviewedAt": "2026-10-19T01:13:13.691Z",
+        "implementation": "implemented",
+        "reviewedAt": "2026-11-01T23:06:20.000Z",
         "sourceFiles": [
           {
             "path": "security/e2eesa-inventory.json",
             "sha256": "b43754139a8ab14634dc110d7dc90e103f9c7456eb830f80278e895dd8e1989f"
           }
         ],
-        "softwareGap": "Finish the complete component/profile coverage review, including protected-flow obligations; preliminary inventory is not full coverage.",
-        "activationRequirement": "Verify the tested revision in its intended release; no additional activation input identified.",
-        "verification": "Current branch source review; final hosted checks and accepted merge are recorded separately."
-      }
+        "softwareGap": null,
+        "activationRequirement": "Protected production profiles, recipient enrollment, independent certification, and runtime E2EESA approval remain separately blocked under G28-021–023 and later protected-flow packages.",
+        "verification": "Merged dedicated PR #144; combined CI 41359919156 success; both password-protected Render preview deployments are live on 6d6c7aab464f89bc716e7a18cdd2227771285c59. This is not a public production activation."
+      },
+      "acceptedAt": "2026-11-01T23:06:20.000Z",
+      "reviewedSourceSha": "6d6c7aab464f89bc716e7a18cdd2227771285c59",
+      "acceptanceSummary": "Source-bound security and privacy flow contract identifies fail-closed protected obligations with no E2EE claims; integrated source review and CI passed.",
+      "evidence": [
+        "security/source-flow-contract.json",
+        "scripts/security-contract.mjs",
+        "tests/security-contract.test.mjs",
+        "docs/security/SOURCE_FLOW_CONTRACT.md"
+      ]
     },
     {
       "id": "G28-006",
       "title": "Implement versioned content and publication contracts",
       "origin": "original",
-      "prs": [],
+      "prs": [
+        145
+      ],
       "contributingPrs": [
         12,
         13,
@@ -220,12 +251,11 @@
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "implemented",
-      "acceptanceBlocker": "Verify the tested revision in its intended release; no additional activation input identified.",
-      "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
+      "status": "completed",
+      "acceptanceReport": "docs/evidence/ROADMAP_RECONCILIATION_20261101.md",
       "implementationReview": {
         "implementation": "implemented",
-        "reviewedAt": "2026-10-19T01:13:13.691Z",
+        "reviewedAt": "2026-11-01T23:06:20.000Z",
         "sourceFiles": [
           {
             "path": "apps/api/src/campaign-store.mjs",
@@ -237,15 +267,26 @@
           }
         ],
         "softwareGap": null,
-        "activationRequirement": "Verify the tested revision in its intended release; no additional activation input identified.",
-        "verification": "Current branch source review; final hosted checks and accepted merge are recorded separately."
-      }
+        "activationRequirement": "Full package verified in existing protected preview; live external release inputs are separately gated.",
+        "verification": "Merged dedicated PR #145; combined CI 41359919156 success; both password-protected Render preview deployments are live on 6d6c7aab464f89bc716e7a18cdd2227771285c59. This is not a public production activation."
+      },
+      "acceptedAt": "2026-11-01T23:06:20.000Z",
+      "reviewedSourceSha": "6d6c7aab464f89bc716e7a18cdd2227771285c59",
+      "acceptanceSummary": "Approved versioned material publication, independent review and immutable public-release boundaries pass the combined browser/integration tests and deployed preview.",
+      "evidence": [
+        "packages/core/content.mjs",
+        "packages/core/material-approval.mjs",
+        "packages/core/material-publication.mjs",
+        "tests/material-publication.test.mjs"
+      ]
     },
     {
       "id": "G28-007",
       "title": "Implement media, document and provenance handling",
       "origin": "original",
-      "prs": [],
+      "prs": [
+        146
+      ],
       "contributingPrs": [
         45,
         46,
@@ -255,12 +296,11 @@
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "implemented",
-      "acceptanceBlocker": "Verify the tested revision in its intended release; no additional activation input identified.",
-      "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
+      "status": "completed",
+      "acceptanceReport": "docs/evidence/ROADMAP_RECONCILIATION_20261101.md",
       "implementationReview": {
         "implementation": "implemented",
-        "reviewedAt": "2026-10-19T01:13:13.691Z",
+        "reviewedAt": "2026-11-01T23:06:20.000Z",
         "sourceFiles": [
           {
             "path": "packages/core/campaign-image.mjs",
@@ -272,9 +312,18 @@
           }
         ],
         "softwareGap": null,
-        "activationRequirement": "Verify the tested revision in its intended release; no additional activation input identified.",
-        "verification": "Current branch source review; final hosted checks and accepted merge are recorded separately."
-      }
+        "activationRequirement": "Full package verified in existing protected preview; live external release inputs are separately gated.",
+        "verification": "Merged dedicated PR #146; combined CI 41359919156 success; both password-protected Render preview deployments are live on 6d6c7aab464f89bc716e7a18cdd2227771285c59. This is not a public production activation."
+      },
+      "acceptedAt": "2026-11-01T23:06:20.000Z",
+      "reviewedSourceSha": "6d6c7aab464f89bc716e7a18cdd2227771285c59",
+      "acceptanceSummary": "Safe public media and policy-document admission with rights/provenance and strict file handling passed integrated CI and remains protected in live previews.",
+      "evidence": [
+        "packages/core/campaign-image.mjs",
+        "packages/core/safe-policy-document.mjs",
+        "packages/core/policy-documents.mjs",
+        "tests/campaign-image.test.mjs"
+      ]
     },
     {
       "id": "G28-008",
@@ -459,7 +508,8 @@
         12,
         13,
         52,
-        68
+        68,
+        146
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -552,7 +602,9 @@
         42,
         43
       ],
-      "contributingPrs": [],
+      "contributingPrs": [
+        147
+      ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
@@ -893,7 +945,8 @@
       "origin": "original",
       "prs": [],
       "contributingPrs": [
-        46
+        46,
+        145
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -928,7 +981,8 @@
         11,
         49,
         62,
-        68
+        68,
+        145
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -963,7 +1017,8 @@
         7,
         35,
         49,
-        62
+        62,
+        147
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -1119,7 +1174,8 @@
       "prs": [],
       "contributingPrs": [
         1,
-        35
+        35,
+        147
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -1247,7 +1303,13 @@
       "prs": [],
       "contributingPrs": [
         104,
-        123
+        123,
+        137,
+        138,
+        139,
+        140,
+        146,
+        147
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -1348,7 +1410,8 @@
       "prs": [],
       "contributingPrs": [
         8,
-        45
+        45,
+        139
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -1816,7 +1879,9 @@
       "contributingPrs": [
         10,
         11,
-        13
+        13,
+        143,
+        147
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -1848,7 +1913,9 @@
       "origin": "original",
       "prs": [],
       "contributingPrs": [
-        35
+        35,
+        143,
+        147
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -1913,7 +1980,9 @@
         66,
         108,
         134,
-        135
+        135,
+        142,
+        144
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -1994,7 +2063,9 @@
         63,
         67,
         111,
-        132
+        132,
+        136,
+        141
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -2132,7 +2203,9 @@
       "contributingPrs": [
         34,
         44,
-        63
+        63,
+        136,
+        140
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -2574,6 +2647,186 @@
     }
   ],
   "pullRequests": [
+    {
+      "id": 5112425331,
+      "number": 147,
+      "title": "Make all volunteer cards clickable and add real role detail pages",
+      "url": "https://github.com/neophilism/Galinsky-2028/pull/147",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-11-01T22:57:07Z",
+      "updatedAt": "2026-11-01T23:05:09Z",
+      "closedAt": "2026-11-01T23:05:09Z",
+      "mergedAt": "2026-11-01T23:05:09Z",
+      "headSha": "bc63a75eb6a908d3e6945452ba675913da7ceee7",
+      "baseRef": "main",
+      "mergeCommitSha": "6d6c7aab464f89bc716e7a18cdd2227771285c59"
+    },
+    {
+      "id": 5110430612,
+      "number": 146,
+      "title": "G28-007: Implement media, document and provenance handling",
+      "url": "https://github.com/neophilism/Galinsky-2028/pull/146",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-11-01T18:45:45Z",
+      "updatedAt": "2026-11-01T22:47:14Z",
+      "closedAt": "2026-11-01T22:47:14Z",
+      "mergedAt": "2026-11-01T22:47:14Z",
+      "headSha": "a0eed36d97cd1abf23984c7340f2e8cd31600b56",
+      "baseRef": "main",
+      "mergeCommitSha": "d82d57ec7b54af5f7a66503743842f0522d2f855"
+    },
+    {
+      "id": 5110344952,
+      "number": 145,
+      "title": "G28-006: Implement versioned content and publication contracts",
+      "url": "https://github.com/neophilism/Galinsky-2028/pull/145",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-11-01T18:36:27Z",
+      "updatedAt": "2026-11-01T22:47:07Z",
+      "closedAt": "2026-11-01T22:47:07Z",
+      "mergedAt": "2026-11-01T22:47:07Z",
+      "headSha": "1ba581d3a4f5e6133105a834286e67e3475c1ed1",
+      "baseRef": "main",
+      "mergeCommitSha": "dc8548c07d924800e5fb8eb2deeea474417bc26f"
+    },
+    {
+      "id": 5110271779,
+      "number": 144,
+      "title": "G28-005: Define the E2EESA security and privacy contract",
+      "url": "https://github.com/neophilism/Galinsky-2028/pull/144",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-11-01T18:28:02Z",
+      "updatedAt": "2026-11-01T22:47:03Z",
+      "closedAt": "2026-11-01T22:47:02Z",
+      "mergedAt": "2026-11-01T22:47:02Z",
+      "headSha": "d53a0a31bed6ef1e71bb047390cc634c59877442",
+      "baseRef": "main",
+      "mergeCommitSha": "2a931416d8fd02060242a19a349cb8477cdb9a64"
+    },
+    {
+      "id": 5110139742,
+      "number": 143,
+      "title": "G28-003: Build the exact design system and shared navigation",
+      "url": "https://github.com/neophilism/Galinsky-2028/pull/143",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-11-01T18:12:43Z",
+      "updatedAt": "2026-11-01T22:46:51Z",
+      "closedAt": "2026-11-01T22:46:51Z",
+      "mergedAt": "2026-11-01T22:46:51Z",
+      "headSha": "688319328b6f18ca69deee10918a5da609d3889c",
+      "baseRef": "main",
+      "mergeCommitSha": "dc81991eddf3034f87faefa72c8f8e4402e2f26d"
+    },
+    {
+      "id": 5110087061,
+      "number": 142,
+      "title": "G28-002: Create the monorepo and mandatory CI",
+      "url": "https://github.com/neophilism/Galinsky-2028/pull/142",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-11-01T18:06:21Z",
+      "updatedAt": "2026-11-01T22:46:47Z",
+      "closedAt": "2026-11-01T22:46:47Z",
+      "mergedAt": "2026-11-01T22:46:47Z",
+      "headSha": "54d5c2288c79ff205e6f5867891fc9410cb682fc",
+      "baseRef": "main",
+      "mergeCommitSha": "c39ea3a7e95384b4b73bac77854a67350d0f146e"
+    },
+    {
+      "id": 4941557784,
+      "number": 141,
+      "title": "Integrate Development Deployment Monitor (inventory-only)",
+      "url": "https://github.com/neophilism/Galinsky-2028/pull/141",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-20T19:50:55Z",
+      "updatedAt": "2026-10-20T20:01:33Z",
+      "closedAt": "2026-10-20T20:01:33Z",
+      "mergedAt": "2026-10-20T20:01:33Z",
+      "headSha": "809fcd6d945fccdceac6ad3c12051e3dca0413fe",
+      "baseRef": "main",
+      "mergeCommitSha": "4be888089106a0e36acc238ae7d1d8713059a2a6"
+    },
+    {
+      "id": 4914804391,
+      "number": 140,
+      "title": "Verify the sharing editor fix on both existing private previews",
+      "url": "https://github.com/neophilism/Galinsky-2028/pull/140",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-19T02:06:20Z",
+      "updatedAt": "2026-10-19T02:11:54Z",
+      "closedAt": "2026-10-19T02:11:54Z",
+      "mergedAt": "2026-10-19T02:11:54Z",
+      "headSha": "527f3f4f647a8e682d715e261aeceacd3374070a",
+      "baseRef": "main",
+      "mergeCommitSha": "8edf772dd8f83f2061513c223340ba2333e10512"
+    },
+    {
+      "id": 4914728136,
+      "number": 139,
+      "title": "Fix sharing editor initialization and verify the accepted preview release",
+      "url": "https://github.com/neophilism/Galinsky-2028/pull/139",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-19T01:55:01Z",
+      "updatedAt": "2026-10-19T02:05:41Z",
+      "closedAt": "2026-10-19T02:05:41Z",
+      "mergedAt": "2026-10-19T02:05:41Z",
+      "headSha": "d79f4abde9a3682e69f1b7e61a5a7f05a035412b",
+      "baseRef": "main",
+      "mergeCommitSha": "feb0c14526d711d1fab26afb68216884396a8373"
+    },
+    {
+      "id": 4914405913,
+      "number": 138,
+      "title": "Finish approved sharing images, printable cards and publication withdrawal",
+      "url": "https://github.com/neophilism/Galinsky-2028/pull/138",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-19T01:07:50Z",
+      "updatedAt": "2026-10-19T01:49:28Z",
+      "closedAt": "2026-10-19T01:49:28Z",
+      "mergedAt": "2026-10-19T01:49:28Z",
+      "headSha": "7180415fcf071b9e4c2bea10029a55ae6ce204bf",
+      "baseRef": "main",
+      "mergeCommitSha": "99ea8011e016e5a3b4a1316ee6e1e87c6d8923a2"
+    },
+    {
+      "id": 4914272375,
+      "number": 137,
+      "title": "Independently decode the rendered QR code in screen and print media",
+      "url": "https://github.com/neophilism/Galinsky-2028/pull/137",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-19T00:47:18Z",
+      "updatedAt": "2026-10-19T00:53:08Z",
+      "closedAt": "2026-10-19T00:53:08Z",
+      "mergedAt": "2026-10-19T00:53:08Z",
+      "headSha": "feadb9bf530947560d13d12cc63729898b9edab9",
+      "baseRef": "main",
+      "mergeCommitSha": "4a36d9134cca40dd62e928f2eb20756f0203b9aa"
+    },
+    {
+      "id": 4914254905,
+      "number": 136,
+      "title": "Record accepted PRs and verify the deployed restricted previews",
+      "url": "https://github.com/neophilism/Galinsky-2028/pull/136",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-10-19T00:44:46Z",
+      "updatedAt": "2026-10-19T00:49:20Z",
+      "closedAt": "2026-10-19T00:49:19Z",
+      "mergedAt": "2026-10-19T00:49:19Z",
+      "headSha": "ec5a4b72ee26f493bc15f8d9347ef77e666d7c8f",
+      "baseRef": "main",
+      "mergeCommitSha": "81d637a4ca90f88d18e863db7b49d29df168342e"
+    },
     {
       "id": 4914218679,
       "number": 135,
