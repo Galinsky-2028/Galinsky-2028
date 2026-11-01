@@ -15,3 +15,10 @@ input,select{min-width:0;width:100%}.field{min-width:0}.check input{width:auto;f
 .brand-symbol{border:0;width:39px;height:30px;flex:0 0 39px;background:repeating-linear-gradient(to bottom,var(--red) 0 6px,transparent 6px 12px)}.brand-symbol:before,.footer .brand-symbol:before{left:0;top:0;width:18px;height:18px;background:var(--blue);box-shadow:none}.brand-symbol:after{content:"\2605";position:absolute;left:3px;top:1px;color:white;font-size:13px;line-height:17px}.footer .brand-symbol{background:repeating-linear-gradient(to bottom,white 0 6px,transparent 6px 12px)}
 
 .reporting-notice{font-size:14px;line-height:1.6;margin:20px 0;color:var(--muted)}
+
+
+/* Public volunteer role tiles are entirely clickable using their existing links. */
+.role-tile{position:relative}
+.role-tile > a.textlink::after{content:"";position:absolute;inset:0}
+.role-tile:hover{border-color:#7294be;box-shadow:0 5px 18px rgba(10,49,97,.10)}
+.role-tile:focus-within{outline:3px solid var(--red);outline-offset:3px}

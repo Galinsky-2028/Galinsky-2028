@@ -138,3 +138,36 @@ the repository's pinned Node 22 runtime; no full application, database,
 cross-browser, deployed integration or upstream conformance pass is claimed.
 Hosted checks must be inspected for the exact committed head before any
 accepted-merge claim.
+
+
+## Integration reconciliation — 1 November 2026
+
+After the source-bound contract was introduced in #144, subsequent accepted
+changes #142, #145 and #146 and the volunteer navigation work in #147 changed
+the recorded source tree. A combined CI run correctly rejected the old baseline
+at the *source coverage* stage. This invalidated downstream mutation-test
+expectations before their intended failure points were reached; it was not
+evidence that E2EESA protection had been turned on.
+
+The integration review reconciled **ten** source entries: full-surface role
+navigation and detail routing in `apps/portal/src/main.tsx`; browser-coverage
+preflight in `scripts/verify.mjs`; V2 signed publishing and approved-reading
+boundaries in `packages/core/content.mjs`, `material-publication.mjs`,
+`staff-review.mjs` and `scripts/publish-materials.mjs`; the new
+`packages/core/material-approval.mjs` under the materials component; and
+defensive public-document and PNG admission changes in
+`packages/core/policy-documents.mjs`, `safe-policy-document.mjs` and
+`campaign-image.mjs`. Those paths, component assignments and exact Git blobs
+are now covered. No database migration or declared SQL field changed.
+Browser-facing styles and tests remain outside the executable source scope.
+
+The review retains the documented component trust boundaries and flow
+classifications. Volunteer navigation introduces no new recipients, PII fields,
+background export or external egress. V2 publishing and document changes tighten
+release admission without introducing a protected profile. Protected
+enrollment/submission/attachment/recovery/export remain blocked, and production
+E2EE, certification and runtime verification claims stay **false**. The
+`sourceCommit` binds the source snapshot prior to this inventory-only update.
+This is a source-level integration review, **not** an independent security
+assessment, runtime penetration test or certification. Combined-head tests must
+still pass before release.

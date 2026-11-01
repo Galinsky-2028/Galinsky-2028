@@ -41,3 +41,17 @@
 @media(max-width:700px){.brand .brand-symbol{flex-basis:36px;width:36px;height:36px}}
 
 .operations-workspace{min-width:0;overflow-wrap:anywhere}.operations-workspace fieldset{min-width:0;max-width:100%;margin:18px 0}.operations-workspace button{min-height:44px;max-width:100%;padding:10px 15px;margin:6px 8px 6px 0;background:var(--blue);color:#fff;border:1px solid var(--blue)}.operations-workspace form{margin:24px 0}.operations-workspace h3{margin:12px 0}.operations-workspace code,.operations-workspace a{overflow-wrap:anywhere}
+
+
+/* Full-surface navigation for volunteer role, guide, worksheet and dashboard cards. */
+.cards .panel.role-card{padding:0}
+.role-card-link{display:block;min-height:100%;padding:26px;color:inherit;text-decoration:none}
+.role-card-cta{display:block;margin-top:20px;font-size:13px;font-weight:800;color:var(--blue);text-decoration:underline;text-underline-offset:3px}
+.cards .panel.card-link{display:block;color:inherit;text-decoration:none;min-height:100%;cursor:pointer}
+.role-card:hover,.card-link:hover{border-color:#7294be;box-shadow:0 5px 18px rgba(10,49,97,.10)}
+.role-card:focus-within,.card-link:focus-visible{outline:3px solid var(--red);outline-offset:3px}
+.role-card-link:focus-visible{outline:3px solid var(--red);outline-offset:-5px}
+.role-detail{max-width:980px}
+.role-detail .panel p{margin:14px 0}
+.role-detail .actions .btn{white-space:normal;text-align:center}
+@media(max-width:700px){.role-card-link{padding:26px}}
