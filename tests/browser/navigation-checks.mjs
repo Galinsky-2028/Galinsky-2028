@@ -12,7 +12,7 @@ export async function checkNavigation(browser, origin, screenshotPrefix) {
         await page.setViewportSize({ width, height: 900 });
         for (const route of routes) {
           await page.goto(origin + route);
-          const nav = page.getByRole("navigation", { name: "Main navigation" });
+          const nav = page.locator('nav[aria-label="Main navigation"]');
           const menu = page.locator("#menu-toggle");
           const links = nav.locator("a");
           const mobile = width <= 780;
