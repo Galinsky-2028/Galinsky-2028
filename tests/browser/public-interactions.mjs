@@ -1,4 +1,5 @@
 import {chromium,firefox,webkit} from 'playwright';
+import {checkNavigation} from './navigation-checks.mjs';
 import {createServer} from 'node:http';
 import {readFile,mkdir,writeFile} from 'node:fs/promises';
 import {resolve,extname} from 'node:path';
@@ -21,6 +22,7 @@ try{
  for(const [name,engine]of Object.entries({chromium,firefox,webkit})){
   const browser=await engine.launch({headless:true});
   try{
+   const navigation=await checkNavigation(browser,origin,`test-results/public-interactions/${name}`);
    const context=await browser.newContext({viewport:{width:390,height:844}}),page=await context.newPage(),external=[];
    page.on('request',r=>{if(r.url().startsWith('https://'))external.push(r.url());});
    await page.route('https://www.youtube-nocookie.com/**',route=>route.fulfill({contentType:'text/html',body:'<html><body>Synthetic embedded player; no external provider contacted.</body></html>'}));
@@ -48,7 +50,7 @@ try{
    await animated.getByRole('button',{name:'Resume flag animation'}).click();
    assert.equal(await animated.getByRole('button',{name:'Pause flag animation'}).getAttribute('aria-pressed'),'false');
    await animated.close();
-   evidence.push({browser:name,noRequestBeforePlay:true,disconnectAndReplay:true,focusRestored:true,staticFlagWithoutJavaScript:true,persistentMotionControl:true});
+   evidence.push({browser:name,...navigation,noRequestBeforePlay:true,disconnectAndReplay:true,focusRestored:true,staticFlagWithoutJavaScript:true,persistentMotionControl:true});
   }finally{await browser.close();}
  }
 }finally{await new Promise(r=>server.close(r));await writeFile('test-results/public-interactions/results.json',JSON.stringify(evidence,null,2));}

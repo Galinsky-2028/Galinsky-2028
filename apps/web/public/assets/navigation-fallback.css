@@ -1,0 +1,27 @@
+/* Loaded only when scripting is disabled. Keep the approved navigation links
+   in normal document flow instead of exposing a nonfunctional menu button. */
+.mobile-menu {
+  display: none;
+}
+
+@media (max-width: 780px) {
+  .header {
+    height: auto;
+  }
+
+  .nav {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: 75px;
+    padding-top: 16px;
+  }
+
+  .navlinks {
+    display: flex;
+    position: static;
+    flex-basis: 100%;
+    gap: 12px 20px;
+    padding: 12px 0;
+    box-shadow: none;
+  }
+}
