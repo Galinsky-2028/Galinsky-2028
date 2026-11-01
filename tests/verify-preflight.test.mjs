@@ -227,3 +227,67 @@ test('the real verification entrypoint reports unavailable npm as failure, not s
   assert.match(result.stderr, /Verification gate run check failed/);
   assert.equal(result.stdout, '');
 });
+
+test('full verification refuses reduced or malformed browser coverage before any subprocess', () => {
+  for (const engines of [
+    'chromium',
+    'chromium,firefox',
+    'chromium,chromium,webkit',
+    'chromium,firefox,webkit,chromium',
+    'chromium,firefox,webkit,',
+    'chromium,firefox,fixture-engine-canary',
+    ' ',
+    null,
+    42,
+  ]) {
+    let calls = 0;
+    const errors = [];
+    assert.equal(
+      runVerification({
+        env: { ...local, G28_BROWSER_ENGINES: engines },
+        run: () => {
+          calls++;
+          return { status: 0 };
+        },
+        logError: (message) => errors.push(message),
+      }),
+      1,
+    );
+    assert.equal(calls, 0);
+    assert.equal(errors.length, 1);
+    assert.match(errors[0], /requires Chromium, Firefox and WebKit/);
+    assert(!errors[0].includes('fixture-engine-canary'));
+  }
+});
+
+test('default and complete three-engine selections retain every verification gate', () => {
+  for (const engines of ['', 'chromium,firefox,webkit', ' webkit, chromium, firefox ']) {
+    let calls = 0;
+    const env = { ...local, G28_BROWSER_ENGINES: engines };
+    assert.equal(
+      runVerification({
+        env,
+        run: (_command, _args, options) => {
+          calls++;
+          assert.equal(options.env.G28_BROWSER_ENGINES, engines);
+          return { status: 0 };
+        },
+        logError: assert.fail,
+      }),
+      0,
+    );
+    assert.equal(calls, verificationSteps.length);
+  }
+});
+
+test('real full-verification CLI refuses single-engine coverage before launching npm', () => {
+  const result = spawnSync(process.execPath, ['scripts/verify.mjs'], {
+    cwd: fileURLToPath(new URL('../', import.meta.url)),
+    env: { ...local, G28_BROWSER_ENGINES: 'chromium', PATH: '' },
+    encoding: 'utf8',
+    timeout: 5000,
+  });
+  assert.equal(result.status, 1);
+  assert.match(result.stderr, /requires Chromium, Firefox and WebKit/);
+  assert.equal(result.stdout, '');
+});

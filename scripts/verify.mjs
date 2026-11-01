@@ -61,6 +61,24 @@ export function verificationPreflight(env) {
     if (!Number.isInteger(port) || port < 1 || port > 65535)
       throw new Error('TEST_DATABASE_URL must use a valid PostgreSQL port.');
   }
+  // Focused browser runs are useful for debugging, but cannot establish full
+  // verification. The reviewer runner honors this environment override.
+  const requestedEngines = env.G28_BROWSER_ENGINES;
+  if (requestedEngines !== undefined && requestedEngines !== '') {
+    const required = ['chromium', 'firefox', 'webkit'];
+    const selected =
+      typeof requestedEngines === 'string'
+        ? requestedEngines.split(',').map((engine) => engine.trim())
+        : [];
+    if (
+      selected.length !== required.length ||
+      new Set(selected).size !== required.length ||
+      !required.every((engine) => selected.includes(engine))
+    )
+      throw new Error(
+        'Full verification requires Chromium, Firefox and WebKit. Unset G28_BROWSER_ENGINES or select all three engines; use focused browser commands for debugging.',
+      );
+  }
 }
 
 export function runVerification({
