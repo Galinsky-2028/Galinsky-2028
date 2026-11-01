@@ -1,6 +1,6 @@
 {
   "status": "two_private_services_live_production_release_blocked",
-  "full_work_packages_accepted": 8,
+  "full_work_packages_accepted": 13,
   "deployment_verified": true,
   "repository": "neophilism/Galinsky-2028",
   "verified_merges": [
@@ -97,6 +97,47 @@
       "merge_commit": "5aef1f8d2bcabee093960f552ce482f9adfd9f4b",
       "ci_run_id": 38181706838,
       "scope": "remove_fake_volunteer_preview_and_route_twelve_roles_to_real_portal"
+    },
+    {
+      "pr": 142,
+      "merge_commit": "c39ea3a7e95384b4b73bac77854a67350d0f146e",
+      "ci_run_id": 41359919156,
+      "scope": "full-package-acceptance-G28-002",
+      "release_preview_sha": "6d6c7aab464f89bc716e7a18cdd2227771285c59"
+    },
+    {
+      "pr": 143,
+      "merge_commit": "dc81991eddf3034f87faefa72c8f8e4402e2f26d",
+      "ci_run_id": 41359919156,
+      "scope": "full-package-acceptance-G28-003",
+      "release_preview_sha": "6d6c7aab464f89bc716e7a18cdd2227771285c59"
+    },
+    {
+      "pr": 144,
+      "merge_commit": "2a931416d8fd02060242a19a349cb8477cdb9a64",
+      "ci_run_id": 41359919156,
+      "scope": "full-package-acceptance-G28-005",
+      "release_preview_sha": "6d6c7aab464f89bc716e7a18cdd2227771285c59"
+    },
+    {
+      "pr": 145,
+      "merge_commit": "dc8548c07d924800e5fb8eb2deeea474417bc26f",
+      "ci_run_id": 41359919156,
+      "scope": "full-package-acceptance-G28-006",
+      "release_preview_sha": "6d6c7aab464f89bc716e7a18cdd2227771285c59"
+    },
+    {
+      "pr": 146,
+      "merge_commit": "d82d57ec7b54af5f7a66503743842f0522d2f855",
+      "ci_run_id": 41359919156,
+      "scope": "full-package-acceptance-G28-007",
+      "release_preview_sha": "6d6c7aab464f89bc716e7a18cdd2227771285c59"
+    },
+    {
+      "pr": 147,
+      "merge_commit": "6d6c7aab464f89bc716e7a18cdd2227771285c59",
+      "ci_run_id": 41359919156,
+      "scope": "volunteer-full-card-navigation-and-combined-ci-security-repair"
     }
   ],
   "release_gates_pending": [
@@ -115,7 +156,7 @@
     "Staff/admin features not complete",
     "Unreviewed source archive not publicly bundled"
   ],
-  "notes": "All 91 merged GitHub PRs are accepted under the owner rule. Separately, 8 planned work packages are recorded as fully scoped complete. Current private preview deploy, production readiness and unfinished functionality must be verified independently.",
+  "notes": "As of 2026-11-01T23:31:02.606Z, all 134 merged GitHub PRs are accepted. 13/72 packages are full-scope complete, 59/72 have implemented software. Public signup, payments and protected submission production gates remain disabled.",
   "production_release_verified": false,
   "private_preview": {
     "url": "https://galinsky-2028-private-preview.onrender.com",
@@ -123,8 +164,8 @@
     "service_id": "srv-db5teuajnfac73bm8pug",
     "project_id": "prj-db57fnm7bikc739783q0",
     "environment_id": "evm-db57fnm7bikc739783qg",
-    "deploy_id": "dep-db79b2d9fdbs73dblj80",
-    "deployed_commit": "0e70c5cee4b34e5de78aea3b304cbe7aa73c3228",
+    "deploy_id": "dep-dbjsbbk9v7es73b11490",
+    "deployed_commit": "6d6c7aab464f89bc716e7a18cdd2227771285c59",
     "deploy_status": "live",
     "authentication": "HTTP Basic; username preview; secret never stored in Git",
     "rejected_access_test_paths": 9,
@@ -155,8 +196,8 @@
     "service_id": "srv-db5v0lfavr4c73a62870",
     "project_id": "prj-db57fnm7bikc739783q0",
     "environment_id": "evm-db57fnm7bikc739783qg",
-    "deploy_id": "dep-db614gqd0e5s7390qjb0",
-    "deployed_commit": "5aef1f8d2bcabee093960f552ce482f9adfd9f4b",
+    "deploy_id": "dep-dbjsbc3bc2fs73do1j20",
+    "deployed_commit": "6d6c7aab464f89bc716e7a18cdd2227771285c59",
     "deploy_status": "live",
     "auto_deploy": false,
     "password_gate": true,
@@ -170,28 +211,28 @@
     "public_role_links_to_actual_portal": true
   },
   "last_acceptance_audit": {
-    "reviewed_at": "2026-10-16T20:18:36.930Z",
-    "source_sha": "c3ae2b1d32cc5a8869188e7cc3cf70edfb6037fb",
-    "report": "docs/operations/CAMPAIGN_CONTENT_HANDOFF.md",
-    "completed": 8,
-    "in_progress": 11,
+    "reviewed_at": "2026-11-01T23:31:02.606Z",
+    "source_sha": "6d6c7aab464f89bc716e7a18cdd2227771285c59",
+    "report": "docs/evidence/ROADMAP_RECONCILIATION_20261101.md",
+    "completed": 13,
+    "in_progress": 10,
     "not_started": 3,
-    "observed_merged_prs": 122,
+    "observed_merged_prs": 134,
     "observed_closed_unmerged_prs": 8,
-    "ci_run_id": 38942587653,
-    "ci_conclusion": "pending_after_registry_reconciliation",
-    "private_preview_deploy": "dep-db79b2d9fdbs73dblj80",
-    "private_preview_sha": "0e70c5cee4b34e5de78aea3b304cbe7aa73c3228",
-    "portal_preview_sha": "c263d8fd8a331b238ddc884b052c672558cee96e",
-    "warning": "Snapshot now contains accepted GitHub PR merges; the original package-level audit is historical and does not reclassify merged PRs as unaccepted. Some larger planned functionality remains incomplete; production launch is not verified.",
+    "ci_run_id": 41359919156,
+    "ci_conclusion": "success",
+    "private_preview_deploy": "dep-dbjsbbk9v7es73b11490",
+    "private_preview_sha": "6d6c7aab464f89bc716e7a18cdd2227771285c59",
+    "portal_preview_sha": "6d6c7aab464f89bc716e7a18cdd2227771285c59",
+    "warning": "Private previews verified; live public signup, payment, recipient encryption and final external launch approvals remain separate.",
     "observed_open_prs": 0,
-    "pr_observation_at": "2026-10-19T00:44:00.971Z",
-    "implemented": 50,
+    "pr_observation_at": "2026-11-01T23:31:02.606Z",
+    "implemented": 46,
     "software_review_report": "docs/evidence/CURRENT_IMPLEMENTATION_REVIEW.md"
   },
-  "accepted_merged_prs": 122,
-  "accepted_prs_observed_at": "2026-10-19T00:44:00.971Z",
+  "accepted_merged_prs": 134,
+  "accepted_prs_observed_at": "2026-11-01T23:31:02.606Z",
   "acceptance_model": "A verified merge accepts the PR. Full work-package scope completion and production deployment are separately tracked and cannot revoke acceptance of already merged PRs.",
-  "implemented_software_packages": 58,
-  "progress_evidence_note": "Software implementation is reviewed unit by unit in implementationReview. Implemented code, accepted PRs, deployment and external activation are distinct facts. Historical in_progress labels are not a count of partially written PRs."
+  "implemented_software_packages": 59,
+  "progress_evidence_note": "Source-reviewed software implementation: 59/72; distinct fully scoped, release-evidenced accepted packages: 13/72. PR acceptance uses mergedAt for all 134 merged PRs. Yellow depicts accepted contributions to packages without full-scope acceptance, not unwritten software. Open production and protected-data gates remain separate. See docs/evidence/ROADMAP_RECONCILIATION_20261101.md."
 }
