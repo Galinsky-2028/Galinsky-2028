@@ -174,6 +174,32 @@ export function registerVolunteerPasskeys(app,{store,config,clock=()=>Date.now()
   const m=memory(store);
   return {credentials:[...m.identities.values()].filter(x=>x.accountId===s.account.id).map(x=>({id:x.id,createdAt:null,lastUsedAt:null}))};
  });
+
+ app.post('/api/passkeys/revoke',async req=>{
+  enabled();const s=await writeSession(req),b=exactKeys(req.body,['id']);
+  assert(typeof b.id==='string'&&b.id.length>0&&b.id.length<=1024,'invalid_passkey','Choose a registered passkey.');
+  await rate('revoke:'+s.account.id,10);
+  if(store.pool){
+   const client=await store.pool.connect();
+   try{
+    await client.query('BEGIN');
+    const a=await client.query('SELECT id FROM g28.accounts WHERE id=$1 FOR UPDATE',[s.account.id]);
+    assert(a.rowCount===1,'authentication_required','Sign in again.',401);
+    const credentials=await client.query('SELECT credential_id FROM g28.volunteer_passkeys WHERE account_id=$1 FOR UPDATE',[s.account.id]);
+    assert(credentials.rows.some(c=>c.credential_id===b.id),'unknown_passkey','That passkey is not registered to this account.',404);
+    assert(credentials.rowCount>1,'last_passkey','Register another passkey before removing your only sign-in method.',409);
+    await client.query('DELETE FROM g28.volunteer_passkeys WHERE account_id=$1 AND credential_id=$2',[s.account.id,b.id]);
+    await client.query('DELETE FROM g28.sessions WHERE account_id=$1 AND token_hash<>$2',[s.account.id,s.hash]);
+    await client.query('COMMIT');return {removed:true,remaining:credentials.rowCount-1,otherSessionsRevoked:true};
+   }catch(e){await client.query('ROLLBACK');throw e;}finally{client.release();}
+  }
+  const m=memory(store),credentials=[...m.identities.values()].filter(c=>c.accountId===s.account.id);
+  assert(credentials.some(c=>c.id===b.id),'unknown_passkey','That passkey is not registered to this account.',404);
+  assert(credentials.length>1,'last_passkey','Register another passkey before removing your only sign-in method.',409);
+  m.identities.delete(b.id);
+  for(const [hash,session] of store.sessions)if(session.accountId===s.account.id&&hash!==s.hash)store.sessions.delete(hash);
+  return {removed:true,remaining:credentials.length-1,otherSessionsRevoked:true};
+ });
  app.post('/api/passkeys/add/options',async(req,reply)=>{
   enabled();const s=await writeSession(req);exactKeys(req.body,[]);
   await rate('add:'+s.account.id,8);
