@@ -14,6 +14,14 @@ const context=await browser.newContext({
 });
 const page=await context.newPage();
 const errors=[];page.on('pageerror',e=>errors.push(e.message));
+page.on('response',async response=>{
+ const path=new URL(response.url()).pathname;
+ if(!path.startsWith('/api/passkeys/'))return;
+ console.log('PASSKEY_HOSTED_HTTP',path,response.status());
+ if(response.status()>=400){
+  try{const body=await response.json();console.log('PASSKEY_HOSTED_ERROR',path,body.error,body.message);}catch{}
+ }
+});
 let created=false,accountId='';
 try{
  const cdp=await context.newCDPSession(page);
