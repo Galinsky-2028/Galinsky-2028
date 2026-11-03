@@ -67,6 +67,7 @@ try{
  console.log(JSON.stringify({origin,hostedWebAuthnAccount:true,backupPasskey:true,returnSignIn:true,
   persistedVolunteerRole:true,protectedPreview:true,syntheticOnly:true}));
 }finally{
+ let cleanupError=null;
  if(created){
   try{
    const response=await context.request.get(origin+'/api/session',{timeout:15000});
@@ -77,9 +78,12 @@ try{
      headers:{Origin:origin,'x-csrf-token':session.csrf},
      timeout:15000
     });
-    if(close.status()>=400)console.error('Synthetic account cleanup returned',close.status());
+    assert.equal(close.status(),200,'Synthetic account must be deleted after live acceptance');
+    const revoked=await context.request.get(origin+'/api/session');
+    assert.equal(revoked.status(),401,'Closed account session must be invalidated');
    }
-  }catch(e){console.error('Synthetic account cleanup failed:',e.message);}
+  }catch(e){cleanupError=e;console.error('Synthetic account cleanup failed:',e.message);}
  }
  await context.close();await browser.close();
+ if(cleanupError)throw cleanupError;
 }
