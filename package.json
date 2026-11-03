@@ -27,7 +27,7 @@
     "materials:sign": "node scripts/sign-material-review.mjs",
     "issue:prepare": "node scripts/prepare-issue-video.mjs",
     "policy:html": "node scripts/prepare-public-document.mjs",
-    "test:browser": "node tests/browser/journeys.mjs && node tests/browser/campaign-editor.mjs && node tests/browser/campaign-public.mjs && node tests/browser/visitor-analytics.mjs && node tests/browser/operations.mjs && node tests/browser/sharing-assets.mjs",
+    "test:browser": "node tests/browser/journeys.mjs && node tests/browser/campaign-editor.mjs && node tests/browser/campaign-public.mjs && node tests/browser/visitor-analytics.mjs && node tests/browser/operations.mjs && node tests/browser/sharing-assets.mjs && node tests/browser/volunteer-passkeys.mjs",
     "test:review-browser": "node scripts/run-review-browser-suite.mjs",
     "lint": "eslint apps packages scripts tests registry",
     "format": "prettier --write",
