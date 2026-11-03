@@ -1,0 +1,26 @@
+name: Verify hosted private volunteer passkey account
+on:
+  push:
+    branches: [verification/live-passkey-acceptance-20261103]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  hosted:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      G28_PREVIEW_ACCESS_PASSWORD: ${{ secrets.G28_PREVIEW_ACCESS_PASSWORD }}
+      G28_PREVIEW_ACCESS_USER: ${{ vars.G28_PREVIEW_ACCESS_USER || 'preview' }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.23.3
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci --no-fund
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Verify actual password-protected staging enrollment
+        run: node tests/browser/live-volunteer-passkey-acceptance.mjs
