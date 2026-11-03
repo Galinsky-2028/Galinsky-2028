@@ -307,8 +307,12 @@ function Activity(){const{data,error}=useLoad<{notice:string;modules:ActivitySum
  <div className="panel spaced"><h2>Before a restricted activity</h2><p>Check the exact jurisdiction, election, activity, approved tool, required training, review dates and authorization. An old guide or a completed lesson is not sufficient.</p><p>Every actual regulated action requires two distinct verifiers, campaign publication approval for the exact revision, and all personal prerequisites. This read-only list does not activate tasks.</p><Link to="/roles" className="textlink">Review the roles &rarr;</Link></div></>;}
 function PasskeySettings({csrf}:{csrf:string}){
  const{config}=useContext(Context);
- const[count,setCount]=useState<number|null>(null),[busy,setBusy]=useState(false),[error,setError]=useState(''),[message,setMessage]=useState('');
- async function load(){try{const r=await request<{credentials:{id:string}[]}>('/api/passkeys');setCount(r.credentials.length);}catch(e){setError((e as Error).message);}}
+ const[credentials,setCredentials]=useState<{id:string;createdAt:string|null}[]|null>(null);
+ const[busy,setBusy]=useState(false),[error,setError]=useState(''),[message,setMessage]=useState('');
+ async function load(){
+  try{const r=await request<{credentials:{id:string;createdAt:string|null}[]}>('/api/passkeys');setCredentials(r.credentials);}
+  catch(e){setError((e as Error).message);}
+ }
  useEffect(()=>{if(config?.passkeyEnabled)void load();},[config?.passkeyEnabled]);
  if(!config?.passkeyEnabled)return null;
  async function add(){setBusy(true);setError('');setMessage('');try{
@@ -318,10 +322,21 @@ function PasskeySettings({csrf}:{csrf:string}){
   await request('/api/passkeys/add/verify',{response},csrf);
   await load();setMessage('Another passkey is now registered on this account.');
  }catch(e){setError((e as Error).message);}finally{setBusy(false);}}
+ async function revoke(id:string){
+  if(!window.confirm('Remove this passkey and sign out any other sessions? Make sure another passkey is available first.'))return;
+  setBusy(true);setError('');setMessage('');
+  try{await request('/api/passkeys/revoke',{id},csrf);await load();setMessage('Passkey removed and other sessions signed out.');}
+  catch(e){setError((e as Error).message);}finally{setBusy(false);}
+ }
  return <div className="panel spaced"><h2>Passkey access and backup</h2>
-  <p>{count===null?'Checking account passkeys...':count+' passkey'+(count===1?'':'s')+' registered.'} Add a passkey stored on another trusted device or synchronized through a provider you control. Without a usable enrolled passkey, account recovery is not available yet.</p>
+  <p>{credentials===null?'Checking account passkeys...':credentials.length+' passkey'+(credentials.length===1?'':'s')+' registered.'} Add a passkey on another trusted device or synchronized through a provider you control. Account recovery without an available passkey is not supported yet.</p>
   {error&&<Notice error>{error}</Notice>}{message&&<Notice>{message}</Notice>}
-  <button type="button" className="btn blue" disabled={busy||count===null||count>=8} onClick={()=>void add()}>{busy?'Opening passkey...':'Add another passkey'}</button>
+  <button type="button" className="btn blue" disabled={busy||credentials===null||credentials.length>=8} onClick={()=>void add()}>{busy?'Working...':'Add another passkey'}</button>
+  {credentials&&<ul className="passkey-list">{credentials.map((item,index)=><li key={item.id}>
+   <strong>Passkey {index+1}</strong> <span className="fine">{item.createdAt?'Added '+new Date(item.createdAt).toLocaleDateString():'Registered on this account'}</span>
+   <button type="button" className="text-button" disabled={busy||credentials.length===1} aria-label={'Remove passkey '+(index+1)} onClick={()=>void revoke(item.id)}>Remove</button>
+  </li>)}</ul>}
+  {credentials?.length===1&&<p className="fine">Your only enrolled passkey cannot be removed. Register a backup first.</p>}
  </div>;
 }
 function Settings(){
