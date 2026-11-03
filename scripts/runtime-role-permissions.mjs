@@ -1,7 +1,7 @@
 // SQL-created login profiles: Neon API-created roles inherit administrative membership.
 // Passwords are supplied in memory by an authorized operator, never logged here.
 export const PORTAL_RUNTIME_TABLES=Object.freeze([
- 'account_bookmarks','account_notice_keys','accounts','activity_modules','admin_grants','content_revisions','coordination_teams','help_requests','login_requests','mail_events','mail_suppressions','material_reading','materials','operation_claims','operation_definitions','outbox','page_events','page_visit_retention','page_visits','rate_buckets','sessions','staff_security','task_progress','tool_consents','training_attestations','treasury_secrets','volunteer_role_preferences',
+ 'account_bookmarks','account_notice_keys','accounts','activity_modules','admin_grants','content_revisions','coordination_teams','help_requests','login_requests','mail_events','mail_suppressions','material_reading','materials','operation_claims','operation_definitions','outbox','page_events','page_visit_retention','page_visits','rate_buckets','sessions','staff_security','task_progress','tool_consents','training_attestations','treasury_secrets','volunteer_passkey_challenges','volunteer_passkeys','volunteer_role_preferences',
 ]);
 const identifier=value=>{if(typeof value!=='string'||!/^g28_(?:stripe|portal)_runtime_[a-z0-9_]{1,40}$/.test(value))throw Error('Use an explicitly scoped runtime login name.');return '"'+value+'"';};
 export function runtimeRoleStatements({role,password,profile}){
