@@ -88,7 +88,32 @@ async function signInWithPasskey(store,{response,challenge,origin,rpID,verify,se
  store.sessions.set(session.hash,{...session,accountId:credential.accountId});
  return credential.accountId;
 }
-export function registerVolunteerPasskeys(app,{store,config,clock=()=>Date.now(),webauthn={}}){
+
+async function addAccountPasskey(store,accountId,credential){
+ const pk={id:credential.id,publicKey:Buffer.from(credential.publicKey).toString('base64url'),counter:credential.counter,transports:credential.transports||[]};
+ if(store.pool){
+  const client=await store.pool.connect();
+  try{
+   await client.query('BEGIN');
+   const existing=await client.query('SELECT id FROM g28.accounts WHERE id=$1 FOR UPDATE',[accountId]);
+   assert(existing.rowCount===1,'authentication_required','Sign in again.',401);
+   const count=await client.query('SELECT count(*)::integer AS n FROM g28.volunteer_passkeys WHERE account_id=$1',[accountId]);
+   assert(count.rows[0].n<8,'passkey_limit','This account already has eight passkeys.',409);
+   const duplicate=await client.query('SELECT 1 FROM g28.volunteer_passkeys WHERE credential_id=$1',[pk.id]);
+   assert(duplicate.rowCount===0,'duplicate_passkey','This passkey is already registered.',409);
+   await client.query('INSERT INTO g28.volunteer_passkeys(credential_id,account_id,public_key,counter,transports) VALUES($1,$2,$3,$4,$5)',
+    [pk.id,accountId,pk.publicKey,pk.counter,JSON.stringify(pk.transports)]);
+   await client.query('COMMIT');
+  }catch(e){await client.query('ROLLBACK');throw e;}finally{client.release();}
+ }else{
+  const m=memory(store);
+  assert(store.accounts.has(accountId),'authentication_required','Sign in again.',401);
+  assert([...m.identities.values()].filter(v=>v.accountId===accountId).length<8,'passkey_limit','This account already has eight passkeys.',409);
+  assert(!m.identities.has(pk.id),'duplicate_passkey','This passkey is already registered.',409);
+  m.identities.set(pk.id,{...pk,accountId});
+ }
+}
+export function registerVolunteerPasskeys(app,{store,config,clock=()=>Date.now(),webauthn={},account,writeSession})){
  const engine={
   generateRegistrationOptions:webauthn.generateRegistrationOptions||generateRegistrationOptions,
   verifyRegistrationResponse:webauthn.verifyRegistrationResponse||verifyRegistrationResponse,
@@ -138,6 +163,39 @@ export function registerVolunteerPasskeys(app,{store,config,clock=()=>Date.now()
   const s=session();
   await createPasskeyAccount(store,{accountId:r.accountId,credential:proof.registrationInfo.credential,session:s});
   reply.header('Set-Cookie',sessionCookie(s.token,{secure:config.production}));return {verified:true};
+ });
+
+ app.get('/api/passkeys',async req=>{
+  enabled();const s=await account(req);
+  if(store.pool){
+   const r=await store.pool.query('SELECT credential_id,created_at,last_used_at FROM g28.volunteer_passkeys WHERE account_id=$1 ORDER BY created_at,credential_id',[s.account.id]);
+   return {credentials:r.rows.map(x=>({id:x.credential_id,createdAt:x.created_at.toISOString(),lastUsedAt:x.last_used_at?.toISOString()||null}))};
+  }
+  const m=memory(store);
+  return {credentials:[...m.identities.values()].filter(x=>x.accountId===s.account.id).map(x=>({id:x.id,createdAt:null,lastUsedAt:null}))};
+ });
+ app.post('/api/passkeys/add/options',async(req,reply)=>{
+  enabled();const s=await writeSession(req);exactKeys(req.body,[]);
+  await rate('add:'+s.account.id,8);
+  const options=await engine.generateRegistrationOptions({
+   rpName:'Galinsky 2028 Volunteer',rpID,userName:'Volunteer '+s.account.id.slice(0,8),
+   userID:byteUserId(s.account.id),attestationType:'none',supportedAlgorithmIDs:[-7,-257],
+   authenticatorSelection:{residentKey:'required',userVerification:'required'},timeout:challengeTTL
+  });
+  await fresh('add',options.challenge,s.account.id,reply);return {options};
+ });
+ app.post('/api/passkeys/add/verify',async(req,reply)=>{
+  enabled();const s=await writeSession(req),b=exactKeys(req.body,['response']);
+  await rate('addverify:'+s.account.id,12);
+  const r=await pending(req,'add');clear(reply);
+  assert(r&&r.accountId===s.account.id,'passkey_expired','The passkey request expired or belongs to a different account.',403);
+  let proof;try{proof=await engine.verifyRegistrationResponse({
+   response:b.response,expectedChallenge:r.challenge,expectedOrigin:origin,expectedRPID:rpID,requireUserVerification:true
+  });}catch{assert(false,'passkey_rejected','Passkey verification failed. Start again.',403);}
+  assert(proof?.verified&&proof.registrationInfo?.userVerified&&proof.registrationInfo.credential,
+   'passkey_rejected','A verified passkey is required.',403);
+  await addAccountPasskey(store,s.account.id,proof.registrationInfo.credential);
+  return {added:true};
  });
  app.post('/api/passkeys/authenticate/options',async(req,reply)=>{
   enabled();exactKeys(req.body,[]);await rate('login:'+req.ip,20);
