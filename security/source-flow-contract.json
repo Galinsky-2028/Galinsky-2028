@@ -268,7 +268,7 @@
     },
     {
       "path": "apps/api/src/volunteer-passkeys.mjs",
-      "blobSha": "ca84b915a9472d48def9c63bd7dcd6e586cbb9dd",
+      "blobSha": "8f88a7c5efd7d41a26bf9d4fc7ed62b00ae6dab2",
       "componentId": "identity"
     },
     {
@@ -323,7 +323,7 @@
     },
     {
       "path": "apps/portal/src/main.tsx",
-      "blobSha": "2a6bcf3f46e92663e8a727fcee926d1c8d8bca13",
+      "blobSha": "af6638983b4df1a45dfe0637c7049c426d59284e",
       "componentId": "identity"
     },
     {
@@ -2793,7 +2793,8 @@
         "WebAuthn public key and signature counter",
         "One-use challenge hash and exact RP/origin",
         "Device-held authenticator private key never transmitted",
-        "Authenticated account/CSRF session"
+        "Authenticated account/CSRF session",
+        "Explicit signed-in passkey removal and concurrent session invalidation"
       ],
       "from": "volunteer browser and its verified platform authenticator",
       "recipients": [
@@ -2809,7 +2810,7 @@
       "egress": [
         "same-origin WebAuthn registration and assertion ceremonies only"
       ],
-      "authorization": "Resident/discoverable device credential, required local user verification, one-use challenge, exact RP and origin, session cookie and CSRF for account changes; never assigns staff roles",
+      "authorization": "Resident/discoverable device credential, required local user verification, one-use challenge, exact RP and origin, session cookie and CSRF for account changes; never assigns staff roles; passkey removal requires a verified session plus CSRF and never removes the final login credential",
       "retention": "Five-minute challenges, 24-hour sessions, public credentials until account closure; backup passkey registration requires current authenticated session and CSRF",
       "evidence": [
         "apps/api/src/volunteer-passkeys.mjs",
