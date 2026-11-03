@@ -69,7 +69,7 @@ try{
      headers:{Origin:origin,'x-csrf-token':session.csrf},
      timeout:15000
     });
-    if(close.statusCode>=400)console.error('Synthetic account cleanup returned',close.status());
+    if(close.status()>=400)console.error('Synthetic account cleanup returned',close.status());
    }
   }catch(e){console.error('Synthetic account cleanup failed:',e.message);}
  }
