@@ -30,7 +30,9 @@ try{
  await page.locator('.passkey-entry').waitFor();
  await page.locator('.passkey-entry input[type=checkbox]').check();
  await page.getByRole('button',{name:'Create volunteer account'}).click();
- await page.getByRole('button',{name:'Sign out',exact:true}).waitFor({timeout:20000});
+ try{await page.getByRole('button',{name:'Sign out',exact:true}).waitFor({timeout:10000});}catch(e){
+  console.error('VOLUNTEER_PASSKEY_BROWSER_DIAGNOSTIC',JSON.stringify({url:page.url(),text:(await page.locator('main').innerText()).slice(0,2800),errors}));throw e;
+ }
  assert.equal(store.accounts.size,1,'one genuine passkey-created volunteer account');
  const originalAccount=(await (await page.request.get('/api/session')).json()).account.id;
  assert.equal((await (await page.request.get('/api/session')).json()).account.role,'volunteer');
