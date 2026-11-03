@@ -268,7 +268,7 @@
     },
     {
       "path": "apps/api/src/volunteer-passkeys.mjs",
-      "blobSha": "5b4cc9b6f39bb571e7bc766eb69380ba5ab1509b",
+      "blobSha": "ca84b915a9472d48def9c63bd7dcd6e586cbb9dd",
       "componentId": "identity"
     },
     {
