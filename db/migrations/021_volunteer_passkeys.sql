@@ -2,7 +2,7 @@
 -- email identity is manufactured for credential-only volunteers.
 CREATE TABLE IF NOT EXISTS g28.volunteer_passkey_challenges(
  token_hash text PRIMARY KEY,
- kind text NOT NULL CHECK(kind IN ('register','authenticate')),
+ kind text NOT NULL CHECK(kind IN ('register','authenticate','add')),
  challenge text NOT NULL,
  account_id uuid,
  expires_at timestamptz NOT NULL,
