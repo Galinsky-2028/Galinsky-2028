@@ -2,6 +2,7 @@ import {TaskBoard,OperationsAdmin} from './Operations';
 import {ActivityReview} from './ActivityReview';
 import {StaffSecurity} from './StaffSecurity';
 import React,{useEffect,useState,FormEvent,createContext,useContext} from 'react';
+import {startRegistration,startAuthentication} from '@simplewebauthn/browser';
 import {createRoot} from 'react-dom/client';
 import {request,ApiError} from './api';
 import {forms as worksheetTemplates,worksheet} from '../../../packages/core/forms.mjs';
@@ -14,7 +15,7 @@ import {AdminOperations} from './AdminOperations';
 import {AdminVisitors} from './AdminVisitors';
 import {Orientation} from './Orientation';
 import {HelpCenter} from './HelpCenter';
-type Config={publicOrigin:string;signupEnabled:boolean;adminLoginEnabled:boolean;notice:string|null;features:Record<string,boolean>};
+type Config={publicOrigin:string;signupEnabled:boolean;adminLoginEnabled:boolean;passkeyEnabled?:boolean;notice:string|null;features:Record<string,boolean>};
 type Session={account:{id:string;verified:boolean;marketing:boolean;role:string};csrf:string;expires:number};
 type Material={id:string;title:string;description:string;category:string;revision:number;body?:string;reviewedAt?:string;acknowledged?:boolean;readingNotice?:string};
 type FormSpec={id:string;title:string;notice:string;restricted:boolean;fields:{name:string;label:string;type:string}[]};
@@ -25,7 +26,38 @@ function useLoad<T>(path:string|null){const[data,setData]=useState<T|null>(null)
 function Notice({children,error=false}:{children:React.ReactNode;error?:boolean}){return <div className={'notice'+(error?' error':'')} role={error?'alert':'status'}>{children}</div>;}
 function Brand(){const {config}=useContext(Context);return <a href={config?.publicOrigin||'/'} className="brand" aria-label="Galinsky for America campaign"><span className="brand-symbol" aria-hidden="true"/><span><strong>GALINSKY</strong><small>FOR AMERICA &bull; 2028</small></span></a>;}
 function Join(){const{config,refresh}=useContext(Context);const[email,setEmail]=useState(''),[terms,setTerms]=useState(false),[marketing,setMarketing]=useState(false),[message,setMessage]=useState(''),[error,setError]=useState(''),[busy,setBusy]=useState(false);async function submit(e:FormEvent){e.preventDefault();if(!(config?.signupEnabled||config?.adminLoginEnabled))return;setBusy(true);setError('');try{const r=await request<{message:string}>('/api/auth/request',{email,termsAccepted:terms,marketing});setMessage(r.message);setEmail('');await refresh();}catch(e){setError((e as Error).message);}finally{setBusy(false);}}
- return <section className="join-layout"><div className="join-copy"><span className="eyebrow">JUSTICE FOR ALL STARTS WITH US.</span><h1>Your time.<br/>Your voice.<br/><em>A way forward.</em></h1><p>One conversation. One shared idea. One manageable action. Find the tools and guidance to make your contribution count.</p><div className="join-principles"><span>Choose your role</span><span>Learn at your pace</span><span>Make your first move</span></div></div><div className="panel"><span className="eyebrow">{config?.adminLoginEnabled&&!config.signupEnabled?'PRIVATE STAFF SIGN-IN':'JOIN THE VOLUNTEER TEAM'}</span><h2>Start here.</h2><p>{config?.adminLoginEnabled&&!config.signupEnabled?'Authorized staff sign in by verifying their registered email address. Public volunteer signup remains disabled.':'New and returning volunteers use the same email sign-in. No password to remember.'}</p>{config&&!config.signupEnabled&&<Notice>{config.notice} Public volunteer registration remains closed.</Notice>}{error&&<Notice error>{error}</Notice>}{message?<Notice>{message}</Notice>:<form onSubmit={submit}><label>Email address<input name="email" type="email" autoComplete="email" required maxLength={254} value={email} onChange={e=>setEmail(e.target.value)} disabled={!(config?.signupEnabled||config?.adminLoginEnabled)||busy}/></label><label className="check"><input type="checkbox" checked={terms} onChange={e=>setTerms(e.target.checked)} required disabled={!(config?.signupEnabled||config?.adminLoginEnabled)||busy}/><span>I have read the <a href={(config?.publicOrigin||'')+'/notices/#terms'}>participation terms</a> and <a href={(config?.publicOrigin||'')+'/notices/#privacy'}>privacy notice</a>. Account access requires service messages.</span></label><label className="check"><input type="checkbox" checked={marketing} onChange={e=>setMarketing(e.target.checked)} disabled={!config?.signupEnabled||busy}/><span>Send optional campaign updates by email. This is not required to volunteer.</span></label><button className="btn" disabled={!(config?.signupEnabled||config?.adminLoginEnabled)||busy}>{busy?'Sending securely...':'Email my sign-in link'} <span aria-hidden="true">&rarr;</span></button><p className="fine">We use your email for account access. Profile details and sensitive submissions are not collected here.</p></form>}<Link to="/roles" className="textlink">Explore the twelve roles &rarr;</Link></div></section>;
+ return <section className="join-layout"><div className="join-copy"><span className="eyebrow">JUSTICE FOR ALL STARTS WITH US.</span><h1>Your time.<br/>Your voice.<br/><em>A way forward.</em></h1><p>One conversation. One shared idea. One manageable action. Find the tools and guidance to make your contribution count.</p><div className="join-principles"><span>Choose your role</span><span>Learn at your pace</span><span>Make your first move</span></div></div><div className="panel"><span className="eyebrow">{config?.adminLoginEnabled&&!config.signupEnabled?'PRIVATE STAFF SIGN-IN':'JOIN THE VOLUNTEER TEAM'}</span><h2>Start here.</h2><p>{config?.adminLoginEnabled&&!config.signupEnabled?'Authorized staff sign in by verifying their registered email address. Public volunteer signup remains disabled.':'New and returning volunteers use the same email sign-in. No password to remember.'}</p>{config&&!config.signupEnabled&&<Notice>{config.notice} Public volunteer registration remains closed.</Notice>}{error&&<Notice error>{error}</Notice>}{message?<Notice>{message}</Notice>:<form onSubmit={submit}><label>Email address<input name="email" type="email" autoComplete="email" required maxLength={254} value={email} onChange={e=>setEmail(e.target.value)} disabled={!(config?.signupEnabled||config?.adminLoginEnabled)||busy}/></label><label className="check"><input type="checkbox" checked={terms} onChange={e=>setTerms(e.target.checked)} required disabled={!(config?.signupEnabled||config?.adminLoginEnabled)||busy}/><span>I have read the <a href={(config?.publicOrigin||'')+'/notices/#terms'}>participation terms</a> and <a href={(config?.publicOrigin||'')+'/notices/#privacy'}>privacy notice</a>. Account access requires service messages.</span></label><label className="check"><input type="checkbox" checked={marketing} onChange={e=>setMarketing(e.target.checked)} disabled={!config?.signupEnabled||busy}/><span>Send optional campaign updates by email. This is not required to volunteer.</span></label><button className="btn" disabled={!(config?.signupEnabled||config?.adminLoginEnabled)||busy}>{busy?'Sending securely...':'Email my sign-in link'} <span aria-hidden="true">&rarr;</span></button><p className="fine">We use your email for account access. Profile details and sensitive submissions are not collected here.</p></form>}<PasskeyEntry/><Link to="/roles" className="textlink">Explore the twelve roles &rarr;</Link></div></section>;
+}
+
+function PasskeyEntry(){
+ const{config,refresh}=useContext(Context);
+ const[,navigate]=usePath();
+ const[terms,setTerms]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState('');
+ if(!config?.passkeyEnabled)return null;
+ async function run(kind:'register'|'authenticate'){
+  setBusy(true);setError('');
+  try{
+   if(!window.PublicKeyCredential||!navigator.credentials)throw new Error('This browser does not support passkeys. Use a current browser or email sign-in.');
+   if(kind==='register'&&!terms)throw new Error('Review and accept the participation terms and privacy notice first.');
+   const options=await request<{options:Parameters<typeof startRegistration>[0]['optionsJSON']}>('/api/passkeys/'+kind+'/options',{});
+   const response=kind==='register'?
+    await startRegistration({optionsJSON:options.options}):
+    await startAuthentication({optionsJSON:options.options as Parameters<typeof startAuthentication>[0]['optionsJSON']});
+   await request('/api/passkeys/'+kind+'/verify',kind==='register'?{response,termsAccepted:true}:{response});
+   await refresh();navigate('/');
+  }catch(e){setError((e as Error).message||'Passkey authentication failed. Try again.');}
+  finally{setBusy(false);}
+ }
+ return <div className="passkey-entry" aria-label="Volunteer passkey account">
+  <h3>Use a passkey instead</h3>
+  <p>Create or open your volunteer account with your device's passkey, without waiting for an email message.</p>
+  <p className="fine"><strong>Keep your passkey available:</strong> account recovery and replacement-device access are not available for passkey-only accounts yet. Use a passkey synchronized by your trusted device provider if possible.</p>
+  <label className="check"><input type="checkbox" checked={terms} onChange={e=>setTerms(e.target.checked)} disabled={busy}/>
+   <span>I accept the <a href={config.publicOrigin+'/notices/#terms'}>participation terms</a> and <a href={config.publicOrigin+'/notices/#privacy'}>privacy notice</a>.</span></label>
+  {error&&<Notice error>{error}</Notice>}
+  <div className="actions"><button type="button" className="btn blue" disabled={busy||!terms} onClick={()=>void run('register')}>{busy?'Opening passkey...':'Create volunteer account'}</button>
+   <button type="button" className="btn outline" disabled={busy} onClick={()=>void run('authenticate')}>Sign in with passkey</button></div>
+ </div>;
 }
 function Verify(){const{refresh}=useContext(Context);const[,navigate]=usePath();const[token]=useState(()=>{const value=new URLSearchParams(location.hash.slice(1)).get('token')||'';history.replaceState({},'',location.pathname);return value;});const[error,setError]=useState(''),[busy,setBusy]=useState(false);async function verify(){setBusy(true);try{await request('/api/auth/verify',{token});await refresh();navigate('/');}catch(e){setError((e as Error).message);}finally{setBusy(false);}}return <div className="narrow panel"><span className="eyebrow">WELCOME TO THE TEAM</span><h1>Confirm your sign-in.</h1><p>Continue only if you requested this email in this browser. Opening the email alone does not create a session.</p>{error&&<Notice error>{error}</Notice>}<button className="btn" onClick={verify} disabled={busy||!token}>{busy?'Confirming...':'Continue to my workspace'}</button><p className="fine">Links expire after 15 minutes and can be used once.</p><Link to="/join" className="textlink">Request a new link</Link></div>;}
 const nav=[['/','Your first action'],['/materials','Materials library'],['/roles','Find your role'],['/orientation','First-hour orientation'],['/tasks','Available actions'],['/forms','Forms & practice'],['/activity','Activity status'],['/teams','Teams & events'],['/help','Help & corrections'],['/settings','Account settings']];
