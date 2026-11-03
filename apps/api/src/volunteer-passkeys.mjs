@@ -113,7 +113,7 @@ async function addAccountPasskey(store,accountId,credential){
   m.identities.set(pk.id,{...pk,accountId});
  }
 }
-export function registerVolunteerPasskeys(app,{store,config,clock=()=>Date.now(),webauthn={},account,writeSession})){
+export function registerVolunteerPasskeys(app,{store,config,clock=()=>Date.now(),webauthn={},account,writeSession}){
  const engine={
   generateRegistrationOptions:webauthn.generateRegistrationOptions||generateRegistrationOptions,
   verifyRegistrationResponse:webauthn.verifyRegistrationResponse||verifyRegistrationResponse,
