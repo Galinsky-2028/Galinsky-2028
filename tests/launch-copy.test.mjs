@@ -12,7 +12,7 @@ test('production public copy never describes launch pages as design previews',()
 });
 test('volunteer access and fundraising are described precisely without implying activation',()=>{
  const volunteer=renderPage('volunteer',{site:live});
- assert.match(volunteer,/Account access is available only when verified email delivery is enabled/);
+ assert.match(volunteer,/Passkey account creation is available inside the secure volunteer portal/);
  assert.match(volunteer,/No information is collected on this public page/);
  const donate=renderPage('donate',{site:live});
  assert.match(donate,/This page has no card fields and cannot accept money/);
