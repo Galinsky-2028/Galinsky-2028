@@ -7,15 +7,15 @@ import {MemoryStore} from '../../apps/api/src/memory-store.mjs';
 import {loadConfig} from '../../apps/api/src/config.mjs';
 import {registerPortal} from '../../apps/api/src/static.mjs';
 
-const portalOrigin='http://127.0.0.1:4456';
-const publicOrigin='http://127.0.0.1:4455';
+const portalOrigin='http://localhost:4456';
+const publicOrigin='http://localhost:4455';
 const config=loadConfig({NODE_ENV:'test',PORTAL_ORIGIN:portalOrigin,PUBLIC_ORIGIN:publicOrigin,
  VOLUNTEER_PASSKEYS_ENABLED:'true',SIGNUP_ENABLED:'false'});
 const store=new MemoryStore();
 const app=createApp({store,config});registerPortal(app,portalOrigin);
 let browser;
 try{
- await app.listen({host:'127.0.0.1',port:4456});
+ await app.listen({host:'localhost',port:4456});
  browser=await chromium.launch({headless:true});
  const context=await browser.newContext({baseURL:portalOrigin});
  const page=await context.newPage();
