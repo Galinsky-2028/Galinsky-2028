@@ -158,7 +158,7 @@
     },
     {
       "path": "apps/api/src/app.mjs",
-      "blobSha": "f7cbb9171460a227a7c3bc4c8ca699a8c97b3d8a",
+      "blobSha": "b3468b9a76ef4914c8504dabbfbf77cd64ec4c86",
       "componentId": "identity"
     },
     {
@@ -178,7 +178,7 @@
     },
     {
       "path": "apps/api/src/config.mjs",
-      "blobSha": "464f48e14df985ec4e041f7b6de630f1a6092402",
+      "blobSha": "63d880c3fa40982e061d5b6560de33c25249ec0a",
       "componentId": "identity"
     },
     {
@@ -267,6 +267,11 @@
       "componentId": "analytics"
     },
     {
+      "path": "apps/api/src/volunteer-passkeys.mjs",
+      "blobSha": "5b4cc9b6f39bb571e7bc766eb69380ba5ab1509b",
+      "componentId": "identity"
+    },
+    {
       "path": "apps/api/src/worker.mjs",
       "blobSha": "94a8553cf3a60992fc92f268352c32fc6f179bba",
       "componentId": "mail"
@@ -318,7 +323,7 @@
     },
     {
       "path": "apps/portal/src/main.tsx",
-      "blobSha": "808780b6c26e4e641e5701055a957175e9c32b75",
+      "blobSha": "2a6bcf3f46e92663e8a727fcee926d1c8d8bca13",
       "componentId": "identity"
     },
     {
@@ -554,6 +559,11 @@
     {
       "path": "db/migrations/020_treasury_exports.sql",
       "blobSha": "9593d5298a7ae19862f95ffb059b046c173b9d91",
+      "componentId": "schema"
+    },
+    {
+      "path": "db/migrations/021_volunteer_passkeys.sql",
+      "blobSha": "49f5835fb161f3a823aaaaec8bb8e0118514aabf",
       "componentId": "schema"
     },
     {
@@ -993,6 +1003,43 @@
     }
   ],
   "storage": [
+    {
+      "id": "browser-local",
+      "kind": "non-table",
+      "columns": [
+        "worksheet values",
+        "downloaded files",
+        "motion preference",
+        "analytics consent"
+      ],
+      "paths": [
+        "packages/core/forms.mjs",
+        "apps/web/public/assets/motion.js",
+        "apps/web/public/assets/visitor-analytics.js"
+      ],
+      "classification": "local-only",
+      "authority": "User-controlled device storage and files; public browser publisher remains trusted",
+      "retention": "Worksheet memory until unload; explicit files and local preferences until user clears them",
+      "disposal": "Campaign closure cannot delete user/provider copies; never enter protected supporter information"
+    },
+    {
+      "id": "diagnostic-output",
+      "kind": "non-table",
+      "columns": [
+        "fixed event codes",
+        "job id",
+        "safe status/count/digest metadata"
+      ],
+      "paths": [
+        "apps/api/src/server.mjs",
+        "apps/api/src/worker.mjs",
+        "apps/web/private-preview.mjs"
+      ],
+      "classification": "operational-metadata",
+      "authority": "Runtime/operator and platform log service",
+      "retention": "Platform retention and access have not been observed; deployment must prove controls",
+      "disposal": "No raw bodies, addresses, cookies, URLs containing tokens or key material; provider/platform deletion is separate"
+    },
     {
       "id": "g28.account_bookmarks",
       "columns": [
@@ -1729,6 +1776,47 @@
       "disposal": "No automatic uncertain payment retry; finance records and export digests retained separately from volunteer deletion; provider-held cards never enter this store"
     },
     {
+      "id": "g28.volunteer_passkey_challenges",
+      "columns": [
+        "account_id",
+        "challenge",
+        "created_at",
+        "expires_at",
+        "kind",
+        "token_hash"
+      ],
+      "paths": [
+        "db/migrations/021_volunteer_passkeys.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "identity",
+      "classification": "identity-metadata",
+      "authority": "Same-origin registration/authentication challenge only, single-use token hash; no email/third-party identity",
+      "retention": "Five-minute challenge validity; expired challenges removed by recurring cleanup",
+      "disposal": "Delete after every verification attempt or expiry; no plaintext passkey secrets stored"
+    },
+    {
+      "id": "g28.volunteer_passkeys",
+      "columns": [
+        "account_id",
+        "counter",
+        "created_at",
+        "credential_id",
+        "last_used_at",
+        "public_key",
+        "transports"
+      ],
+      "paths": [
+        "db/migrations/021_volunteer_passkeys.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "identity",
+      "classification": "identity-metadata",
+      "authority": "Verified device WebAuthn public key; user verification, counter and exact RP/origin required",
+      "retention": "Stored while the account remains; public keys are not private authenticator keys",
+      "disposal": "Cascade account deletion; enrolled credential access can be revoked after account verification"
+    },
+    {
       "id": "g28.volunteer_role_preferences",
       "columns": [
         "account_id",
@@ -1746,6 +1834,77 @@
       "authority": "Authenticated self or scoped staff; current task/training/tool authorization is distinct from material access",
       "retention": "Owned activity until deletion/closure; versioned definitions/history retained without a global timed purge",
       "disposal": "FK cascades owned records; account close scrubs coordination record membership/invitation references; exports remain user-controlled"
+    },
+    {
+      "id": "operator-backup",
+      "kind": "non-table",
+      "columns": [
+        "archive header",
+        "encrypted database dump",
+        "GCM tag",
+        "restore target"
+      ],
+      "paths": [
+        "scripts/database-recovery.mjs"
+      ],
+      "classification": "identity-metadata",
+      "authority": "Operator with separately held recovery key and isolated restore authorization",
+      "retention": "No automatic archive expiry proved; archive schedule, custody and disposal require operator policy",
+      "disposal": "Authentication before restore; local partial output cleanup; encrypted archive can outlive source deletions"
+    },
+    {
+      "id": "policy-source-memory",
+      "kind": "non-table",
+      "columns": [
+        "private source blob bytes",
+        "approved filenames",
+        "content digest"
+      ],
+      "paths": [
+        "packages/core/live-policy-library.mjs",
+        "apps/web/private-preview.mjs"
+      ],
+      "classification": "restricted-material",
+      "authority": "Server-owned allowlisted GitHub source and authenticated preview recipient",
+      "retention": "Server request/cache and user explicit document download; repository and user copies persist",
+      "disposal": "No private GitHub credential reaches browser; view/download authorization does not authorize public publication"
+    },
+    {
+      "id": "public-artifacts",
+      "kind": "non-table",
+      "columns": [
+        "approved HTML",
+        "public portrait/media",
+        "indexed URLs",
+        "rights-approved sharing card"
+      ],
+      "paths": [
+        "scripts/public-renderer.mjs",
+        "apps/web/campaign-runtime.mjs"
+      ],
+      "classification": "public",
+      "authority": "Explicit approved publication; unapproved source is not public authority",
+      "retention": "Public release/cache/download lifetime; withdrawal cannot recall third-party copies",
+      "disposal": "No restricted source ZIP or protected record in static build; invalid publication fails closed"
+    },
+    {
+      "id": "public-projections",
+      "kind": "non-table",
+      "columns": [
+        "approved campaign document",
+        "published media",
+        "hero effects",
+        "unexpired sharing cards"
+      ],
+      "paths": [
+        "db/migrations/20261016_campaign_public_views.sql",
+        "db/migrations/20261016_hero_effect_projection.sql",
+        "db/migrations/20261019_sharing_assets.sql"
+      ],
+      "classification": "public",
+      "authority": "Security-barrier SQL projection and narrowly granted public read role",
+      "retention": "Derived from current explicit publication, not independent storage",
+      "disposal": "Draft/private state is excluded; actual runtime grants must be tested separately"
     },
     {
       "id": "public.g28_review_account",
@@ -1899,114 +2058,6 @@
       "authority": "Review administrator and separate restricted review database role",
       "retention": "Account/session expiry and administrative revocation; no global automatic account/audit deletion demonstrated",
       "disposal": "Review user deletion cascades sessions/accounts; downloaded public pages and provider/platform logs cannot be recalled"
-    },
-    {
-      "id": "browser-local",
-      "kind": "non-table",
-      "columns": [
-        "worksheet values",
-        "downloaded files",
-        "motion preference",
-        "analytics consent"
-      ],
-      "paths": [
-        "packages/core/forms.mjs",
-        "apps/web/public/assets/motion.js",
-        "apps/web/public/assets/visitor-analytics.js"
-      ],
-      "classification": "local-only",
-      "authority": "User-controlled device storage and files; public browser publisher remains trusted",
-      "retention": "Worksheet memory until unload; explicit files and local preferences until user clears them",
-      "disposal": "Campaign closure cannot delete user/provider copies; never enter protected supporter information"
-    },
-    {
-      "id": "operator-backup",
-      "kind": "non-table",
-      "columns": [
-        "archive header",
-        "encrypted database dump",
-        "GCM tag",
-        "restore target"
-      ],
-      "paths": [
-        "scripts/database-recovery.mjs"
-      ],
-      "classification": "identity-metadata",
-      "authority": "Operator with separately held recovery key and isolated restore authorization",
-      "retention": "No automatic archive expiry proved; archive schedule, custody and disposal require operator policy",
-      "disposal": "Authentication before restore; local partial output cleanup; encrypted archive can outlive source deletions"
-    },
-    {
-      "id": "diagnostic-output",
-      "kind": "non-table",
-      "columns": [
-        "fixed event codes",
-        "job id",
-        "safe status/count/digest metadata"
-      ],
-      "paths": [
-        "apps/api/src/server.mjs",
-        "apps/api/src/worker.mjs",
-        "apps/web/private-preview.mjs"
-      ],
-      "classification": "operational-metadata",
-      "authority": "Runtime/operator and platform log service",
-      "retention": "Platform retention and access have not been observed; deployment must prove controls",
-      "disposal": "No raw bodies, addresses, cookies, URLs containing tokens or key material; provider/platform deletion is separate"
-    },
-    {
-      "id": "policy-source-memory",
-      "kind": "non-table",
-      "columns": [
-        "private source blob bytes",
-        "approved filenames",
-        "content digest"
-      ],
-      "paths": [
-        "packages/core/live-policy-library.mjs",
-        "apps/web/private-preview.mjs"
-      ],
-      "classification": "restricted-material",
-      "authority": "Server-owned allowlisted GitHub source and authenticated preview recipient",
-      "retention": "Server request/cache and user explicit document download; repository and user copies persist",
-      "disposal": "No private GitHub credential reaches browser; view/download authorization does not authorize public publication"
-    },
-    {
-      "id": "public-artifacts",
-      "kind": "non-table",
-      "columns": [
-        "approved HTML",
-        "public portrait/media",
-        "indexed URLs",
-        "rights-approved sharing card"
-      ],
-      "paths": [
-        "scripts/public-renderer.mjs",
-        "apps/web/campaign-runtime.mjs"
-      ],
-      "classification": "public",
-      "authority": "Explicit approved publication; unapproved source is not public authority",
-      "retention": "Public release/cache/download lifetime; withdrawal cannot recall third-party copies",
-      "disposal": "No restricted source ZIP or protected record in static build; invalid publication fails closed"
-    },
-    {
-      "id": "public-projections",
-      "kind": "non-table",
-      "columns": [
-        "approved campaign document",
-        "published media",
-        "hero effects",
-        "unexpired sharing cards"
-      ],
-      "paths": [
-        "db/migrations/20261016_campaign_public_views.sql",
-        "db/migrations/20261016_hero_effect_projection.sql",
-        "db/migrations/20261019_sharing_assets.sql"
-      ],
-      "classification": "public",
-      "authority": "Security-barrier SQL projection and narrowly granted public read role",
-      "retention": "Derived from current explicit publication, not independent storage",
-      "disposal": "Draft/private state is excluded; actual runtime grants must be tested separately"
     }
   ],
   "flows": [
@@ -2728,6 +2779,43 @@
       "retention": "Caller lifecycle; no independent persistence or egress",
       "evidence": [
         "packages/core/validation.mjs"
+      ],
+      "profileDecision": "server",
+      "blocked": false,
+      "plaintextFallback": false
+    },
+    {
+      "id": "volunteer-passkey-accounts",
+      "componentId": "identity",
+      "classification": "identity-metadata",
+      "fields": [
+        "Opaque account identifier (no address)",
+        "WebAuthn public key and signature counter",
+        "One-use challenge hash and exact RP/origin",
+        "Device-held authenticator private key never transmitted",
+        "Authenticated account/CSRF session"
+      ],
+      "from": "volunteer browser and its verified platform authenticator",
+      "recipients": [
+        "same-origin volunteer authentication API and its scoped database"
+      ],
+      "storage": [
+        "g28.accounts",
+        "g28.sessions",
+        "g28.rate_buckets",
+        "g28.volunteer_passkey_challenges",
+        "g28.volunteer_passkeys"
+      ],
+      "egress": [
+        "same-origin WebAuthn registration and assertion ceremonies only"
+      ],
+      "authorization": "Resident/discoverable device credential, required local user verification, one-use challenge, exact RP and origin, session cookie and CSRF for account changes; never assigns staff roles",
+      "retention": "Five-minute challenges, 24-hour sessions, public credentials until account closure; backup passkey registration requires current authenticated session and CSRF",
+      "evidence": [
+        "apps/api/src/volunteer-passkeys.mjs",
+        "apps/api/src/app.mjs",
+        "apps/portal/src/main.tsx",
+        "db/migrations/021_volunteer_passkeys.sql"
       ],
       "profileDecision": "server",
       "blocked": false,
