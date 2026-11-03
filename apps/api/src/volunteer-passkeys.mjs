@@ -1,4 +1,4 @@
-import {randomUUID,randomBytes} from 'node:crypto';
+import {randomUUID} from 'node:crypto';
 import {generateRegistrationOptions,verifyRegistrationResponse,generateAuthenticationOptions,verifyAuthenticationResponse} from '@simplewebauthn/server';
 import {assert,exactKeys} from '../../../packages/core/validation.mjs';
 import {tokenHash,randomToken,readCookie,sessionCookie} from '../../../packages/core/auth.mjs';
@@ -34,7 +34,7 @@ async function consumeChallenge(store,hash,kind,now){
  const m=memory(store).pending,r=m.get(hash);m.delete(hash);
  return r&&r.kind===kind&&r.expires>now?r:null;
 }
-async function createPasskeyAccount(store,{accountId,credential,session,now}){
+async function createPasskeyAccount(store,{accountId,credential,session}){
  const pk={id:credential.id,publicKey:Buffer.from(credential.publicKey).toString('base64url'),counter:credential.counter,transports:credential.transports||[]};
  if(store.pool){
   const client=await store.pool.connect();
@@ -57,7 +57,7 @@ async function createPasskeyAccount(store,{accountId,credential,session,now}){
   store.sessions.set(session.hash,{...session,accountId});
  }
 }
-async function signInWithPasskey(store,{response,challenge,origin,rpID,verify,session,now}){
+async function signInWithPasskey(store,{response,challenge,origin,rpID,verify,session}){
  if(store.pool){
   const client=await store.pool.connect();
   try{
@@ -136,7 +136,7 @@ export function registerVolunteerPasskeys(app,{store,config,clock=()=>Date.now()
   assert(proof?.verified&&proof.registrationInfo?.userVerified&&proof.registrationInfo.credential,
    'passkey_rejected','An authenticator with user verification is required.',403);
   const s=session();
-  await createPasskeyAccount(store,{accountId:r.accountId,credential:proof.registrationInfo.credential,session:s,now:clock()});
+  await createPasskeyAccount(store,{accountId:r.accountId,credential:proof.registrationInfo.credential,session:s});
   reply.header('Set-Cookie',sessionCookie(s.token,{secure:config.production}));return {verified:true};
  });
  app.post('/api/passkeys/authenticate/options',async(req,reply)=>{
@@ -152,7 +152,7 @@ export function registerVolunteerPasskeys(app,{store,config,clock=()=>Date.now()
   assert(r,'passkey_expired','The passkey request expired or was already used. Start again.',403);
   const s=session();
   await signInWithPasskey(store,{response:b.response,challenge:r.challenge,origin,rpID,
-   verify:engine.verifyAuthenticationResponse,session:s,now:clock()});
+   verify:engine.verifyAuthenticationResponse,session:s});
   reply.header('Set-Cookie',sessionCookie(s.token,{secure:config.production}));return {verified:true};
  });
 }
