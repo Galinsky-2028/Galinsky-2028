@@ -177,6 +177,9 @@ export class PostgresStore{
  // can expire, but its queued/leased job must still be claimed and marked dead
  // by the worker; age alone is never proof that delivery completed.
  async cleanup(){
+  // Mixed-schema staging and isolated legacy tests may not have migration 021 yet.
+  if((await this.pool.query("SELECT to_regclass('g28.volunteer_passkey_challenges') AS name")).rows[0].name)
+   await this.pool.query('DELETE FROM g28.volunteer_passkey_challenges WHERE expires_at<now()');
   await this.pool.query('DELETE FROM g28.login_requests WHERE expires_at<now()');
   await this.pool.query('DELETE FROM g28.sessions WHERE expires_at<now()');
   await this.pool.query('DELETE FROM g28.rate_buckets WHERE expires_at<now()');

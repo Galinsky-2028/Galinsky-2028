@@ -1,0 +1,21 @@
+name: Volunteer passkey browser acceptance
+on:
+  push:
+    branches: [release/usable-volunteer-starter-20261103]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  webauthn:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.23.3
+          cache: npm
+      - run: npm ci --no-fund
+      - run: npm run build:portal
+      - run: npx playwright install --with-deps chromium
+      - run: node tests/browser/volunteer-passkeys.mjs

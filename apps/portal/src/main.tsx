@@ -2,6 +2,7 @@ import {TaskBoard,OperationsAdmin} from './Operations';
 import {ActivityReview} from './ActivityReview';
 import {StaffSecurity} from './StaffSecurity';
 import React,{useEffect,useState,FormEvent,createContext,useContext} from 'react';
+import {startRegistration,startAuthentication} from '@simplewebauthn/browser';
 import {createRoot} from 'react-dom/client';
 import {request,ApiError} from './api';
 import {forms as worksheetTemplates,worksheet} from '../../../packages/core/forms.mjs';
@@ -14,7 +15,7 @@ import {AdminOperations} from './AdminOperations';
 import {AdminVisitors} from './AdminVisitors';
 import {Orientation} from './Orientation';
 import {HelpCenter} from './HelpCenter';
-type Config={publicOrigin:string;signupEnabled:boolean;adminLoginEnabled:boolean;notice:string|null;features:Record<string,boolean>};
+type Config={publicOrigin:string;signupEnabled:boolean;adminLoginEnabled:boolean;passkeyEnabled?:boolean;notice:string|null;features:Record<string,boolean>};
 type Session={account:{id:string;verified:boolean;marketing:boolean;role:string};csrf:string;expires:number};
 type Material={id:string;title:string;description:string;category:string;revision:number;body?:string;reviewedAt?:string;acknowledged?:boolean;readingNotice?:string};
 type FormSpec={id:string;title:string;notice:string;restricted:boolean;fields:{name:string;label:string;type:string}[]};
@@ -25,7 +26,38 @@ function useLoad<T>(path:string|null){const[data,setData]=useState<T|null>(null)
 function Notice({children,error=false}:{children:React.ReactNode;error?:boolean}){return <div className={'notice'+(error?' error':'')} role={error?'alert':'status'}>{children}</div>;}
 function Brand(){const {config}=useContext(Context);return <a href={config?.publicOrigin||'/'} className="brand" aria-label="Galinsky for America campaign"><span className="brand-symbol" aria-hidden="true"/><span><strong>GALINSKY</strong><small>FOR AMERICA &bull; 2028</small></span></a>;}
 function Join(){const{config,refresh}=useContext(Context);const[email,setEmail]=useState(''),[terms,setTerms]=useState(false),[marketing,setMarketing]=useState(false),[message,setMessage]=useState(''),[error,setError]=useState(''),[busy,setBusy]=useState(false);async function submit(e:FormEvent){e.preventDefault();if(!(config?.signupEnabled||config?.adminLoginEnabled))return;setBusy(true);setError('');try{const r=await request<{message:string}>('/api/auth/request',{email,termsAccepted:terms,marketing});setMessage(r.message);setEmail('');await refresh();}catch(e){setError((e as Error).message);}finally{setBusy(false);}}
- return <section className="join-layout"><div className="join-copy"><span className="eyebrow">JUSTICE FOR ALL STARTS WITH US.</span><h1>Your time.<br/>Your voice.<br/><em>A way forward.</em></h1><p>One conversation. One shared idea. One manageable action. Find the tools and guidance to make your contribution count.</p><div className="join-principles"><span>Choose your role</span><span>Learn at your pace</span><span>Make your first move</span></div></div><div className="panel"><span className="eyebrow">{config?.adminLoginEnabled&&!config.signupEnabled?'PRIVATE STAFF SIGN-IN':'JOIN THE VOLUNTEER TEAM'}</span><h2>Start here.</h2><p>{config?.adminLoginEnabled&&!config.signupEnabled?'Authorized staff sign in by verifying their registered email address. Public volunteer signup remains disabled.':'New and returning volunteers use the same email sign-in. No password to remember.'}</p>{config&&!config.signupEnabled&&<Notice>{config.notice} Public volunteer registration remains closed.</Notice>}{error&&<Notice error>{error}</Notice>}{message?<Notice>{message}</Notice>:<form onSubmit={submit}><label>Email address<input name="email" type="email" autoComplete="email" required maxLength={254} value={email} onChange={e=>setEmail(e.target.value)} disabled={!(config?.signupEnabled||config?.adminLoginEnabled)||busy}/></label><label className="check"><input type="checkbox" checked={terms} onChange={e=>setTerms(e.target.checked)} required disabled={!(config?.signupEnabled||config?.adminLoginEnabled)||busy}/><span>I have read the <a href={(config?.publicOrigin||'')+'/notices/#terms'}>participation terms</a> and <a href={(config?.publicOrigin||'')+'/notices/#privacy'}>privacy notice</a>. Account access requires service messages.</span></label><label className="check"><input type="checkbox" checked={marketing} onChange={e=>setMarketing(e.target.checked)} disabled={!config?.signupEnabled||busy}/><span>Send optional campaign updates by email. This is not required to volunteer.</span></label><button className="btn" disabled={!(config?.signupEnabled||config?.adminLoginEnabled)||busy}>{busy?'Sending securely...':'Email my sign-in link'} <span aria-hidden="true">&rarr;</span></button><p className="fine">We use your email for account access. Profile details and sensitive submissions are not collected here.</p></form>}<Link to="/roles" className="textlink">Explore the twelve roles &rarr;</Link></div></section>;
+ return <section className="join-layout"><div className="join-copy"><span className="eyebrow">JUSTICE FOR ALL STARTS WITH US.</span><h1>Your time.<br/>Your voice.<br/><em>A way forward.</em></h1><p>One conversation. One shared idea. One manageable action. Find the tools and guidance to make your contribution count.</p><div className="join-principles"><span>Choose your role</span><span>Learn at your pace</span><span>Make your first move</span></div></div><div className="panel"><span className="eyebrow">{config?.adminLoginEnabled&&!config.signupEnabled?'PRIVATE STAFF SIGN-IN':'JOIN THE VOLUNTEER TEAM'}</span><h2>Start here.</h2><p>{config?.adminLoginEnabled&&!config.signupEnabled?'Authorized staff sign in by verifying their registered email address. Public volunteer signup remains disabled.':config?.passkeyEnabled&&!config?.signupEnabled?'Create a volunteer account with your device passkey. Your role, orientation and task progress are saved in the real portal.':'New and returning volunteers use the same email sign-in. No password to remember.'}</p>{config&&!config.signupEnabled&&<Notice>{config.notice} {config.passkeyEnabled?'Email-link registration is not available yet.':'Public volunteer registration remains closed.'}</Notice>}{error&&<Notice error>{error}</Notice>}{message?<Notice>{message}</Notice>:(!config?.passkeyEnabled||config.signupEnabled||config.adminLoginEnabled)?<form onSubmit={submit}><label>Email address<input name="email" type="email" autoComplete="email" required maxLength={254} value={email} onChange={e=>setEmail(e.target.value)} disabled={!(config?.signupEnabled||config?.adminLoginEnabled)||busy}/></label><label className="check"><input type="checkbox" checked={terms} onChange={e=>setTerms(e.target.checked)} required disabled={!(config?.signupEnabled||config?.adminLoginEnabled)||busy}/><span>I have read the <a href={(config?.publicOrigin||'')+'/notices/#terms'}>participation terms</a> and <a href={(config?.publicOrigin||'')+'/notices/#privacy'}>privacy notice</a>. Account access requires service messages.</span></label><label className="check"><input type="checkbox" checked={marketing} onChange={e=>setMarketing(e.target.checked)} disabled={!config?.signupEnabled||busy}/><span>Send optional campaign updates by email. This is not required to volunteer.</span></label><button className="btn" disabled={!(config?.signupEnabled||config?.adminLoginEnabled)||busy}>{busy?'Sending securely...':'Email my sign-in link'} <span aria-hidden="true">&rarr;</span></button><p className="fine">We use your email for account access. Profile details and sensitive submissions are not collected here.</p></form>:null}<PasskeyEntry/><Link to="/roles" className="textlink">Explore the twelve roles &rarr;</Link></div></section>;
+}
+
+function PasskeyEntry(){
+ const{config,refresh}=useContext(Context);
+ const[,navigate]=usePath();
+ const[terms,setTerms]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState('');
+ if(!config?.passkeyEnabled)return null;
+ async function run(kind:'register'|'authenticate'){
+  setBusy(true);setError('');
+  try{
+   if(!window.PublicKeyCredential||!navigator.credentials)throw new Error('This browser does not support passkeys. Use a current browser or email sign-in.');
+   if(kind==='register'&&!terms)throw new Error('Review and accept the participation terms and privacy notice first.');
+   const options=await request<{options:Parameters<typeof startRegistration>[0]['optionsJSON']}>('/api/passkeys/'+kind+'/options',{});
+   const response=kind==='register'?
+    await startRegistration({optionsJSON:options.options}):
+    await startAuthentication({optionsJSON:options.options as Parameters<typeof startAuthentication>[0]['optionsJSON']});
+   await request('/api/passkeys/'+kind+'/verify',kind==='register'?{response,termsAccepted:true}:{response});
+   await refresh();navigate('/');
+  }catch(e){setError((e as Error).message||'Passkey authentication failed. Try again.');}
+  finally{setBusy(false);}
+ }
+ return <div className="passkey-entry" aria-label="Volunteer passkey account">
+  <h3>Use a passkey instead</h3>
+  <p>Create or open your volunteer account with your device's passkey, without waiting for an email message.</p>
+  <p className="fine"><strong>Keep your passkey available:</strong> account recovery and replacement-device access are not available for passkey-only accounts yet. Use a passkey synchronized by your trusted device provider if possible.</p>
+  <label className="check"><input type="checkbox" checked={terms} onChange={e=>setTerms(e.target.checked)} disabled={busy}/>
+   <span>I accept the <a href={config.publicOrigin+'/notices/#terms'}>participation terms</a> and <a href={config.publicOrigin+'/notices/#privacy'}>privacy notice</a>.</span></label>
+  {error&&<Notice error>{error}</Notice>}
+  <div className="actions"><button type="button" className="btn blue" disabled={busy||!terms} onClick={()=>void run('register')}>{busy?'Opening passkey...':'Create volunteer account'}</button>
+   <button type="button" className="btn outline" disabled={busy} onClick={()=>void run('authenticate')}>Sign in with passkey</button></div>
+ </div>;
 }
 function Verify(){const{refresh}=useContext(Context);const[,navigate]=usePath();const[token]=useState(()=>{const value=new URLSearchParams(location.hash.slice(1)).get('token')||'';history.replaceState({},'',location.pathname);return value;});const[error,setError]=useState(''),[busy,setBusy]=useState(false);async function verify(){setBusy(true);try{await request('/api/auth/verify',{token});await refresh();navigate('/');}catch(e){setError((e as Error).message);}finally{setBusy(false);}}return <div className="narrow panel"><span className="eyebrow">WELCOME TO THE TEAM</span><h1>Confirm your sign-in.</h1><p>Continue only if you requested this email in this browser. Opening the email alone does not create a session.</p>{error&&<Notice error>{error}</Notice>}<button className="btn" onClick={verify} disabled={busy||!token}>{busy?'Confirming...':'Continue to my workspace'}</button><p className="fine">Links expire after 15 minutes and can be used once.</p><Link to="/join" className="textlink">Request a new link</Link></div>;}
 const nav=[['/','Your first action'],['/materials','Materials library'],['/roles','Find your role'],['/orientation','First-hour orientation'],['/tasks','Available actions'],['/forms','Forms & practice'],['/activity','Activity status'],['/teams','Teams & events'],['/help','Help & corrections'],['/settings','Account settings']];
@@ -273,6 +305,40 @@ type ActivitySummary={id:string;jurisdiction:string;election:string;activity:str
 function Activity(){const{data,error}=useLoad<{notice:string;modules:ActivitySummary[]}>('/api/activity-status');return <><span className="eyebrow">KNOW WHAT IS AUTHORIZED</span><h1>Readiness matters.</h1>{error&&<Notice error>{error}</Notice>}<Notice>{data?.notice||'Checking current activity status...'}</Notice>
  {data?.modules?.length?<section className="cards two" aria-label="Published activity requirements">{data.modules.map(m=><article key={m.id} className="panel"><span className="eyebrow">{m.jurisdiction} · {m.election}</span><h2>{m.activity}</h2><p className="fine">Published revision {m.revision} · through {new Date(m.validUntil).toLocaleDateString()}</p><p><strong>{m.publishedCurrent?'Current published requirements':'Not currently available'}</strong></p><p>{m.reason}</p><p className="fine">Required training items: {m.requiredTrainingCount}. This does not verify your own completion or approve fieldwork.</p></article>)}</section>:null}
  <div className="panel spaced"><h2>Before a restricted activity</h2><p>Check the exact jurisdiction, election, activity, approved tool, required training, review dates and authorization. An old guide or a completed lesson is not sufficient.</p><p>Every actual regulated action requires two distinct verifiers, campaign publication approval for the exact revision, and all personal prerequisites. This read-only list does not activate tasks.</p><Link to="/roles" className="textlink">Review the roles &rarr;</Link></div></>;}
+function PasskeySettings({csrf}:{csrf:string}){
+ const{config}=useContext(Context);
+ const[credentials,setCredentials]=useState<{id:string;createdAt:string|null}[]|null>(null);
+ const[busy,setBusy]=useState(false),[error,setError]=useState(''),[message,setMessage]=useState('');
+ async function load(){
+  try{const r=await request<{credentials:{id:string;createdAt:string|null}[]}>('/api/passkeys');setCredentials(r.credentials);}
+  catch(e){setError((e as Error).message);}
+ }
+ useEffect(()=>{if(config?.passkeyEnabled)void load();},[config?.passkeyEnabled]);
+ if(!config?.passkeyEnabled)return null;
+ async function add(){setBusy(true);setError('');setMessage('');try{
+  if(!window.PublicKeyCredential)throw Error('Passkeys are not supported in this browser.');
+  const r=await request<{options:Parameters<typeof startRegistration>[0]['optionsJSON']}>('/api/passkeys/add/options',{},csrf);
+  const response=await startRegistration({optionsJSON:r.options});
+  await request('/api/passkeys/add/verify',{response},csrf);
+  await load();setMessage('Another passkey is now registered on this account.');
+ }catch(e){setError((e as Error).message);}finally{setBusy(false);}}
+ async function revoke(id:string){
+  if(!window.confirm('Remove this passkey and sign out any other sessions? Make sure another passkey is available first.'))return;
+  setBusy(true);setError('');setMessage('');
+  try{await request('/api/passkeys/revoke',{id},csrf);await load();setMessage('Passkey removed and other sessions signed out.');}
+  catch(e){setError((e as Error).message);}finally{setBusy(false);}
+ }
+ return <div className="panel spaced"><h2>Passkey access and backup</h2>
+  <p>{credentials===null?'Checking account passkeys...':credentials.length+' passkey'+(credentials.length===1?'':'s')+' registered.'} Add a passkey on another trusted device or synchronized through a provider you control. Account recovery without an available passkey is not supported yet.</p>
+  {error&&<Notice error>{error}</Notice>}{message&&<Notice>{message}</Notice>}
+  <button type="button" className="btn blue" disabled={busy||credentials===null||credentials.length>=8} onClick={()=>void add()}>{busy?'Working...':'Add another passkey'}</button>
+  {credentials&&<ul className="passkey-list">{credentials.map((item,index)=><li key={item.id}>
+   <strong>Passkey {index+1}</strong> <span className="fine">{item.createdAt?'Added '+new Date(item.createdAt).toLocaleDateString():'Registered on this account'}</span>
+   <button type="button" className="text-button" disabled={busy||credentials.length===1} aria-label={'Remove passkey '+(index+1)} onClick={()=>void revoke(item.id)}>Remove</button>
+  </li>)}</ul>}
+  {credentials?.length===1&&<p className="fine">Your only enrolled passkey cannot be removed. Register a backup first.</p>}
+ </div>;
+}
 function Settings(){
  const{session,refresh}=useContext(Context);
  const[marketing,setMarketing]=useState(Boolean(session?.account.marketing));
@@ -319,6 +385,7 @@ function Settings(){
  return <>
   <span className="eyebrow">YOUR ACCOUNT, YOUR CHOICES</span><h1>Account settings.</h1>
   {message&&<Notice>{message}</Notice>}{error&&<Notice error>{error}</Notice>}
+  {session&&<PasskeySettings csrf={session.csrf}/>}
   <div className="panel">
    <h2>Email preferences</h2>
    <label className="check"><input type="checkbox" checked={marketing} onChange={e=>setMarketing(e.target.checked)}/><span>Receive optional campaign updates. Account and security messages remain separate.</span></label>

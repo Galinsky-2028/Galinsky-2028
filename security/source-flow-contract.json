@@ -158,7 +158,7 @@
     },
     {
       "path": "apps/api/src/app.mjs",
-      "blobSha": "f7cbb9171460a227a7c3bc4c8ca699a8c97b3d8a",
+      "blobSha": "b3468b9a76ef4914c8504dabbfbf77cd64ec4c86",
       "componentId": "identity"
     },
     {
@@ -178,7 +178,7 @@
     },
     {
       "path": "apps/api/src/config.mjs",
-      "blobSha": "464f48e14df985ec4e041f7b6de630f1a6092402",
+      "blobSha": "63d880c3fa40982e061d5b6560de33c25249ec0a",
       "componentId": "identity"
     },
     {
@@ -233,7 +233,7 @@
     },
     {
       "path": "apps/api/src/postgres-store.mjs",
-      "blobSha": "fbf4cce323dd31f604dce24d16b6b30f75b264b1",
+      "blobSha": "bf55d927d1d5232c61ee79df6542e99fb364a581",
       "componentId": "identity"
     },
     {
@@ -265,6 +265,11 @@
       "path": "apps/api/src/visitor-report.mjs",
       "blobSha": "8ef8959659f1db892ab87ce300d11f0999eb0cd6",
       "componentId": "analytics"
+    },
+    {
+      "path": "apps/api/src/volunteer-passkeys.mjs",
+      "blobSha": "8f88a7c5efd7d41a26bf9d4fc7ed62b00ae6dab2",
+      "componentId": "identity"
     },
     {
       "path": "apps/api/src/worker.mjs",
@@ -318,7 +323,7 @@
     },
     {
       "path": "apps/portal/src/main.tsx",
-      "blobSha": "808780b6c26e4e641e5701055a957175e9c32b75",
+      "blobSha": "7f8d56aa926ea9738e75ce7e5d45bead033d1e04",
       "componentId": "identity"
     },
     {
@@ -554,6 +559,11 @@
     {
       "path": "db/migrations/020_treasury_exports.sql",
       "blobSha": "9593d5298a7ae19862f95ffb059b046c173b9d91",
+      "componentId": "schema"
+    },
+    {
+      "path": "db/migrations/021_volunteer_passkeys.sql",
+      "blobSha": "49f5835fb161f3a823aaaaec8bb8e0118514aabf",
       "componentId": "schema"
     },
     {
@@ -933,7 +943,7 @@
     },
     {
       "path": "scripts/runtime-role-permissions.mjs",
-      "blobSha": "a212af0c08f493c30db5788d747612a62f0f925c",
+      "blobSha": "1aefe339eac9d80190b1d6cae4fe5f3dcd7d6ae3",
       "componentId": "operator"
     },
     {
@@ -2007,6 +2017,47 @@
       "authority": "Security-barrier SQL projection and narrowly granted public read role",
       "retention": "Derived from current explicit publication, not independent storage",
       "disposal": "Draft/private state is excluded; actual runtime grants must be tested separately"
+    },
+    {
+      "id": "g28.volunteer_passkey_challenges",
+      "columns": [
+        "account_id",
+        "challenge",
+        "created_at",
+        "expires_at",
+        "kind",
+        "token_hash"
+      ],
+      "paths": [
+        "db/migrations/021_volunteer_passkeys.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "identity",
+      "classification": "identity-metadata",
+      "authority": "Same-origin registration/authentication challenge only, single-use token hash; no email/third-party identity",
+      "retention": "Five-minute challenge validity; expired challenges removed by recurring cleanup",
+      "disposal": "Delete after every verification attempt or expiry; no plaintext passkey secrets stored"
+    },
+    {
+      "id": "g28.volunteer_passkeys",
+      "columns": [
+        "account_id",
+        "counter",
+        "created_at",
+        "credential_id",
+        "last_used_at",
+        "public_key",
+        "transports"
+      ],
+      "paths": [
+        "db/migrations/021_volunteer_passkeys.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "identity",
+      "classification": "identity-metadata",
+      "authority": "Verified device WebAuthn public key; user verification, counter and exact RP/origin required",
+      "retention": "Stored while the account remains; public keys are not private authenticator keys",
+      "disposal": "Cascade account deletion; enrolled credential access can be revoked after account verification"
     }
   ],
   "flows": [
@@ -2728,6 +2779,44 @@
       "retention": "Caller lifecycle; no independent persistence or egress",
       "evidence": [
         "packages/core/validation.mjs"
+      ],
+      "profileDecision": "server",
+      "blocked": false,
+      "plaintextFallback": false
+    },
+    {
+      "id": "volunteer-passkey-accounts",
+      "componentId": "identity",
+      "classification": "identity-metadata",
+      "fields": [
+        "Opaque account identifier (no address)",
+        "WebAuthn public key and signature counter",
+        "One-use challenge hash and exact RP/origin",
+        "Device-held authenticator private key never transmitted",
+        "Authenticated account/CSRF session",
+        "Explicit signed-in passkey removal and concurrent session invalidation"
+      ],
+      "from": "volunteer browser and its verified platform authenticator",
+      "recipients": [
+        "same-origin volunteer authentication API and its scoped database"
+      ],
+      "storage": [
+        "g28.accounts",
+        "g28.sessions",
+        "g28.rate_buckets",
+        "g28.volunteer_passkey_challenges",
+        "g28.volunteer_passkeys"
+      ],
+      "egress": [
+        "same-origin WebAuthn registration and assertion ceremonies only"
+      ],
+      "authorization": "Resident/discoverable device credential, required local user verification, one-use challenge, exact RP and origin, session cookie and CSRF for account changes; never assigns staff roles; passkey removal requires a verified session plus CSRF and never removes the final login credential",
+      "retention": "Five-minute challenges, 24-hour sessions, public credentials until account closure; backup passkey registration requires current authenticated session and CSRF",
+      "evidence": [
+        "apps/api/src/volunteer-passkeys.mjs",
+        "apps/api/src/app.mjs",
+        "apps/portal/src/main.tsx",
+        "db/migrations/021_volunteer_passkeys.sql"
       ],
       "profileDecision": "server",
       "blocked": false,
