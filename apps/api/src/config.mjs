@@ -19,6 +19,7 @@ export function loadConfig(env=process.env){
  assert(!production||!helpRequests||staffIdentity,'help_release_unavailable','Live support intake requires the pending staff MFA and support operations release.',503);
  assert(!production||!coordination||staffIdentity,'coordination_unavailable','Production team coordination requires the pending staff identity release.',503);
  const signup=env.SIGNUP_ENABLED==='true';
+ const volunteerPasskeys=env.VOLUNTEER_PASSKEYS_ENABLED==='true';
  const mailDeliveryMode=env.MAIL_DELIVERY_MODE||'disabled';
  const adminLoginReady=env.G28_ADMIN_LOGIN_ENABLED==='true';
  const campaignEditorEnabled=adminLoginReady&&env.G28_CAMPAIGN_EDITOR_ENABLED==='true'&&Boolean(env.DATABASE_URL);
@@ -47,5 +48,5 @@ export function loadConfig(env=process.env){
  assert(!staffIdentity||adminLoginReady,'staff_unavailable','Staff passkeys require configured verified-email staff access.',503);
  assert(env.DONATIONS_ENABLED!=='true','fundraising_unavailable','A production fundraising adapter and release evidence are not installed.',503);
  if(production)assert(env.DATABASE_URL,'database_required','Production requires the assigned database.',503);
- return {staffIdentity,coordination,helpRequests,campaignEditorEnabled,production,previewGate,publicOrigin,portalOrigin,deliveryKey,pepper,signup,adminLoginReady,adminOwnerEmailKey,treasuryKey,mailReady,mailDeliveryMode,mailKey:env.RESEND_API_KEY,mailWebhookSecret:env.RESEND_WEBHOOK_SECRET,mailFrom:env.MAIL_FROM,databaseUrl:env.DATABASE_URL,port:Number(env.PORT||4322),host:env.HOST||(production?'0.0.0.0':'127.0.0.1'),commit:safeReleaseCommit(env.RENDER_GIT_COMMIT),termsVersion:'2026-10-10'};
+ return {staffIdentity,coordination,helpRequests,campaignEditorEnabled,volunteerPasskeys,production,previewGate,publicOrigin,portalOrigin,deliveryKey,pepper,signup,adminLoginReady,adminOwnerEmailKey,treasuryKey,mailReady,mailDeliveryMode,mailKey:env.RESEND_API_KEY,mailWebhookSecret:env.RESEND_WEBHOOK_SECRET,mailFrom:env.MAIL_FROM,databaseUrl:env.DATABASE_URL,port:Number(env.PORT||4322),host:env.HOST||(production?'0.0.0.0':'127.0.0.1'),commit:safeReleaseCommit(env.RENDER_GIT_COMMIT),termsVersion:'2026-10-10'};
 }
