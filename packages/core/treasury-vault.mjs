@@ -28,7 +28,7 @@ export function sealTreasury(slot,fields,encodedKey){
 export function openTreasury(slot,envelope,encodedKey){
  treasurySlot(slot);
  const key=treasuryVaultKey(encodedKey);
- assert(typeof envelope==='string'&&envelope.length<15000,'invalid_vault_record','Treasury record is invalid.',500);
+ assert(typeof envelope==='string'&&envelope.length<300000,'invalid_vault_record','Treasury record is invalid.',500);
  const [version,nonce,tag,data,...extra]=envelope.split('.');
  assert(version==='g28v1'&&nonce&&tag&&data&&extra.length===0,'invalid_vault_record','Treasury record is invalid.',500);
  try{

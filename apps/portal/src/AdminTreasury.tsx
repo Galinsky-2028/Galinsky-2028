@@ -1,4 +1,5 @@
 import {TreasuryExport} from './TreasuryExport';
+import {TreasuryWorkflow} from './TreasuryWorkflow';
 import {STAFF_ROLES} from '../../../packages/core/staff-permissions.mjs';
 import React,{useEffect,useState,FormEvent} from 'react';
 import {request} from './api';
@@ -89,6 +90,7 @@ export function AdminTreasury({role,csrf}:{role:string;csrf:string}){
     <h2 className="admin-section-heading">Processor connections</h2>
     {data.slots.map(slot=>role==='auditor'?<div key={slot} className="panel spaced"><h3>{names[slot]}</h3><p>{data.credentials.find(x=>x.slot===slot)?.maskedLabel||'Not configured'}</p></div>:<MerchantSettings key={slot} slot={slot} csrf={csrf} saved={data.credentials.find(x=>x.slot===slot)} onSaved={refresh}/>)}
     {role!=='auditor'&&<TreasuryExport csrf={csrf}/>}
+    {role!=='auditor'&&<TreasuryWorkflow csrf={csrf}/>}
     {role==='owner'&&<StaffInvitations csrf={csrf}/>}
    </>:!error?<p role="status">Checking treasury permissions...</p>:null}
  </div>;

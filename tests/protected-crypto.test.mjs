@@ -1,8 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {randomUUID} from 'node:crypto';
-import {readMessage,decrypt as rawDecrypt} from 'openpgp';
-import {newProtectedKey,publicProtectedKey,unlockProtectedKey,encryptProtected,decryptProtected,validateProtectedEnvelope,PROTECTED_PROFILE} from '../packages/core/protected-crypto.mjs';
+import {readMessage,decrypt as rawDecrypt,generateKey,readKey,encrypt as rawEncrypt,createMessage,enums} from 'openpgp';
+import {newProtectedKey,publicProtectedKey,unlockProtectedKey,encryptProtected,decryptProtected,validateProtectedEnvelope,signProtected,canonical,PROTECTED_PROFILE} from '../packages/core/protected-crypto.mjs';
 import {protectedEnvelope} from '../packages/core/protected-records.mjs';
 test('RFC9580 records authenticate context and exact recipients; host and wrong keys cannot open narratives or attachments',async()=>{
  const password='synthetic recovery passphrase only';
@@ -22,4 +22,12 @@ test('RFC9580 records authenticate context and exact recipients; host and wrong 
  assert.equal((await publicProtectedKey(a.publicKey)).fingerprint.length,64);
  await assert.rejects(publicProtectedKey(a.privateKey));await assert.rejects(newProtectedKey('author','short'));
  assert.throws(()=>protectedEnvelope({...record,narrative:'plaintext forbidden'}));
+});
+
+test('protected receivers reject compression bombs, malformed plaintext, unsupported keys and oversized recovery input',async()=>{
+ const password='synthetic bounded recovery passphrase',a=await newProtectedKey('synthetic author',password),b=await newProtectedKey('synthetic recipient',password),key=await unlockProtectedKey(a.privateKey,password),other=await unlockProtectedKey(b.privateKey,password),context={profile:PROTECTED_PROFILE,recordId:randomUUID(),sequence:1,kind:'incident',sender:randomUUID(),recipients:[randomUUID(),randomUUID()].sort(),generation:1};
+ const malicious=async(payload)=>{const ciphertext=await rawEncrypt({message:await createMessage({text:canonical({context,payload})}),encryptionKeys:await Promise.all([a,b].map(p=>readKey({armoredKey:p.publicKey}))),signingKeys:key,config:{aeadProtect:true,preferredCompressionAlgorithm:enums.compression.zip}}),outer={context,ciphertext};return {...outer,signature:await signProtected(outer,key)};};
+ const bomb=await malicious({text:'x'.repeat(600000)});assert(bomb.ciphertext.length<400000);await assert.rejects(decryptProtected(bomb,other,a),/decompress|limit|size/i);
+ await assert.rejects(decryptProtected(await malicious({text:{unexpected:'cannot render this object'}}),other,a));
+ const rsa=await generateKey({type:'rsa',rsaBits:2048,userIDs:[{name:'synthetic incompatible key'}],passphrase:password,config:{v6Keys:true}});await assert.rejects(publicProtectedKey(rsa.publicKey),/Ed25519/);await assert.rejects(unlockProtectedKey('x'.repeat(20001),password),/bounded/);
 });

@@ -20,7 +20,7 @@ async function providerId(response){
 }
 export async function deliverNotice(job,config,transport=fetch,receipt){
  const p=openDelivery(job.payload_envelope,config.deliveryKey);if(!p.expires||p.expires<=Date.now())return 'expired';
- const t=noticeTemplate(job.kind,config.portalOrigin);
+ const t=noticeTemplate(job.kind,config.portalOrigin,config.publicOrigin);
  const response=await transport('https://api.resend.com/emails',{method:'POST',signal:AbortSignal.timeout(10000),headers:{Authorization:`Bearer ${config.mailKey}`,'Content-Type':'application/json','Idempotency-Key':`g28-notice-${job.id}`},body:JSON.stringify({from:config.mailFrom,to:[p.email],subject:t.subject,text:t.text+'\n\n'+t.link})});
  if(!response.ok)return response.status===429?'provider_rate_limited':response.status>=500?'provider_unavailable':'provider_rejected';
  if(receipt)await receipt(await providerId(response));return null;

@@ -42,7 +42,7 @@ test('real task HTTP/SQL enforces capacity, current training, tool opt-out, publ
   assert.equal((await post('/api/staff/operations/training',owner,{definition:training,expected:null})).statusCode,200);
   const evidence={accountId:first.id,revision:1,expiresAt:end,evidenceDigest:'a'.repeat(64),revoked:false};
   assert.equal((await post('/api/staff/operations/training/'+trainingId+'/attest',owner,{...evidence,accountId:owner.id})).statusCode,403);
-  const tool={id:toolId,title:'Synthetic practice tool',active:true,url:'https://example.org/practice',purpose:'Synthetic controlled practice only',reviewDigest:'b'.repeat(64),reviewUntil:end};
+  const tool={id:toolId,title:'Synthetic practice tool',active:true,url:'https://example.org/practice',purpose:'Synthetic controlled practice only',reviewDigest:'b'.repeat(64),reviewUntil:end,capabilityMode:'manual-link',suppressionMode:'provider-managed',health:{state:'available',checkedAt:new Date(now).toISOString(),validUntil:end,evidenceDigest:'c'.repeat(64)}};
   assert.equal((await post('/api/staff/operations/tool',owner,{definition:tool,expected:null})).statusCode,200);
   const module={id:moduleId,revision:1,status:'published',jurisdiction:'CT',election:'2028',activity:'Synthetic practice',validFrom:new Date(now-1000).toISOString(),validUntil:end,training:[trainingId],approvedTools:[toolId],sources:[{url:'https://example.org/official',checkedAt:new Date(now).toISOString()}],verifiers:[{id:randomUUID(),revision:1,evidence:'review-one'},{id:randomUUID(),revision:1,evidence:'review-two'}],approval:{by:randomUUID(),revision:1}};
   await pool.query('INSERT INTO g28.activity_modules(id,revision,record) VALUES($1,1,$2)',[moduleId,module]);
@@ -55,6 +55,7 @@ test('real task HTTP/SQL enforces capacity, current training, tool opt-out, publ
   assert.equal((await action('handoff')).statusCode,403);
   assert.equal((await post('/api/operations/tools/'+toolId+'/consent',first,{revision:1,allowed:true})).statusCode,200);
   assert.equal((await action('handoff')).json().url,'https://example.org/practice');
+  await pool.query("UPDATE g28.operation_definitions SET record=jsonb_set(record,'{health,state}','\"suppression_failed\"'::jsonb) WHERE kind='tool' AND id=$1",[toolId]);assert.equal((await action('handoff')).statusCode,403,'Known failed suppression pauses existing claims');await pool.query("UPDATE g28.operation_definitions SET record=jsonb_set(record,'{health,state}','\"available\"'::jsonb) WHERE kind='tool' AND id=$1",[toolId]);
   await post('/api/operations/tools/'+toolId+'/consent',first,{revision:1,allowed:false});assert.equal((await action('handoff')).statusCode,403);
   await pool.query("INSERT INTO g28.activity_modules(id,revision,record) VALUES($1,2,$2)",[moduleId,{...module,revision:2,status:'revoked'}]);
   assert.equal((await action('report',{report:{count:1,minutes:2,feedback:'completed'}})).statusCode,403);

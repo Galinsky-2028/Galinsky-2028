@@ -6,10 +6,10 @@
   "plan_status": "implementation_started",
   "design_status": "approved_with_issue_video_amendment",
   "planned_work_packages": 72,
-  "implemented_packages": 67,
+  "implemented_packages": 66,
   "merged_packages": 13,
   "deployed_packages": 12,
-  "note": "67 of 72 reviewed software packages implemented; 13 separately have full-scope release acceptance. The protected recipient protocol, reporting, recovery and retention software is implemented and tested; real staff/recipient activation remains distinct.",
+  "note": "Source-reviewed software implementation: 66/72; full-scope release-evidenced accepted packages: 13/72. Treasury/outreach additions are source-tested; protected ratcheted protocol and recurring enforcement remain real software gaps. Every verified merged PR is accepted separately from package scope and deployment.",
   "packages": [
     {
       "id": "G28-01",
@@ -1068,7 +1068,7 @@
         "blocker": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence."
       },
       "implementation_review": {
-        "implementation": "implemented",
+        "implementation": "partial",
         "reviewedAt": "2026-11-10T04:02:08.568340Z",
         "sourceFiles": [
           {
@@ -1112,9 +1112,9 @@
             "sha256": "b06a06653fd551a0053cac984a655c67c560a064ae92a1c1b362423e1728e44f"
           }
         ],
-        "softwareGap": null,
+        "softwareGap": "Static OpenPGP prototype does not implement a registered forward-secret ratcheted messaging profile required by pinned E2EESA ADRs 0005/0006. Runtime unconditionally blocks protected intake until replacement adapter and client-state lifecycle are verified.",
         "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
-        "verification": "Real RFC9580 crypto tests, PostgreSQL HTTP adversarial/lifecycle tests, Chromium key recovery/encrypted attachment/export/mobile/egress journey and full encrypted DB restore with separately held recipient decryption key. See docs/security/PROTECTED_PROFILE.md; CI/merge/deploy observed separately."
+        "verification": "Corrected review in docs/evidence/TREASURY_COMPLETION_20261110.md; merged PR154 remains accepted, without claiming complete protocol scope."
       }
     },
     {
@@ -1143,7 +1143,7 @@
         "blocker": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence."
       },
       "implementation_review": {
-        "implementation": "implemented",
+        "implementation": "partial",
         "reviewedAt": "2026-11-10T04:02:08.568340Z",
         "sourceFiles": [
           {
@@ -1187,9 +1187,9 @@
             "sha256": "b06a06653fd551a0053cac984a655c67c560a064ae92a1c1b362423e1728e44f"
           }
         ],
-        "softwareGap": null,
+        "softwareGap": "Static OpenPGP prototype does not implement a registered forward-secret ratcheted messaging profile required by pinned E2EESA ADRs 0005/0006. Runtime unconditionally blocks protected intake until replacement adapter and client-state lifecycle are verified.",
         "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
-        "verification": "Real RFC9580 crypto tests, PostgreSQL HTTP adversarial/lifecycle tests, Chromium key recovery/encrypted attachment/export/mobile/egress journey and full encrypted DB restore with separately held recipient decryption key. See docs/security/PROTECTED_PROFILE.md; CI/merge/deploy observed separately."
+        "verification": "Corrected review in docs/evidence/TREASURY_COMPLETION_20261110.md; merged PR154 remains accepted, without claiming complete protocol scope."
       }
     },
     {
@@ -1218,7 +1218,7 @@
         "blocker": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence."
       },
       "implementation_review": {
-        "implementation": "implemented",
+        "implementation": "partial",
         "reviewedAt": "2026-11-10T04:02:08.568340Z",
         "sourceFiles": [
           {
@@ -1262,9 +1262,9 @@
             "sha256": "b06a06653fd551a0053cac984a655c67c560a064ae92a1c1b362423e1728e44f"
           }
         ],
-        "softwareGap": null,
+        "softwareGap": "Static OpenPGP prototype does not implement a registered forward-secret ratcheted messaging profile required by pinned E2EESA ADRs 0005/0006. Runtime unconditionally blocks protected intake until replacement adapter and client-state lifecycle are verified.",
         "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
-        "verification": "Real RFC9580 crypto tests, PostgreSQL HTTP adversarial/lifecycle tests, Chromium key recovery/encrypted attachment/export/mobile/egress journey and full encrypted DB restore with separately held recipient decryption key. See docs/security/PROTECTED_PROFILE.md; CI/merge/deploy observed separately."
+        "verification": "Corrected review in docs/evidence/TREASURY_COMPLETION_20261110.md; merged PR154 remains accepted, without claiming complete protocol scope."
       }
     },
     {
@@ -1789,7 +1789,7 @@
         "blocker": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence."
       },
       "implementation_review": {
-        "implementation": "implemented",
+        "implementation": "partial",
         "reviewedAt": "2026-11-10T04:02:08.568340Z",
         "sourceFiles": [
           {
@@ -1833,9 +1833,9 @@
             "sha256": "b06a06653fd551a0053cac984a655c67c560a064ae92a1c1b362423e1728e44f"
           }
         ],
-        "softwareGap": null,
+        "softwareGap": "Static OpenPGP prototype does not implement a registered forward-secret ratcheted messaging profile required by pinned E2EESA ADRs 0005/0006. Runtime unconditionally blocks protected intake until replacement adapter and client-state lifecycle are verified.",
         "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
-        "verification": "Real RFC9580 crypto tests, PostgreSQL HTTP adversarial/lifecycle tests, Chromium key recovery/encrypted attachment/export/mobile/egress journey and full encrypted DB restore with separately held recipient decryption key. See docs/security/PROTECTED_PROFILE.md; CI/merge/deploy observed separately."
+        "verification": "Corrected review in docs/evidence/TREASURY_COMPLETION_20261110.md; merged PR154 remains accepted, without claiming complete protocol scope."
       }
     },
     {
@@ -1937,29 +1937,21 @@
         "blocker": "Approved link registry, version-bound opt-in/handoff and opt-out are implemented. Provider-specific API/suppression adapters require the actual approved provider contract; no fictional connector is enabled."
       },
       "implementation_review": {
-        "implementation": "remaining_implementation",
-        "reviewedAt": "2026-10-19T01:13:13.691Z",
+        "implementation": "implemented",
+        "reviewedAt": "2026-11-10T06:05:36.325Z",
         "sourceFiles": [
           {
             "path": "packages/core/operations.mjs",
-            "sha256": "238c65654760520fb65f516f58dda49db9255a334550976fd35b288d16e64533"
+            "sha256": "8498d40fc9b896dcea38be3cf78812fb12c6bef9576565a857427764563d02e2"
           },
           {
-            "path": "apps/api/src/operations-store.mjs",
-            "sha256": "dfd16743b171d1fb620a2925a150984f9abbd1be65d08cc259807e7f97b5c9be"
-          },
-          {
-            "path": "apps/api/src/operations-routes.mjs",
-            "sha256": "0f7e593e4e07c01c0c92443353dd42afc40baff5b4384f141ead437dd865957e"
-          },
-          {
-            "path": "docs/operations/COORDINATED_TASKS.md",
-            "sha256": "fa0b9a1d0a39819c67054205f2fe95e004226bff3a46b06008e9c9c8e911b542"
+            "path": "apps/portal/src/Operations.tsx",
+            "sha256": "7efc0483fb071cd24829d86fb6b6ffb1006da294624280ab4f1a880ee66e60c1"
           }
         ],
-        "softwareGap": "Approved link registry, version-bound opt-in/handoff and opt-out are implemented. Provider-specific API/suppression adapters require the actual approved provider contract; no fictional connector is enabled.",
-        "activationRequirement": "Verify the tested revision in its intended release; no additional activation input identified.",
-        "verification": "Current branch source review; final hosted checks and accepted merge are recorded separately."
+        "softwareGap": null,
+        "activationRequirement": "Actual approved tool capability/health review and provider configuration; API-required tools stay blocked absent adapter.",
+        "verification": "AI source review and synthetic unit/PostgreSQL/browser evidence in docs/evidence/TREASURY_COMPLETION_20261110.md; PR/CI/deployment recorded separately."
       }
     },
     {
@@ -2043,7 +2035,7 @@
         "blocker": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence."
       },
       "implementation_review": {
-        "implementation": "implemented",
+        "implementation": "partial",
         "reviewedAt": "2026-11-10T04:02:08.568340Z",
         "sourceFiles": [
           {
@@ -2087,9 +2079,9 @@
             "sha256": "b06a06653fd551a0053cac984a655c67c560a064ae92a1c1b362423e1728e44f"
           }
         ],
-        "softwareGap": null,
+        "softwareGap": "Static OpenPGP prototype does not implement a registered forward-secret ratcheted messaging profile required by pinned E2EESA ADRs 0005/0006. Runtime unconditionally blocks protected intake until replacement adapter and client-state lifecycle are verified.",
         "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
-        "verification": "Real RFC9580 crypto tests, PostgreSQL HTTP adversarial/lifecycle tests, Chromium key recovery/encrypted attachment/export/mobile/egress journey and full encrypted DB restore with separately held recipient decryption key. See docs/security/PROTECTED_PROFILE.md; CI/merge/deploy observed separately."
+        "verification": "Corrected review in docs/evidence/TREASURY_COMPLETION_20261110.md; merged PR154 remains accepted, without claiming complete protocol scope."
       }
     },
     {
@@ -2294,17 +2286,21 @@
         "blocker": "Complete treasury settlement/deposit and all-channel reconciliation beyond the implemented signed event ledger."
       },
       "implementation_review": {
-        "implementation": "remaining_implementation",
-        "reviewedAt": "2026-10-19T01:13:13.691Z",
+        "implementation": "implemented",
+        "reviewedAt": "2026-11-10T06:05:36.326Z",
         "sourceFiles": [
           {
-            "path": "packages/core/fundraising-ledger.mjs",
-            "sha256": "9f93f41d21e10e260062fe28dc2ef225394d04b3e3f614d2d3810060479d0794"
+            "path": "packages/core/treasury-workflow.mjs",
+            "sha256": "3214763d5e8288d6cb0de1ebecad936d1ed697eea1a13eb1f928f609b9a6e3bf"
+          },
+          {
+            "path": "apps/api/src/treasury-workflow-store.mjs",
+            "sha256": "f574093a3009ec32fee07583545f7e045fbc0664888cf8cd4989fd31eca4ad4d"
           }
         ],
-        "softwareGap": "Complete treasury settlement/deposit and all-channel reconciliation beyond the implemented signed event ledger.",
-        "activationRequirement": "Verify the tested revision in its intended release; no additional activation input identified.",
-        "verification": "Current branch source review; final hosted checks and accepted merge are recorded separately."
+        "softwareGap": null,
+        "activationRequirement": "Actual owner/treasurer identity, mail sender, documentary rules/source mapping and provider TEST configuration. Live financial processing remains separately disabled.",
+        "verification": "AI source review and synthetic unit/PostgreSQL/browser evidence in docs/evidence/TREASURY_COMPLETION_20261110.md; PR/CI/deployment recorded separately."
       }
     },
     {
@@ -2340,7 +2336,7 @@
             "sha256": "e7cda76f88fe19bceef3e60eb6a6f88636112aa6dd33f18766958e80836c1381"
           }
         ],
-        "softwareGap": "Implement independent donor receipt/recurring cancellation and processor-managed customer portal.",
+        "softwareGap": "Independent original-browser receipt and Stripe-managed donor portal implemented and tested. New recurring commitments remain disabled pending proven future-charge limit/expiry enforcement; no invented recurring launch readiness.",
         "activationRequirement": "Verify the tested revision in its intended release; no additional activation input identified.",
         "verification": "Current branch source review; final hosted checks and accepted merge are recorded separately."
       }
@@ -2372,17 +2368,21 @@
         "blocker": "Implement treasurer-controlled exception casework and approved refund/dispute actions beyond ledger reconciliation."
       },
       "implementation_review": {
-        "implementation": "remaining_implementation",
-        "reviewedAt": "2026-10-19T01:13:13.691Z",
+        "implementation": "implemented",
+        "reviewedAt": "2026-11-10T06:05:36.326Z",
         "sourceFiles": [
           {
-            "path": "packages/core/fundraising-ledger.mjs",
-            "sha256": "9f93f41d21e10e260062fe28dc2ef225394d04b3e3f614d2d3810060479d0794"
+            "path": "apps/api/src/treasury-workflow-routes.mjs",
+            "sha256": "ff9e17a21fb5ddb326ed96c7b3a9a53aaa712308c613e92df384bd36bf56d3f8"
+          },
+          {
+            "path": "packages/core/stripe-treasury-actions.mjs",
+            "sha256": "caf5f90f1f12ea4b1097ac4d5b4e498ac409f589b0af6899b0aad40528e59d30"
           }
         ],
-        "softwareGap": "Implement treasurer-controlled exception casework and approved refund/dispute actions beyond ledger reconciliation.",
-        "activationRequirement": "Verify the tested revision in its intended release; no additional activation input identified.",
-        "verification": "Current branch source review; final hosted checks and accepted merge are recorded separately."
+        "softwareGap": null,
+        "activationRequirement": "Actual owner/treasurer identity, mail sender, documentary rules/source mapping and provider TEST configuration. Live financial processing remains separately disabled.",
+        "verification": "AI source review and synthetic unit/PostgreSQL/browser evidence in docs/evidence/TREASURY_COMPLETION_20261110.md; PR/CI/deployment recorded separately."
       }
     },
     {
@@ -2411,33 +2411,21 @@
         "blocker": "Finish donor/source and all-channel export adapters with the remaining ledger. Audited generic ledger CSV/JSON, source totals, explicit confirmation and formula-injection protection are implemented."
       },
       "implementation_review": {
-        "implementation": "remaining_implementation",
-        "reviewedAt": "2026-10-19T01:13:13.691Z",
+        "implementation": "implemented",
+        "reviewedAt": "2026-11-10T06:05:36.327Z",
         "sourceFiles": [
           {
-            "path": "packages/core/treasury-export.mjs",
-            "sha256": "7ddae1713687f549a013bd05b7da71cfa51370f033720a6ef76a2bd7a90eacdb"
+            "path": "apps/api/src/treasury-workflow-store.mjs",
+            "sha256": "f574093a3009ec32fee07583545f7e045fbc0664888cf8cd4989fd31eca4ad4d"
           },
           {
-            "path": "apps/api/src/treasury-export.mjs",
-            "sha256": "95ac5d0bf3df88fc7e0659a36724488297adc0589084afd08e33bc17f8321db4"
-          },
-          {
-            "path": "apps/portal/src/TreasuryExport.tsx",
-            "sha256": "63a68e1d09fb70dfe9916e8fa6e2c5c0ee87c7c5a3915e79b385d7c2050f2bb4"
-          },
-          {
-            "path": "tests/treasury-export.test.mjs",
-            "sha256": "a399d844cd62a819b2e83d121970eb97d7727607990ed8097c5e7c96df06880f"
-          },
-          {
-            "path": "tests/integration/treasury-export.test.mjs",
-            "sha256": "54a06d28ba30f97dd45af7ff7d5e0701a7f3e69f8dc5fc2034fbf81960807cce"
+            "path": "apps/portal/src/TreasuryWorkflow.tsx",
+            "sha256": "d290bff66072bf70ec8deeebd69553ffeaa81e543c9e0d676f6ab182d5af92f0"
           }
         ],
-        "softwareGap": "Finish donor/source and all-channel export adapters with the remaining ledger. Audited generic ledger CSV/JSON, source totals, explicit confirmation and formula-injection protection are implemented.",
-        "activationRequirement": "Verify the tested revision in its intended release; no additional activation input identified.",
-        "verification": "Current branch source review; final hosted checks and accepted merge are recorded separately."
+        "softwareGap": null,
+        "activationRequirement": "Actual owner/treasurer identity, mail sender, documentary rules/source mapping and provider TEST configuration. Live financial processing remains separately disabled.",
+        "verification": "AI source review and synthetic unit/PostgreSQL/browser evidence in docs/evidence/TREASURY_COMPLETION_20261110.md; PR/CI/deployment recorded separately."
       }
     },
     {

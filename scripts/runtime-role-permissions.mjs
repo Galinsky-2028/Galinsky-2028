@@ -18,11 +18,15 @@ export function runtimeRoleStatements({role,password,profile,database="neondb"})
  ]:profile==='portal_preview'?[`GRANT SELECT ON g28.schema_migrations TO ${id}`,`GRANT SELECT ON g28.campaign_public_releases,g28.campaign_public_settings,g28.campaign_public_media,g28.sharing_assets_public TO ${id}`]:profile==='stripe'?[
   `GRANT SELECT,INSERT,UPDATE ON g28.stripe_checkout_intents TO ${id}`,
   `GRANT SELECT,INSERT ON g28.stripe_webhook_receipts TO ${id}`,
+  `GRANT SELECT,INSERT ON g28.stripe_payment_identities,g28.stripe_remedy_events TO ${id}`,
   `GRANT INSERT ON g28.financial_provider_events TO ${id}`,
-  `GRANT SELECT(provider,event_id) ON g28.financial_provider_events TO ${id}`,
+  `GRANT SELECT(provider,event_id,payment_id,event_kind,amount_cents) ON g28.financial_provider_events TO ${id}`,
  ]:[`GRANT SELECT,INSERT,UPDATE,DELETE ON ${PORTAL_RUNTIME_TABLES.map(t=>'g28.'+t).join(',')} TO ${id}`,
   `GRANT SELECT,INSERT ON g28.audit_events,g28.operation_claim_history,g28.treasury_audit,g28.treasury_exports,g28.protected_lifecycle_events TO ${id}`,
   `GRANT SELECT ON g28.financial_provider_events,g28.schema_migrations TO ${id}`,
+  `GRANT SELECT ON g28.stripe_remedy_events TO ${id}`,
+  `GRANT SELECT,INSERT ON g28.treasury_evidence,g28.treasury_policies,g28.treasury_donor_revisions,g28.treasury_journal,g28.treasury_settlements,g28.treasury_settlement_entries,g28.treasury_deposits,g28.treasury_workflow_audit,g28.treasury_case_notices TO ${id}`,
+  `GRANT SELECT,INSERT,UPDATE ON g28.treasury_donors,g28.treasury_gifts,g28.treasury_cases,g28.treasury_commands TO ${id}`,
   `GRANT SELECT ON g28.campaign_public_releases,g28.campaign_public_settings,g28.campaign_public_media,g28.sharing_assets_public TO ${id}`];
  return [`CREATE ROLE ${id} LOGIN NOINHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS PASSWORD '${password}'`,
   `GRANT CONNECT ON DATABASE ${database} TO ${id}`,`GRANT USAGE ON SCHEMA g28 TO ${id}`,...grants];

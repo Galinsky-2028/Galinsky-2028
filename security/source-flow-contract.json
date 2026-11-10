@@ -29,9 +29,9 @@
     },
     {
       "id": "protected",
-      "mode": "protected-client-encrypted",
-      "rationale": "RFC9580 v6 OpenPGP application profile; client-only encrypted private keys, independently verified fingerprints, exact authorized recipients, signed immutable contexts, no plaintext fallback. AI source review; no upstream conformance or certification claim.",
-      "profilePin": "G28-PGP-1/openpgp-6.3.2",
+      "mode": "protected-blocked",
+      "rationale": "Static OpenPGP prototype is not an eligible ratcheted network-messaging profile in the pinned standard. Runtime unconditionally rejects protected activation pending registered ratcheted adapter and verified client state lifecycle; owner AI-review authorization does not waive protocol controls.",
+      "profilePin": null,
       "requiredEvidence": [
         "exact applicable protocol/profile and upstream remediation pins",
         "authenticated recipient/device authority and host/endpoint obligations",
@@ -41,7 +41,9 @@
       "privateKeyCustody": "recipient-device-only",
       "plaintextFallback": false,
       "dependencyIntegrity": "sha512-wcZTzHz41LV8Y48zH/JlD1JT8YdNmpWOuMAjQ/podvvCwsjBEU37K3znJh4UQcj3hksE5z9TzvhbUbwzsGvlLQ==",
-      "review": "docs/security/PROTECTED_PROFILE.md"
+      "review": "docs/security/PROTECTED_PROFILE.md",
+      "enabled": false,
+      "prototypeProfilePin": "G28-PGP-1/openpgp-6.3.2"
     }
   ],
   "components": [
@@ -121,7 +123,7 @@
       "id": "protected",
       "purpose": "Recipient enrollment, protected reports, attachments, recovery and exports",
       "trustBoundary": "Browser-owned OpenPGP recipient keys; trusted browser/code publisher, independently checked fingerprints; hosting receives ciphertext and minimal metadata only",
-      "blocked": false
+      "blocked": true
     },
     {
       "id": "recovery",
@@ -161,7 +163,7 @@
     },
     {
       "path": "apps/api/src/app.mjs",
-      "blobSha": "0f7d248785ddf010beea1060bea7475d2c94a5f8",
+      "blobSha": "85bdb046a02fb6a6806415b5f90140173d1559f1",
       "componentId": "identity"
     },
     {
@@ -181,7 +183,7 @@
     },
     {
       "path": "apps/api/src/config.mjs",
-      "blobSha": "fb08100bff4d250b73715037c7faf9111d0ca864",
+      "blobSha": "41d1240aa73df93b3503189d43716b5e537b5b06",
       "componentId": "identity"
     },
     {
@@ -211,17 +213,17 @@
     },
     {
       "path": "apps/api/src/mail-notices.mjs",
-      "blobSha": "4396e518be85f7b5ce005a4564836533129894c5",
+      "blobSha": "178c809fcbfe16cdff6bda0a282cefdce5dfc12e",
       "componentId": "mail"
     },
     {
       "path": "apps/api/src/mail-store.mjs",
-      "blobSha": "095ebdc25e5cf0b6a27001841e76b3195fcb00a0",
+      "blobSha": "1791f2912c28cb44f140008e84e55734af91f611",
       "componentId": "mail"
     },
     {
       "path": "apps/api/src/memory-store.mjs",
-      "blobSha": "e6c2b2498ee0d00e0034779754de308558b39253",
+      "blobSha": "8572ad69caef02e4b81d04325a8fb25f303d6671",
       "componentId": "identity"
     },
     {
@@ -236,12 +238,12 @@
     },
     {
       "path": "apps/api/src/postgres-store.mjs",
-      "blobSha": "03f804af863a934801a0a215f1394505a2d8de7d",
+      "blobSha": "2bbcaa7bd8ca32457ad464f813a39e44a7851323",
       "componentId": "identity"
     },
     {
       "path": "apps/api/src/protected-routes.mjs",
-      "blobSha": "dcdcfe911c07b3e9ae13d494ce4e0699b2c41283",
+      "blobSha": "bdc3b4a32f05fcfdd0657b1bae7abd300dd06950",
       "componentId": "protected"
     },
     {
@@ -275,6 +277,21 @@
       "componentId": "finance"
     },
     {
+      "path": "apps/api/src/treasury-pages.mjs",
+      "blobSha": "d81ef480e43a7631433884b71a5a48fb6de7fb64",
+      "componentId": "finance"
+    },
+    {
+      "path": "apps/api/src/treasury-workflow-routes.mjs",
+      "blobSha": "68cda222df03d22c04a2c1a3262761b4f43c1ad3",
+      "componentId": "finance"
+    },
+    {
+      "path": "apps/api/src/treasury-workflow-store.mjs",
+      "blobSha": "58f145a058c3d3618c452ead54fd52b9709f700d",
+      "componentId": "finance"
+    },
+    {
       "path": "apps/api/src/visitor-report.mjs",
       "blobSha": "8ef8959659f1db892ab87ce300d11f0999eb0cd6",
       "componentId": "analytics"
@@ -286,7 +303,7 @@
     },
     {
       "path": "apps/api/src/worker.mjs",
-      "blobSha": "94a8553cf3a60992fc92f268352c32fc6f179bba",
+      "blobSha": "a786d7d5ab266cfb25ed2e60b4916a6a592bde42",
       "componentId": "mail"
     },
     {
@@ -306,7 +323,7 @@
     },
     {
       "path": "apps/portal/src/AdminTreasury.tsx",
-      "blobSha": "7e0556f33fdb11acd4361278c830454eb2f00a33",
+      "blobSha": "6c870d500c257dc4836e0f182fb802530ae9076c",
       "componentId": "finance"
     },
     {
@@ -326,7 +343,7 @@
     },
     {
       "path": "apps/portal/src/Operations.tsx",
-      "blobSha": "3686342182007e4563d0fb196ffa2240028bd798",
+      "blobSha": "9708c76512c20ae873e3a92a8680d709f313299c",
       "componentId": "coordination"
     },
     {
@@ -336,7 +353,7 @@
     },
     {
       "path": "apps/portal/src/ProtectedReports.tsx",
-      "blobSha": "6fcb4612cf5f6665bea0d81132c9f949890c9247",
+      "blobSha": "d86d5042b710ed4cf12d509a20320a85ddfb3d5e",
       "componentId": "protected"
     },
     {
@@ -347,6 +364,11 @@
     {
       "path": "apps/portal/src/TreasuryExport.tsx",
       "blobSha": "8d9b7a62f5f7c3a9b21003dd7a6862d404a0a37c",
+      "componentId": "finance"
+    },
+    {
+      "path": "apps/portal/src/TreasuryWorkflow.tsx",
+      "blobSha": "6aa061323706811393cbefdc6b5238b102d523af",
       "componentId": "finance"
     },
     {
@@ -386,7 +408,7 @@
     },
     {
       "path": "apps/web/private-preview.mjs",
-      "blobSha": "5c11a4ee9b948c76603eae75bb413afc85594253",
+      "blobSha": "bccc7f62a98fbb0abed27dd557bb260cc2215738",
       "componentId": "public"
     },
     {
@@ -456,7 +478,12 @@
     },
     {
       "path": "apps/web/stripe-campaign-store.mjs",
-      "blobSha": "eaf9d039b44da8c753083d2192453c81c9410b6a",
+      "blobSha": "d8596c78d8007ddecf5a0dc6b832104c1fe9c4e2",
+      "componentId": "finance"
+    },
+    {
+      "path": "apps/web/stripe-remedies.mjs",
+      "blobSha": "6e81c111a0af3cea5d01c43df6b1fb459a41fe43",
       "componentId": "finance"
     },
     {
@@ -587,6 +614,11 @@
     {
       "path": "db/migrations/022_protected_records.sql",
       "blobSha": "1678e563b3cdf4db04d0305c3094f0eea608313c",
+      "componentId": "schema"
+    },
+    {
+      "path": "db/migrations/023_treasury_workflows.sql",
+      "blobSha": "afdb449b3431d93f4d89764128580c6df7650c25",
       "componentId": "schema"
     },
     {
@@ -751,7 +783,7 @@
     },
     {
       "path": "packages/core/operations.mjs",
-      "blobSha": "d7d900eb23b757fe2bde3945c6bf5de87b01c3f0",
+      "blobSha": "1472e69dddaa12bd59225f0cb0b4c93de0cba8a7",
       "componentId": "coordination"
     },
     {
@@ -781,12 +813,17 @@
     },
     {
       "path": "packages/core/protected-crypto.mjs",
-      "blobSha": "9348a408b7e18ab090c65d4e8be76c290e559135",
+      "blobSha": "c27aafda224c5738143155cff534338914497b69",
+      "componentId": "protected"
+    },
+    {
+      "path": "packages/core/protected-profile.mjs",
+      "blobSha": "99c0acf052f86116a72316d060ef87ba85c49c63",
       "componentId": "protected"
     },
     {
       "path": "packages/core/protected-records.mjs",
-      "blobSha": "f902e2c207abf0379ccae2eed9501469bf0b04c9",
+      "blobSha": "94a6135a355ded567b90fedf39e5f9be98cc0838",
       "componentId": "protected"
     },
     {
@@ -821,7 +858,17 @@
     },
     {
       "path": "packages/core/stripe-campaign.mjs",
-      "blobSha": "f6da92f41d99724d31c5d6b717e7c5b9253db34e",
+      "blobSha": "3d7cebec8fadae3b38475354ee534bac1ee91209",
+      "componentId": "finance"
+    },
+    {
+      "path": "packages/core/stripe-donor-service.mjs",
+      "blobSha": "9bd4decc275d77af7b19c3fb11be4295c881cd9a",
+      "componentId": "finance"
+    },
+    {
+      "path": "packages/core/stripe-treasury-actions.mjs",
+      "blobSha": "db5e6e7149556c8dcdf778e574beb685428c4bbe",
       "componentId": "finance"
     },
     {
@@ -840,8 +887,18 @@
       "componentId": "finance"
     },
     {
+      "path": "packages/core/treasury-private.mjs",
+      "blobSha": "44145e220942c0cf75ff9c9fbc32e63ccea8a537",
+      "componentId": "finance"
+    },
+    {
       "path": "packages/core/treasury-vault.mjs",
-      "blobSha": "9212fc1a95f85814e92539dd739ac4832425c405",
+      "blobSha": "ade7f377a7012432ca3941b58766530607fa44ff",
+      "componentId": "finance"
+    },
+    {
+      "path": "packages/core/treasury-workflow.mjs",
+      "blobSha": "265fbd414b6082c251b107ac64a6c342170ed5b4",
       "componentId": "finance"
     },
     {
@@ -986,7 +1043,7 @@
     },
     {
       "path": "scripts/runtime-role-permissions.mjs",
-      "blobSha": "a6a87603d8fffcc0e5802ce85fa3c25112c47ed5",
+      "blobSha": "a2a97f43d7fec85759e2a00e570e2754b8817dbf",
       "componentId": "operator"
     },
     {
@@ -2167,6 +2224,320 @@
       "authority": "Current account and exact recipient device; approved current scoped staff role and fresh passkey for staff actions; source-bound signatures and no server recipient keys",
       "retention": "Ciphertext 90 days unless held; account closure deletes unheld authored ciphertext and revokes devices. Public keys remain for referenced historical signatures; minimal lifecycle tombstones retained for backup recovery.",
       "disposal": "Serialized legal-hold-aware purge; matching ciphertext/attachment/public-generation DB backup, separately held recipient recovery keys; replay newer hold/deletion events before any old restore is exposed"
+    },
+    {
+      "id": "g28.stripe_payment_identities",
+      "columns": [
+        "livemode",
+        "payment_intent_id",
+        "session_id"
+      ],
+      "paths": [
+        "db/migrations/023_treasury_workflows.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "Restricted financial provenance, immutable event, reconciliation, case or action authority metadata",
+      "authority": "Raw-signature-verified Stripe webhook identity; exact checkout/payment/mode binding; scoped processor login; no public contributor read",
+      "retention": "Separate legally required financial retention governed by actual treasurer policy; not deleted on volunteer closure; no invented statutory duration or purge approval",
+      "disposal": "Explicit finance-authorized retention disposition; authenticated full database recovery plus separately managed financial vault key; append-only history and restore reconciliation; not browser-recipient E2EE"
+    },
+    {
+      "id": "g28.stripe_remedy_events",
+      "columns": [
+        "amount_cents",
+        "command_id",
+        "event_id",
+        "event_sha256",
+        "kind",
+        "livemode",
+        "occurred_at",
+        "provider_reference",
+        "session_id"
+      ],
+      "paths": [
+        "db/migrations/023_treasury_workflows.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "Restricted financial provenance, immutable event, reconciliation, case or action authority metadata",
+      "authority": "Raw-signature-verified Stripe webhook identity; exact checkout/payment/mode binding; scoped processor login; no public contributor read",
+      "retention": "Separate legally required financial retention governed by actual treasurer policy; not deleted on volunteer closure; no invented statutory duration or purge approval",
+      "disposal": "Explicit finance-authorized retention disposition; authenticated full database recovery plus separately managed financial vault key; append-only history and restore reconciliation; not browser-recipient E2EE"
+    },
+    {
+      "id": "g28.treasury_case_notices",
+      "columns": [
+        "case_id",
+        "case_version",
+        "donor_id",
+        "donor_version",
+        "job_id"
+      ],
+      "paths": [
+        "db/migrations/023_treasury_workflows.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "Restricted financial provenance, immutable event, reconciliation, case or action authority metadata",
+      "authority": "Current owner or treasurer with fresh staff passkey; CSRF and exact source/record binding; append-only source history; financial identity independent of volunteer account",
+      "retention": "Separate legally required financial retention governed by actual treasurer policy; not deleted on volunteer closure; no invented statutory duration or purge approval",
+      "disposal": "Explicit finance-authorized retention disposition; authenticated full database recovery plus separately managed financial vault key; append-only history and restore reconciliation; not browser-recipient E2EE"
+    },
+    {
+      "id": "g28.treasury_cases",
+      "columns": [
+        "document",
+        "gift_id",
+        "id",
+        "updated_at",
+        "version"
+      ],
+      "paths": [
+        "db/migrations/023_treasury_workflows.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "Restricted financial provenance, immutable event, reconciliation, case or action authority metadata",
+      "authority": "Current owner or treasurer with fresh staff passkey; CSRF and exact source/record binding; append-only source history; financial identity independent of volunteer account",
+      "retention": "Separate legally required financial retention governed by actual treasurer policy; not deleted on volunteer closure; no invented statutory duration or purge approval",
+      "disposal": "Explicit finance-authorized retention disposition; authenticated full database recovery plus separately managed financial vault key; append-only history and restore reconciliation; not browser-recipient E2EE"
+    },
+    {
+      "id": "g28.treasury_commands",
+      "columns": [
+        "case_id",
+        "document",
+        "id",
+        "provider_reference",
+        "status",
+        "updated_at"
+      ],
+      "paths": [
+        "db/migrations/023_treasury_workflows.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "Restricted financial provenance, immutable event, reconciliation, case or action authority metadata",
+      "authority": "Current owner or treasurer with fresh staff passkey; CSRF and exact source/record binding; append-only source history; financial identity independent of volunteer account",
+      "retention": "Separate legally required financial retention governed by actual treasurer policy; not deleted on volunteer closure; no invented statutory duration or purge approval",
+      "disposal": "Explicit finance-authorized retention disposition; authenticated full database recovery plus separately managed financial vault key; append-only history and restore reconciliation; not browser-recipient E2EE"
+    },
+    {
+      "id": "g28.treasury_deposits",
+      "columns": [
+        "bank_reference",
+        "created_at",
+        "document",
+        "id",
+        "settlement_id"
+      ],
+      "paths": [
+        "db/migrations/023_treasury_workflows.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "Restricted financial provenance, immutable event, reconciliation, case or action authority metadata",
+      "authority": "Current owner or treasurer with fresh staff passkey; CSRF and exact source/record binding; append-only source history; financial identity independent of volunteer account",
+      "retention": "Separate legally required financial retention governed by actual treasurer policy; not deleted on volunteer closure; no invented statutory duration or purge approval",
+      "disposal": "Explicit finance-authorized retention disposition; authenticated full database recovery plus separately managed financial vault key; append-only history and restore reconciliation; not browser-recipient E2EE"
+    },
+    {
+      "id": "g28.treasury_donor_revisions",
+      "columns": [
+        "created_at",
+        "created_by",
+        "donor_id",
+        "encrypted_envelope",
+        "evidence_digest",
+        "version"
+      ],
+      "paths": [
+        "db/migrations/023_treasury_workflows.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "Server-readable authenticated encrypted financial identity or documentary evidence",
+      "authority": "Current owner or treasurer with fresh staff passkey; CSRF and exact source/record binding; append-only source history; financial identity independent of volunteer account",
+      "retention": "Separate legally required financial retention governed by actual treasurer policy; not deleted on volunteer closure; no invented statutory duration or purge approval",
+      "disposal": "Explicit finance-authorized retention disposition; authenticated full database recovery plus separately managed financial vault key; append-only history and restore reconciliation; not browser-recipient E2EE"
+    },
+    {
+      "id": "g28.treasury_donors",
+      "columns": [
+        "encrypted_envelope",
+        "evidence_digest",
+        "id",
+        "updated_at",
+        "version"
+      ],
+      "paths": [
+        "db/migrations/023_treasury_workflows.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "Server-readable authenticated encrypted financial identity or documentary evidence",
+      "authority": "Current owner or treasurer with fresh staff passkey; CSRF and exact source/record binding; append-only source history; financial identity independent of volunteer account",
+      "retention": "Separate legally required financial retention governed by actual treasurer policy; not deleted on volunteer closure; no invented statutory duration or purge approval",
+      "disposal": "Explicit finance-authorized retention disposition; authenticated full database recovery plus separately managed financial vault key; append-only history and restore reconciliation; not browser-recipient E2EE"
+    },
+    {
+      "id": "g28.treasury_evidence",
+      "columns": [
+        "byte_count",
+        "created_at",
+        "created_by",
+        "digest",
+        "encrypted_envelope",
+        "id"
+      ],
+      "paths": [
+        "db/migrations/023_treasury_workflows.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "Server-readable authenticated encrypted financial identity or documentary evidence",
+      "authority": "Current owner or treasurer with fresh staff passkey; CSRF and exact source/record binding; append-only source history; financial identity independent of volunteer account",
+      "retention": "Separate legally required financial retention governed by actual treasurer policy; not deleted on volunteer closure; no invented statutory duration or purge approval",
+      "disposal": "Explicit finance-authorized retention disposition; authenticated full database recovery plus separately managed financial vault key; append-only history and restore reconciliation; not browser-recipient E2EE"
+    },
+    {
+      "id": "g28.treasury_gifts",
+      "columns": [
+        "donor_id",
+        "environment",
+        "id",
+        "source",
+        "state",
+        "updated_at"
+      ],
+      "paths": [
+        "db/migrations/023_treasury_workflows.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "Restricted financial provenance, immutable event, reconciliation, case or action authority metadata",
+      "authority": "Current owner or treasurer with fresh staff passkey; CSRF and exact source/record binding; append-only source history; financial identity independent of volunteer account",
+      "retention": "Separate legally required financial retention governed by actual treasurer policy; not deleted on volunteer closure; no invented statutory duration or purge approval",
+      "disposal": "Explicit finance-authorized retention disposition; authenticated full database recovery plus separately managed financial vault key; append-only history and restore reconciliation; not browser-recipient E2EE"
+    },
+    {
+      "id": "g28.treasury_journal",
+      "columns": [
+        "created_by",
+        "digest",
+        "document",
+        "environment",
+        "event_kind",
+        "external_reference",
+        "gift_id",
+        "id",
+        "posted_at",
+        "source"
+      ],
+      "paths": [
+        "db/migrations/023_treasury_workflows.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "Restricted financial provenance, immutable event, reconciliation, case or action authority metadata",
+      "authority": "Current owner or treasurer with fresh staff passkey; CSRF and exact source/record binding; append-only source history; financial identity independent of volunteer account",
+      "retention": "Separate legally required financial retention governed by actual treasurer policy; not deleted on volunteer closure; no invented statutory duration or purge approval",
+      "disposal": "Explicit finance-authorized retention disposition; authenticated full database recovery plus separately managed financial vault key; append-only history and restore reconciliation; not browser-recipient E2EE"
+    },
+    {
+      "id": "g28.treasury_policies",
+      "columns": [
+        "created_at",
+        "created_by",
+        "document",
+        "id",
+        "version"
+      ],
+      "paths": [
+        "db/migrations/023_treasury_workflows.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "Restricted financial provenance, immutable event, reconciliation, case or action authority metadata",
+      "authority": "Current owner or treasurer with fresh staff passkey; CSRF and exact source/record binding; append-only source history; financial identity independent of volunteer account",
+      "retention": "Separate legally required financial retention governed by actual treasurer policy; not deleted on volunteer closure; no invented statutory duration or purge approval",
+      "disposal": "Explicit finance-authorized retention disposition; authenticated full database recovery plus separately managed financial vault key; append-only history and restore reconciliation; not browser-recipient E2EE"
+    },
+    {
+      "id": "g28.treasury_settlement_entries",
+      "columns": [
+        "entry_id",
+        "settlement_id"
+      ],
+      "paths": [
+        "db/migrations/023_treasury_workflows.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "Restricted financial provenance, immutable event, reconciliation, case or action authority metadata",
+      "authority": "Current owner or treasurer with fresh staff passkey; CSRF and exact source/record binding; append-only source history; financial identity independent of volunteer account",
+      "retention": "Separate legally required financial retention governed by actual treasurer policy; not deleted on volunteer closure; no invented statutory duration or purge approval",
+      "disposal": "Explicit finance-authorized retention disposition; authenticated full database recovery plus separately managed financial vault key; append-only history and restore reconciliation; not browser-recipient E2EE"
+    },
+    {
+      "id": "g28.treasury_settlements",
+      "columns": [
+        "created_at",
+        "document",
+        "environment",
+        "external_reference",
+        "id",
+        "source"
+      ],
+      "paths": [
+        "db/migrations/023_treasury_workflows.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "Restricted financial provenance, immutable event, reconciliation, case or action authority metadata",
+      "authority": "Current owner or treasurer with fresh staff passkey; CSRF and exact source/record binding; append-only source history; financial identity independent of volunteer account",
+      "retention": "Separate legally required financial retention governed by actual treasurer policy; not deleted on volunteer closure; no invented statutory duration or purge approval",
+      "disposal": "Explicit finance-authorized retention disposition; authenticated full database recovery plus separately managed financial vault key; append-only history and restore reconciliation; not browser-recipient E2EE"
+    },
+    {
+      "id": "g28.treasury_workflow_audit",
+      "columns": [
+        "action",
+        "actor_id",
+        "created_at",
+        "digest",
+        "id",
+        "object_id"
+      ],
+      "paths": [
+        "db/migrations/023_treasury_workflows.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "Restricted financial provenance, immutable event, reconciliation, case or action authority metadata",
+      "authority": "Current owner or treasurer with fresh staff passkey; CSRF and exact source/record binding; append-only source history; financial identity independent of volunteer account",
+      "retention": "Separate legally required financial retention governed by actual treasurer policy; not deleted on volunteer closure; no invented statutory duration or purge approval",
+      "disposal": "Explicit finance-authorized retention disposition; authenticated full database recovery plus separately managed financial vault key; append-only history and restore reconciliation; not browser-recipient E2EE"
+    },
+    {
+      "id": "donor-browser-capability",
+      "kind": "browser-cookie",
+      "componentId": "finance",
+      "classification": "Opaque signed authority to one original recorded checkout; no identity or card data",
+      "columns": [
+        "clientRef",
+        "sessionId",
+        "expires",
+        "mac"
+      ],
+      "paths": [
+        "packages/core/stripe-donor-service.mjs",
+        "apps/web/private-preview.mjs"
+      ],
+      "authority": "Original checkout browser only, HttpOnly Secure SameSite cookie; HMAC, exact ledger/provider identity/mode/amount binding and separate short-lived POST CSRF; Stripe email login remains processor-owned",
+      "retention": "30 days; only latest checkout capability in browser; explicit forget action expires cookie",
+      "disposal": "Expire browser cookie; no volunteer identity or card storage, no restoration by guessed checkout URL"
     }
   ],
   "flows": [
@@ -2251,7 +2622,8 @@
         "one-use login URL",
         "fixed notice template",
         "provider message/event ids",
-        "suppression HMAC"
+        "suppression HMAC",
+        "Generic finance_attention notice with no case amount or private document; encrypted source-verified donor delivery address"
       ],
       "from": "account outbox worker / authenticated provider receipt",
       "recipients": [
@@ -2263,18 +2635,22 @@
         "g28.account_notice_keys",
         "g28.mail_events",
         "g28.mail_suppressions",
-        "g28.outbox"
+        "g28.outbox",
+        "g28.treasury_case_notices",
+        "g28.treasury_cases",
+        "g28.treasury_donors"
       ],
       "egress": [
         "https://api.resend.com/emails",
         "signature-verified Resend callback"
       ],
-      "authorization": "Encrypted-at-rest envelope can be decrypted by service; signed receipt, exact correlation and idempotent delivery; no protected content",
+      "authorization": "Encrypted-at-rest envelope can be decrypted by service; signed receipt, exact correlation and idempotent delivery; no protected content; Finance notice requires current exact donor revision, open case and current deadline, per-address bound, suppression check, leased idempotent outbox; no stale-contact fallback",
       "retention": "Terminal envelope cleared; terminal rows 30 days/events 90 days on prune; provider retention and suppression indefinite unless separately disposed",
       "evidence": [
         "apps/api/src/worker.mjs",
         "apps/api/src/mail-events.mjs",
-        "apps/api/src/mail-store.mjs"
+        "apps/api/src/mail-store.mjs",
+        "apps/api/src/mail-notices.mjs"
       ],
       "profileDecision": "server",
       "blocked": false,
@@ -2494,7 +2870,12 @@
         "checkout session/reference/amount/election/terms",
         "signed event digest/id/order",
         "restricted encrypted treasury credentials",
-        "financial export range/purpose/row count/digest/audit"
+        "financial export range/purpose/row count/digest/audit",
+        "Encrypted contributor revisions and private documentary source evidence",
+        "Immutable all-channel journal with test/live and election partition",
+        "Settlement allocation, partial bank credit/debit and mismatch state",
+        "Actual policy deadline basis, exceptions, bounded generic notice and test-only refund command",
+        "Signature-verified refund/dispute outcomes and exact payment identity"
       ],
       "from": "donor browser / signed processor event / fresh-MFA authorized finance staff",
       "recipients": [
@@ -2511,20 +2892,45 @@
         "g28.stripe_webhook_receipts",
         "g28.treasury_audit",
         "g28.treasury_exports",
-        "g28.treasury_secrets"
+        "g28.treasury_secrets",
+        "g28.treasury_evidence",
+        "g28.treasury_policies",
+        "g28.treasury_donors",
+        "g28.treasury_donor_revisions",
+        "g28.treasury_journal",
+        "g28.treasury_gifts",
+        "g28.treasury_settlements",
+        "g28.treasury_settlement_entries",
+        "g28.treasury_deposits",
+        "g28.treasury_cases",
+        "g28.treasury_commands",
+        "g28.treasury_workflow_audit",
+        "g28.treasury_case_notices",
+        "g28.stripe_payment_identities",
+        "g28.stripe_remedy_events",
+        "donor-browser-capability"
       ],
       "egress": [
         "approved provider checkout/API",
         "signature-verified provider callback",
         "explicit controlled treasury CSV/JSON download"
       ],
-      "authorization": "Sandbox only absent verified live release; hosted card fields; raw-body signatures, idempotency, no uncertain retry, scoped fresh-MFA exports; encryption-at-rest is server-readable",
+      "authorization": "Sandbox only absent verified live release; hosted card fields; raw-body signatures, idempotency, no uncertain retry, scoped fresh-MFA exports; encryption-at-rest is server-readable; Actual documentary policy with no invented limits, donor-ID identity never fuzzy-name merges, fixed host TEST-only refund executor, durable uncertain-command suppression and terminal outcome compare-and-set; live execution absent",
       "retention": "Finance/legal record lifecycle is separate from volunteer closure; no global timed purge or live approval inferred",
       "evidence": [
         "packages/core/stripe-web-checkout.mjs",
         "packages/core/stripe-campaign.mjs",
         "apps/api/src/treasury-export.mjs",
-        "packages/core/treasury-export.mjs"
+        "packages/core/treasury-export.mjs",
+        "apps/api/src/treasury-pages.mjs",
+        "apps/api/src/treasury-workflow-routes.mjs",
+        "apps/api/src/treasury-workflow-store.mjs",
+        "apps/portal/src/TreasuryWorkflow.tsx",
+        "apps/web/stripe-remedies.mjs",
+        "packages/core/stripe-donor-service.mjs",
+        "packages/core/stripe-treasury-actions.mjs",
+        "packages/core/treasury-private.mjs",
+        "packages/core/treasury-workflow.mjs"
       ],
       "profileDecision": "server",
       "blocked": false,
@@ -2652,7 +3058,7 @@
       "egress": [
         "same-origin ciphertext API only; encrypted recovery/downloads explicitly requested on device"
       ],
-      "authorization": "Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
+      "authorization": "Unavailable in runtime configuration: static OpenPGP prototype lacks registered forward-secret ratcheted messaging. Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
       "retention": "90-day encrypted records; legal holds override purge; account closure deletes unheld authored records, revokes devices; recipient downloads are outside recall. Full DB backup includes ciphertext and exact public-key generations; recipient recovery key stays separate.",
       "evidence": [
         "packages/core/protected-crypto.mjs",
@@ -2662,7 +3068,7 @@
         "apps/portal/src/ProtectedReports.tsx"
       ],
       "profileDecision": "protected",
-      "blocked": false,
+      "blocked": true,
       "plaintextFallback": false
     },
     {
@@ -2687,7 +3093,7 @@
       "egress": [
         "same-origin ciphertext API only; encrypted recovery/downloads explicitly requested on device"
       ],
-      "authorization": "Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
+      "authorization": "Unavailable in runtime configuration: static OpenPGP prototype lacks registered forward-secret ratcheted messaging. Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
       "retention": "90-day encrypted records; legal holds override purge; account closure deletes unheld authored records, revokes devices; recipient downloads are outside recall. Full DB backup includes ciphertext and exact public-key generations; recipient recovery key stays separate.",
       "evidence": [
         "packages/core/protected-crypto.mjs",
@@ -2697,7 +3103,7 @@
         "apps/portal/src/ProtectedReports.tsx"
       ],
       "profileDecision": "protected",
-      "blocked": false,
+      "blocked": true,
       "plaintextFallback": false
     },
     {
@@ -2721,7 +3127,7 @@
       "egress": [
         "same-origin ciphertext API only; encrypted recovery/downloads explicitly requested on device"
       ],
-      "authorization": "Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
+      "authorization": "Unavailable in runtime configuration: static OpenPGP prototype lacks registered forward-secret ratcheted messaging. Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
       "retention": "90-day encrypted records; legal holds override purge; account closure deletes unheld authored records, revokes devices; recipient downloads are outside recall. Full DB backup includes ciphertext and exact public-key generations; recipient recovery key stays separate.",
       "evidence": [
         "packages/core/protected-crypto.mjs",
@@ -2731,7 +3137,7 @@
         "apps/portal/src/ProtectedReports.tsx"
       ],
       "profileDecision": "protected",
-      "blocked": false,
+      "blocked": true,
       "plaintextFallback": false
     },
     {
@@ -2755,7 +3161,7 @@
       "egress": [
         "same-origin ciphertext API only; encrypted recovery/downloads explicitly requested on device"
       ],
-      "authorization": "Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
+      "authorization": "Unavailable in runtime configuration: static OpenPGP prototype lacks registered forward-secret ratcheted messaging. Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
       "retention": "90-day encrypted records; legal holds override purge; account closure deletes unheld authored records, revokes devices; recipient downloads are outside recall. Full DB backup includes ciphertext and exact public-key generations; recipient recovery key stays separate.",
       "evidence": [
         "packages/core/protected-crypto.mjs",
@@ -2765,7 +3171,7 @@
         "apps/portal/src/ProtectedReports.tsx"
       ],
       "profileDecision": "protected",
-      "blocked": false,
+      "blocked": true,
       "plaintextFallback": false
     },
     {
@@ -2789,7 +3195,7 @@
       "egress": [
         "same-origin ciphertext API only; encrypted recovery/downloads explicitly requested on device"
       ],
-      "authorization": "Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
+      "authorization": "Unavailable in runtime configuration: static OpenPGP prototype lacks registered forward-secret ratcheted messaging. Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
       "retention": "90-day encrypted records; legal holds override purge; account closure deletes unheld authored records, revokes devices; recipient downloads are outside recall. Full DB backup includes ciphertext and exact public-key generations; recipient recovery key stays separate.",
       "evidence": [
         "packages/core/protected-crypto.mjs",
@@ -2799,7 +3205,7 @@
         "apps/portal/src/ProtectedReports.tsx"
       ],
       "profileDecision": "protected",
-      "blocked": false,
+      "blocked": true,
       "plaintextFallback": false
     },
     {

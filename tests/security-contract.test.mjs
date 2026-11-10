@@ -133,7 +133,7 @@ for (const id of [
         /protected obligation missing/,
       );
       for (const patch of [
-        { blocked: true },
+        { blocked: false },
         { plaintextFallback: true },
         { profileDecision: "server" },
       ])

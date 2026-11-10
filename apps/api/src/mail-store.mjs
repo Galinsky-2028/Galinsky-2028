@@ -19,6 +19,10 @@ export const postgresMail={
   return {windowDays:30,events:Object.fromEntries(events.rows.map(r=>[r.event_type,r.count])),suppressedRecipients:suppressed.rows[0].count,lastCallbackAt:events.rows.reduce((latest,r)=>!latest||r.latest>latest?r.latest:latest,null)};
  },
  async deliveryAllowed(job){
+  if(job.kind==='finance_attention'){
+   const current=await this.pool.query("SELECT 1 FROM g28.treasury_case_notices n JOIN g28.treasury_cases c ON c.id=n.case_id JOIN g28.treasury_gifts g ON g.id=c.gift_id JOIN g28.treasury_donors d ON d.id=g.donor_id WHERE n.job_id=$1 AND c.document->>'status'<>'closed' AND (c.document->>'deadline')::timestamptz>now() AND n.donor_id=d.id AND n.donor_version=d.version",[job.id]);
+   if(!current.rowCount)return false;
+  }
   const q=await this.pool.query(`SELECT NOT EXISTS(SELECT 1 FROM g28.mail_suppressions WHERE subject_key=$1) AS allowed,
    EXISTS(SELECT 1 FROM g28.accounts WHERE email_key=$1 AND marketing_consent=true) AS opted_in`,[job.subject_key]);
   return q.rows[0].allowed&&(job.kind!=='account_reminder'||q.rows[0].opted_in);

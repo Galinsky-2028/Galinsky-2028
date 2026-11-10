@@ -232,7 +232,9 @@ export function validateContract(contract, { paths, read }) {
         decision.profilePin === null &&
         Array.isArray(decision.requiredEvidence) &&
         decision.requiredEvidence.length >=
-          4, "protected profile must fail closed");
+          4 && decision.privateKeyCustody === "recipient-device-only" &&
+        decision.dependencyIntegrity === JSON.parse(read("package-lock.json")).packages["node_modules/openpgp"]?.integrity,
+        "protected profile must fail closed");
     if (decision.mode === "protected-client-encrypted") {
       const lock=JSON.parse(read("package-lock.json"));
       require(decision.profilePin === "G28-PGP-1/openpgp-6.3.2" &&

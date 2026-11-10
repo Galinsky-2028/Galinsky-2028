@@ -1,4 +1,5 @@
 import {registerProtected} from './protected-routes.mjs';
+import {registerTreasuryWorkflow} from './treasury-workflow-routes.mjs';
 import {registerTreasuryExports} from './treasury-export.mjs';
 import {registerOperations} from './operations-routes.mjs';
 import {registerVolunteerPasskeys} from './volunteer-passkeys.mjs';
@@ -23,7 +24,7 @@ import {previewAuthorized,PREVIEW_REALM,PREVIEW_ROBOTS} from '../../../packages/
 import {visitorRange,visitorPage} from '../../../packages/core/visitor-analytics.mjs';
 import {visitorReport} from './visitor-report.mjs';
 import {cleanTreasuryPayload,sealTreasury,MERCHANT_SLOTS} from '../../../packages/core/treasury-vault.mjs';
-export function createApp({store,config,clock=()=>Date.now(),webauthn}){
+export function createApp({store,config,clock=()=>Date.now(),webauthn,financeTransport}){
  const app=Fastify({logger:false,bodyLimit:32768,trustProxy:false,requestTimeout:15000});
  if(config.production&&!config.previewGate)throw Error('Production portal must be behind the private preview password gate.');
  if(config.previewGate)app.addHook('onRequest',async(req,reply)=>{
@@ -34,6 +35,7 @@ export function createApp({store,config,clock=()=>Date.now(),webauthn}){
  registerOperations(app,{store,config,account,writeSession,clock});
  registerTreasuryExports(app,{store,config,writeSession,clock});
  registerProtected(app,{store,config,account,writeSession,clock});
+ registerTreasuryWorkflow(app,{store,config,writeSession,clock,transport:financeTransport});
  const cookieName=config.production?'__Host-g28':'g28-local';const bindingCookie=config.production?'__Host-g28-login':'g28-local-login';
  app.addHook('onRequest',async(req,reply)=>{
   reply.header('Cache-Control','no-store').header('X-Content-Type-Options','nosniff').header('Referrer-Policy','no-referrer').header('X-Frame-Options','DENY');

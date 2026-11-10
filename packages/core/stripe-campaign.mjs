@@ -13,7 +13,8 @@ const EVENT_TYPES=new Set([
  'checkout.session.completed','checkout.session.async_payment_succeeded',
  'checkout.session.async_payment_failed','checkout.session.expired','payment_intent.succeeded',
  'payment_intent.payment_failed','charge.refunded','charge.dispute.created',
- 'invoice.paid','invoice.payment_failed','customer.subscription.deleted'
+ 'invoice.paid','invoice.payment_failed','customer.subscription.deleted',
+ 'refund.created','refund.updated','refund.failed','charge.dispute.closed'
 ]);
 
 function safeUrl(origin,path){
@@ -62,7 +63,7 @@ export function stripeCheckoutPlan({contribution,policy,release}){
   'line_items[0][quantity]':'1',
   'client_reference_id':clientRef,
   'billing_address_collection':'required',
-  'success_url':safeUrl(policy.publicOrigin,'/donate/?checkout=processing'),
+  'success_url':safeUrl(policy.publicOrigin,'/donate/manage?checkout=processing'),
   'cancel_url':safeUrl(policy.publicOrigin,'/donate/?checkout=cancelled'),
   'metadata[client_reference]':clientRef,
   'metadata[election]':election,
@@ -79,6 +80,7 @@ export function stripeCheckoutPlan({contribution,policy,release}){
   'custom_fields[1][optional]':'false'
  };
  if(frequency==='monthly')fields['line_items[0][price_data][recurring][interval]']='month';
+ else fields.customer_creation='always';
  // The browser cannot select or forge the terms version. Record the server's
  // version in Stripe metadata so the eventual signed event has audit context.
  if(termsVersion!==undefined){
@@ -143,6 +145,12 @@ export function verifyStripeWebhook(raw,signature,secret,{now=Math.floor(Date.no
  // emails, card details and full raw payloads must not reach ordinary logs.
  return {valid:true,event:{id:event.id,type:event.type,livemode:event.livemode,
   objectId:data.id,created:event.created,amountTotal:Number.isSafeInteger(data.amount_total)?data.amount_total:null,
+  paymentIntentId:typeof data.payment_intent==='string'&&/^pi_[A-Za-z0-9]{5,100}$/.test(data.payment_intent)?data.payment_intent:null,
+  remedy:['refund.created','refund.updated','refund.failed','charge.dispute.created','charge.dispute.closed'].includes(event.type)?{
+   reference:data.id,amountCents:Number.isSafeInteger(data.amount)?data.amount:null,
+   currency:data.currency,status:data.status,
+   commandId:typeof data.metadata?.g28_treasury_command==='string'&&/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/.test(data.metadata.g28_treasury_command)?data.metadata.g28_treasury_command:null
+  }:null,
   currency:typeof data.currency==='string'?data.currency:null,
   paymentStatus:data.payment_status==='paid'?'paid':data.payment_status==='unpaid'?'unpaid':null,
   clientReferenceId:typeof data.client_reference_id==='string'&&/^attempt_[a-f0-9]{32}$/.test(data.client_reference_id)?data.client_reference_id:null,
