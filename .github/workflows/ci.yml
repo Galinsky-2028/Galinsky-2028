@@ -54,6 +54,15 @@ jobs:
         run: npm run test:api
       - name: Build Astro and React applications
         run: npm run build
+      - name: Generate complete unsigned web/portal executable closure
+        run: node security/web-release-closure.mjs test-results/security/web-release-closure.json
+      - name: Retain source-bound web release closure evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: galinsky-2028-web-closure
+          path: test-results/security/web-release-closure.json
+          if-no-files-found: error
+          retention-days: 30
       - name: Verify public first-render byte budgets
         run: npm run perf:budget
       - name: Preserve public static preview for visual review
