@@ -6,12 +6,14 @@ Assessment date: 1 November 2026. Source basis:
 review. It supplements the older discovery inventory; it does not replace the
 upstream component-inventory schema 0.2 or issue certification.
 
-The canonical upstream development pin is
-`neophilism/End-To-End-Everywhere-Security-Architecture-Standard` at
-`8441335f359c6e446f9bfe8b959f9606ce341409`, matching both repository-owned status
-and inventory files. The earlier BOUNDARIES document's different observed head
-must not be interpreted as a selected production profile. This activation did
-not inspect a different repository or select a new cryptographic implementation.
+The selected E2EESA **1.0.0 engineering standard** is
+`Galinsky-Labs/End-To-End-Everywhere-Security-Architecture-Standard` at exact commit
+`b137a3d1cb54900204ff13c7694ed00a50c00141`. The upstream immutable manifest digest, selected profile refs and
+product source constants are machine-checked in `security/e2eesa-release-lock.json`
+and `security/verify-e2eesa-release.mjs`. The source-flow contract's old
+`sourceCommit` remains historical mapping provenance; its current source blob
+hashes are still checked in CI. Migrating this reference does not change the
+protected feature flag or create a production conformance assertion.
 
 ## Scope and integrity
 

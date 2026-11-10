@@ -35,6 +35,17 @@ jobs:
           cache: npm
       - name: Install dependencies from committed lockfile
         run: npm ci --no-fund
+      - name: Checkout immutable published E2EESA 1.0 source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          repository: Galinsky-Labs/End-To-End-Everywhere-Security-Architecture-Standard
+          ref: b137a3d1cb54900204ff13c7694ed00a50c00141
+          path: .e2eesa-upstream
+          persist-credentials: false
+      - name: Verify entire E2EESA 1.0 source manifest and selected profile/implementation pins
+        run: node security/verify-e2eesa-release.mjs .e2eesa-upstream
+      - name: Repeat seeded protected-envelope parser adversarial checks
+        run: node --test tests/e2eesa-mls-mutational.test.mjs
       - name: Syntax, publishing boundary, TypeScript
         run: npm run check && npm run lint && npm run format:check && npm run secrets:check && npm run typecheck
       - name: Unit tests

@@ -3,9 +3,15 @@
   "repository": "neophilism/Galinsky-2028",
   "standardBasis": {
     "repository": "neophilism/End-To-End-Everywhere-Security-Architecture-Standard",
-    "commit": "8441335f359c6e446f9bfe8b959f9606ce341409",
+    "commit": "b137a3d1cb54900204ff13c7694ed00a50c00141",
     "inventorySchema": "0.2",
-    "conformanceArtifactProduced": false
+    "conformanceArtifactProduced": false,
+    "canonicalRepository": "Galinsky-Labs/End-To-End-Everywhere-Security-Architecture-Standard",
+    "basis": "production",
+    "version": "1.0.0",
+    "releaseTreeDigest": "sha256:e0b0390cf6c7e36776b7c4d515742cdda68a0edbf35b7b0d53cb3f599d2becb5",
+    "releaseManifest": "release/1.0.0-manifest.json",
+    "releaseLock": "security/e2eesa-release-lock.json"
   },
   "classificationStatus": "preliminary-source-mapped",
   "coverageComplete": false,
@@ -536,7 +542,8 @@
     "All component and flow statuses require environment-specific audit and real source/build/artifact digest binding. Coverage is explicitly incomplete.",
     "Public disclosures, account provider delivery, approved staff processing, and payment-provider card handling intentionally do not claim private E2EE.",
     "Absence of a source-bound E2EE conformance artifact must never downgrade a protected-content release gate or be presented as E2EESA implementation complete.",
-    "Protected recipient protocol code is implemented and source-reviewed; hosted intake requires operational staff identity, named approved devices and independent fingerprint distribution. See PROTECTED_PROFILE.md for browser trust and static-key limitations."
+    "Protected recipient protocol code is implemented and source-reviewed; hosted intake requires operational staff identity, named approved devices and independent fingerprint distribution. See PROTECTED_PROFILE.md for browser trust and static-key limitations.",
+    "The E2EESA 1.0 standard is published; catalog compatibility does not authenticate product release artifacts, TLS configuration, code-transparency witnesses or real protected intake."
   ],
   "sourceContract": {
     "path": "security/source-flow-contract.json",
@@ -548,5 +555,6 @@
     "reviewed": true,
     "scope": "All checked-in executable files and migration fields enumerated in security/source-flow-contract.json; runtime, dependencies and upstream full conformance remain separate",
     "profileReview": "docs/security/PROTECTED_PROFILE.md"
-  }
+  },
+  "canonicalRepository": "Galinsky-2028/Galinsky-2028"
 }

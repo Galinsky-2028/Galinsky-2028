@@ -196,6 +196,26 @@ test("unknown profiles and invented production eligibility fail closed", () => {
     );
 });
 
+
+test("release lock cannot be reinterpreted as a development pin or as product certification", () => {
+  const lock = JSON.parse(readFileSync('security/e2eesa-release-lock.json', 'utf8'));
+  assert.equal(contract.standard.commit, lock.standardCommit);
+  assert.equal(contract.standard.canonicalRepository, lock.standardRepository);
+  assert.equal(contract.standard.releaseTreeDigest, lock.standardTreeDigest);
+  for (const patch of [
+    { basis: 'development' },
+    { version: '0.9.0-rc.2' },
+    { commit: '0'.repeat(40) },
+    { releaseTreeDigest: 'sha256:' + '0'.repeat(64) },
+    { canonicalRepository: 'unknown/security-standard' },
+  ]) {
+    assert.throws(() => check(modified((c) =>
+      Object.assign(c.standard, patch))), /pinned published E2EESA 1.0/);
+  }
+  assert.equal(contract.productionE2eeClaim, false);
+  assert.equal(contract.runtimeCoverageVerified, false);
+});
+
 test("the actual runtime cannot enable protected reporting without verified staff and an exact profile", () => {
   assert.throws(
     () => loadConfig({ PROTECTED_CONTENT_ENABLED: "true" }),
