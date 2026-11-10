@@ -21,6 +21,7 @@
 | Source-version/profile compatibility | `security/e2eesa-release-lock.json`, `security/verify-e2eesa-release.mjs`, `tests/e2eesa-release.test.mjs` | Machine-enforced full 1.0 source pin and selected catalog profiles; **not conformance** |
 | Parser and ciphertext envelope abuse | `tests/e2eesa-mls-mutational.test.mjs`, `tests/protected-mls-envelope.test.mjs`, `tests/protected-mls.test.mjs` | 2,048 bounded seeded malformed-input cases added; still not a comprehensive fuzz campaign |
 | Software pipeline | `.github/workflows/ci.yml`, `scripts/scan-secrets.mjs` | Unit, HTTP/PostgreSQL, browser, source checks, dependency audit, lint/typecheck and bounded negative tests executed in CI; independent runtime attestation not established |
+| Deterministic web/portal executable closure | `security/web-release-closure.mjs`, `tests/web-release-closure.test.mjs`, `.github/workflows/ci.yml` | All generated `dist/web` and `dist/portal` files are enumerated and hashed with SHA-256 in an exact source-bound CI artifact. This is **unsigned build inventory**, not an authenticated release/update. |
 | Executable web-release authentication, update safety, transparent witness | `spec/native-web-client-security.md` in pinned standard, `docs/security/RELEASE_GATES.md` | **Outstanding:** signed executable closure, antirollback/update root, independent log/witness inclusion/consistency; no fake success |
 | TLS 1.3 / endpoint deployment proof | Pinned `spec/transport-security.md`, configured public/portal origins | **Outstanding:** observe actual edge/proxy handshake policy and fail closed on TLS1.2/fallback, enforce CSP/SRI against assessed release bytes |
 | Actual protected recipient availability | `docs/evidence/CONNECTED_RELEASE_20261110.json` | Latest connected release reports migration 024 applied and **zero** protected identities; live staff and independently verified recipients are absent |
@@ -54,3 +55,20 @@ npm audit --omit=dev --audit-level=high
 ```
 
 The repository's normal browser/TypeScript/lint/performance checks also run. Only completion shown by actual CI is evidence that these jobs ran; the document itself is not a pass certificate. Once real witnessed browser updates and operator-specific deployment observations are available, add exact artifact/source-bound evidence without relaxing the protected-content gate by configuration or assertion alone.
+
+## Deterministic web build identity
+
+After the web and portal builds complete, CI runs
+`node security/web-release-closure.mjs test-results/security/web-release-closure.json`.
+The tool refuses missing or empty build roots, symlinks, unsafe paths and
+source-version mismatches; it records SHA-256 content hashes and byte sizes for
+**every** shipped file, including JS, WASM, workers, styles and HTML.
+`tests/web-release-closure.test.mjs` alters same-length bytes, adds/removes
+files, forges the source commit and injects symlinks to verify fail-closed
+behavior. The resulting manifest is retained as a CI artifact only.
+
+**Remaining external assurance:** the manifest is **not signed**, is **not**
+published to a witnessed append-only log and is **not** independently authenticated
+by deployed clients. It cannot by itself authorize confidential input or claim
+`client-web-hardened` production conformance. The unconditional protected
+intake gate is preserved.
