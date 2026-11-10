@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // Read-only deployed acceptance of the REAL volunteer API, not a UI mock.
 // Password is supplied by an encrypted GitHub Actions secret. Never log it.
-const PORTAL='https://galinsky-2028-volunteer-portal.onrender.com';
-const PUBLIC='https://galinsky-2028-private-preview.onrender.com';
+const PORTAL='https://galinsky2028-volunteers.onrender.com';
+const PUBLIC='https://galinsky2028-website.onrender.com';
 const token=process.env.PREVIEW_ACCESS_PASSWORD;
 if(typeof token!=='string'||token.length<24)throw Error('Private preview password unavailable.');
 const good='Basic '+Buffer.from('preview:'+token).toString('base64');

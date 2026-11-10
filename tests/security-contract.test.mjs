@@ -90,6 +90,10 @@ test("source walker discovers new executable files and rejects symlinked scope",
       join(root, "scripts/security-contract.mjs"),
       "// integrity control excluded from its own hash",
     );
+    for (const cache of ["apps/web/node_modules/.vite", "apps/web/.astro"]) {
+      mkdirSync(join(root, cache), { recursive: true });
+      writeFileSync(join(root, cache, "generated.js"), "// generated cache");
+    }
     assert.deepEqual(sourcePaths(root), ["apps/new.ts"]);
     symlinkSync(join(root, "apps/new.ts"), join(root, "apps/linked.ts"));
     assert.throws(() => sourcePaths(root), /symlink/);

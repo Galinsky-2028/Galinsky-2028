@@ -4,7 +4,7 @@
 import {readFile,writeFile,rename} from 'node:fs/promises';
 import {fileURLToPath} from 'node:url';
 import {resolve} from 'node:path';
-const REPO='neophilism/Galinsky-2028';
+const REPO='Galinsky-2028/Galinsky-2028';
 const PATH='registry/prs.json';
 const validISO=s=>typeof s==='string'&&!Number.isNaN(Date.parse(s))&&
  /^\d{4}-\d\d-\d\dT\d\d:\d\d:\d\d(?:\.\d{1,3})?Z$/.test(s);

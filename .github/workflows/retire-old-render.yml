@@ -1,0 +1,28 @@
+name: Retire superseded Galinsky Render services
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: Audit or delete only the two superseded campaign services
+        type: choice
+        required: true
+        options: [audit, delete]
+permissions:
+  contents: read
+concurrency:
+  group: galinsky-old-service-retirement
+  cancel-in-progress: false
+jobs:
+  retire:
+    if: github.repository == 'Galinsky-2028/Galinsky-2028' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      G28_RENDER_API_KEY: ${{ secrets.G28_RENDER_API_KEY }}
+      G28_RETIRE_ACTION: ${{ inputs.action }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.23.3
+      - run: node scripts/retire-old-render.mjs

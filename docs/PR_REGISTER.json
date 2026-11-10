@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "project": "Galinsky 2028",
-  "repository": "neophilism/Galinsky-2028",
+  "repository": "Galinsky-2028/Galinsky-2028",
   "plan_version": "1.3",
   "plan_status": "implementation_started",
   "design_status": "approved_with_issue_video_amendment",
@@ -197,7 +197,8 @@
       "implementation_note": "Versioned migrations, fail-closed config and two approved-project protected Render services with staging DB and readiness evidence verified. Package acceptance is separate from production release.",
       "contributing_prs": [
         132,
-        135
+        135,
+        151
       ],
       "acceptance_review": {
         "status": "completed",
@@ -2699,7 +2700,8 @@
         63,
         67,
         111,
-        132
+        132,
+        151
       ],
       "implementation_note": "Working source implementation reviewed individually. Verify fresh deployed-SHA, queue and Engine Room outage reporting against the actual services.",
       "acceptance_review": {
@@ -3416,7 +3418,7 @@
     }
   ],
   "progress_evidence_note": "Source-reviewed software implementation: 59/72; distinct fully scoped, release-evidenced accepted packages: 13/72. PR acceptance uses mergedAt for all 134 merged PRs. Yellow depicts accepted contributions to packages without full-scope acceptance, not unwritten software. Open production and protected-data gates remain separate. See docs/evidence/ROADMAP_RECONCILIATION_20261101.md.",
-  "accepted_pull_requests": 134,
-  "accepted_prs_observed_at": "2026-11-01T23:31:02.606Z",
+  "accepted_pull_requests": 137,
+  "accepted_prs_observed_at": "2026-11-10T01:03:52.946Z",
   "pull_request_acceptance_rule": "Every real GitHub PR with a verified merged_at is accepted; no further package review is required to accept that PR. Fully complete planned work packages are counted separately."
 }

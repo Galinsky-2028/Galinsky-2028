@@ -23,7 +23,10 @@ export function sourcePaths(root) {
       withFileTypes: true,
     })) {
       const path = relative + "/" + entry.name;
-      if (entry.isDirectory()) visit(path);
+      if (entry.isDirectory()) {
+        // Dependency/build caches are not checked-in application source.
+        if (!["node_modules", ".astro"].includes(entry.name)) visit(path);
+      }
       else if (
         entry.isFile() &&
         /\.(?:mjs|js|ts|tsx|astro|sql|py)$/.test(path) &&

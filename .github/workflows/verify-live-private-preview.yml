@@ -8,7 +8,7 @@ permissions:
   contents: read
 jobs:
   verify:
-    if: github.repository == 'neophilism/Galinsky-2028' && github.ref == 'refs/heads/main'
+    if: github.repository == 'Galinsky-2028/Galinsky-2028' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
@@ -22,8 +22,8 @@ jobs:
           import assert from 'node:assert/strict';
           import {readFile} from 'node:fs/promises';
           const req=JSON.parse(await readFile('ops/private-preview-acceptance-request.json','utf8'));
-          const origin='https://galinsky-2028-private-preview.onrender.com';
-          assert.deepEqual(req,{action:'verify',serviceId:'srv-db5teuajnfac73bm8pug',publicUrl:origin});
+          const origin='https://galinsky2028-website.onrender.com';
+          assert.deepEqual(req,{action:'verify',serviceId:'srv-dbp6n18m7kps73a0kpsg',publicUrl:origin});
           for(const path of ['/','/issues/','/issues/garden/','/issues/cornerstone/','/donate/','/assets/candidate.webp','/robots.txt','/api/config','/healthz']){
             for(const authorization of [null,'Basic '+Buffer.from('preview:incorrect-password').toString('base64')]){
               const response=await fetch(origin+path,{redirect:'manual',signal:AbortSignal.timeout(20000),headers:authorization?{Authorization:authorization}:{}});
@@ -39,4 +39,4 @@ jobs:
         env:
           PREVIEW_ACCESS_USER: preview
           PREVIEW_ACCESS_PASSWORD: ${{ secrets.G28_PREVIEW_ACCESS_PASSWORD }}
-        run: node scripts/smoke-release.mjs --public https://galinsky-2028-private-preview.onrender.com --mode preview
+        run: node scripts/smoke-release.mjs --public https://galinsky2028-website.onrender.com --mode preview

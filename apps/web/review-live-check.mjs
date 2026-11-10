@@ -4,7 +4,7 @@ import {randomBytes,randomUUID} from 'node:crypto';
 // All credentials stay in process memory. No supporter/staff records or mail.
 export async function verifyReviewLive({auth,pool,origin,portalOrigin,commit,transport=fetch}){
  if(new URL(origin).origin!==origin||new URL(origin).protocol!=='https:')throw Error('HTTPS preview required.');
- if(portalOrigin!=='https://galinsky-2028-volunteer-portal.onrender.com')throw Error('Unexpected portal origin.');
+ if(portalOrigin!=='https://galinsky2028-volunteers.onrender.com')throw Error('Unexpected portal origin.');
  const request=(base,path,options={})=>transport(base+path,{...options,redirect:'manual',signal:AbortSignal.timeout(8000)});
  let serving=false;
  for(let attempt=0;attempt<40;attempt++){

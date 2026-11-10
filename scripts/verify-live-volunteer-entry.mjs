@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 // Read-only proof the public site navigates into the real, secured portal.
 import assert from 'node:assert/strict';
-const PUBLIC='https://galinsky-2028-private-preview.onrender.com';
-const PORTAL='https://galinsky-2028-volunteer-portal.onrender.com';
+const PUBLIC='https://galinsky2028-website.onrender.com';
+const PORTAL='https://galinsky2028-volunteers.onrender.com';
 const password=process.env.G28_PREVIEW_ACCESS_PASSWORD;
 assert(typeof password==='string'&&password.length>=24,'Missing protected GitHub Actions password');
 const authorization='Basic '+Buffer.from('preview:'+password,'utf8').toString('base64');

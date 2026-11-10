@@ -37,7 +37,7 @@ try{
   assert.equal(await page.locator('.role-tile').first().evaluate(card=>getComputedStyle(card.querySelector('a'),'::after').position),'absolute',
     'Public role tile must be clickable across the whole card, not just link text');
   assert.equal(await page.locator('.role-grid a[data-role-id="13"]').getAttribute('href'),
-    'https://galinsky-2028-volunteer-portal.onrender.com/roles?role=skills');
+    'https://galinsky2028-volunteers.onrender.com/roles?role=skills');
   await page.locator('#role-pref').selectOption('skills');
   assert.equal(await page.locator('#role-result').innerText(),'Skills & Operations Volunteer');
   assert.match(await page.locator('#role-open').getAttribute('href'),/\/roles\?role=skills$/);

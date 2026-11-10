@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {readFileSync,existsSync} from 'node:fs';
 import {parsePrRegistry} from '../registry/pr-contract.mjs';
 
-const registry=parsePrRegistry(readFileSync('registry/prs.json','utf8'),'neophilism/Galinsky-2028').document;
+const registry=parsePrRegistry(readFileSync('registry/prs.json','utf8'),'Galinsky-2028/Galinsky-2028').document;
 const plan=JSON.parse(readFileSync('docs/PR_REGISTER.json','utf8'));
 const delivery=JSON.parse(readFileSync('docs/evidence/DELIVERY.json','utf8'));
 const prs=new Map(registry.pullRequests.map(pr=>[pr.number,pr]));
