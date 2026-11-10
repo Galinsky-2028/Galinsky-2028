@@ -6,18 +6,18 @@ import {join} from 'node:path';
 import {videoPanel} from '../packages/core/video.mjs';
 import {renderPage,site,root} from '../scripts/public-renderer.mjs';
 
-test('all three issue pages are ready to show one secure same-origin video asset',()=>{
+test('the owner-selected temporary YouTube video is consent-gated and labeled on all three issues',()=>{
  for(const issue of ['kirk-evers','garden','cornerstone']){
-  assert.equal(site.issues[issue].temporaryLocalVideo,'/assets/issue-video-placeholder.mp4');
-  assert.equal(site.issues[issue].youtubeId,null);
-  const markup=videoPanel(issue,site.issues[issue],{localAssetExists:true});
-  assert(markup.includes('<video controls playsinline preload="metadata"'));
-  assert(markup.includes('<source src="/assets/issue-video-placeholder.mp4" type="video/mp4">'));
-  assert(markup.includes('TEMPORARY VIDEO PLACEHOLDER'));
-  assert(markup.includes('not an explanation'));
-  assert(markup.includes('No third-party video provider')||markup.includes('no third-party video provider'));
-  assert(!markup.includes('<iframe'));
-  assert(!markup.includes('www.youtube'));
+  assert.equal(site.issues[issue].youtubeId,'dpQulJS-R50');
+  assert.equal(site.issues[issue].temporaryLocalVideo,undefined);
+  const html=renderPage(issue);
+  assert(html.includes('data-video="dpQulJS-R50"'));
+  assert(html.includes('TEMPORARY VIDEO PREVIEW'));
+  assert(html.includes('aria-label="Play temporary video for '));
+  assert(html.includes('not the final issue-specific presentation'));
+  assert(html.includes('Choosing Play connects to YouTube'));
+  assert(!html.includes('<iframe'));
+  assert(!html.includes('<video controls'));
  }
 });
 
@@ -35,17 +35,11 @@ test('either render exact campaign-uploaded MP4 on all three preview pages or fa
   ]);
   assert(allowed.has(hash),'Uploaded video does not match either owner-supplied original or reviewed optimized edition');
  }
- for(const issue of ['kirk-evers','garden','cornerstone']){
-  const html=renderPage(issue);
-  if(available){
-   assert(html.includes('<video controls playsinline'),'All three issue pages must play the uploaded asset');
-   assert(html.includes('TEMPORARY VIDEO PLACEHOLDER'),'Unrelated clip must remain clearly labeled');
-   assert(html.includes('<source src="/assets/issue-video-placeholder.mp4" type="video/mp4">'));
-  }else{
-   assert(!html.includes('<video controls'),'Do not link to missing binary');
-   assert(html.includes("Phillip's video introduction is coming soon."));
-  }
- }
+ const local={...site.issues.garden,youtubeId:null,temporaryLocalVideo:'/assets/issue-video-placeholder.mp4'};
+ const html=videoPanel('garden',local,{localAssetExists:available});
+ assert.equal(html.includes('<video controls'),available);
+ if(available)assert(html.includes('TEMPORARY VIDEO PLACEHOLDER'));
+ else assert(html.includes("Phillip's video introduction is coming soon."));
 });
 test('temporary unrelated illustrative video cannot silently become an official production issue video',()=>{
  const prod={...site,mode:'production',canonicalOrigin:'https://campaign.example.test'};
@@ -57,7 +51,7 @@ test('temporary unrelated illustrative video cannot silently become an official 
 });
 
 test('unreviewed external URLs and simultaneous YouTube/temporary sources are rejected',()=>{
- const cfg=site.issues.garden;
+ const cfg={...site.issues.garden,youtubeId:null,temporaryLocalVideo:'/assets/issue-video-placeholder.mp4'};
  assert.throws(()=>videoPanel('garden',{...cfg,temporaryLocalVideo:'http://example.test/evil.mp4'},{localAssetExists:true}),/reviewed temporary/);
  assert.throws(()=>videoPanel('garden',{...cfg,youtubeId:'AbcdefG123_'},{localAssetExists:true}),/either the temporary/);
  assert(!videoPanel('garden',{...cfg,temporaryLocalVideo:null},{localAssetExists:true}).includes('<video'));

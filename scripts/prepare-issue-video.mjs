@@ -20,7 +20,7 @@ export function prepare(config,options){
  const next=structuredClone(config);
  const issue=next.issues[options.issue];
  let changed=0;
- if(options.youtube!==undefined){issue.youtubeId=parseYouTubeId(options.youtube);if(!issue.youtubeId)throw Error('A real video ID is required.');issue.temporaryLocalVideo=null;changed++;}
+ if(options.youtube!==undefined){issue.youtubeId=parseYouTubeId(options.youtube);if(!issue.youtubeId)throw Error('A real video ID is required.');issue.temporaryLocalVideo=null;issue.temporaryLabel=null;changed++;}
  if(options.website!==undefined){issue.websiteUrl=validatedWebsite(options.website);changed++;}
  if(options.transcript!==undefined){
   const bytes=readFileSync(resolve(options.transcript));

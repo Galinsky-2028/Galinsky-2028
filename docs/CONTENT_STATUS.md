@@ -1,5 +1,7 @@
 # Content and input status
 
+**9 November 2026 update:** the owner identified the existing normalized source directory and explicitly authorized an AI-reviewed release. Nineteen reconciled reading guides are now prepared and verified against the release-validation database branch; the raw source edition remains historical. The owner-selected temporary YouTube video `dpQulJS-R50` is configured on all three issue pages, with consent and temporary labeling. Final issue-specific videos and canonical destinations remain separate inputs. See `docs/evidence/VOLUNTEER_MATERIAL_REVIEW_20261109.md`; older observations below are historical.
+
 Updated after verified source merge. This is an inventory and review tracker, not a promise that the campaign is deployed.
 
 | Item | Current status | Required action |

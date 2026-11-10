@@ -1,5 +1,7 @@
 # Volunteer Action System — source edition, not current guidance
 
+**9 November 2026 owner update:** nineteen adapted reading guides have an explicit owner-authorized, AI-reviewed release in `../current.json` and `../owner-release.json`. This does not promote the raw source folder, unrelated policy kits or compiled manual. The original cautions below apply to unreviewed source; the owner exception and reconciliation are recorded in `docs/evidence/VOLUNTEER_MATERIAL_REVIEW_20261109.md`.
+
 This folder contains private-repository, editorial-only normalized Markdown copies
 of the owner's September 2026 Edition 1.0 Volunteer Action System.
 The original user-owned files remain in the Library collection named
@@ -25,8 +27,7 @@ volunteer training.
 - Kirk-Evers: no source kit in this edition; draft from approved primary
   material and review independently.
 
-The current published library remains content/materials/current.json and must
-remain empty until independent authorized approval and versioned publication.
+The current published library remains content/materials/current.json and contains only explicitly approved, versioned publication records.
 An import/commit is never approval. Staff identity and safe releases are
 separate development work.
 

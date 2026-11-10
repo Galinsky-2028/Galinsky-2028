@@ -21,7 +21,8 @@ export function renderPage(key, options={}) {
  let body=readFileSync(join(root,`content/public/pages/${page.key}.html`),'utf8');
  body=body.replace('<main id="main"','<main id="main" tabindex="-1"');
  body=body.replace(/\{\{VIDEO:([a-z-]+)\}\}/g,(_,slug)=>{
-  const video=cfg.issues[slug];
+  const configured=cfg.issues[slug];
+  const video=mode==='production'&&configured?.temporaryLabel?{...configured,youtubeId:null,temporaryLocalVideo:null}:configured;
   const path=video?.temporaryLocalVideo;
   return videoPanel(slug,video,{localAssetExists:Boolean(mode==='preview'&&path&&existsSync(join(root,'apps/web/public',path.slice(1))))});
  });

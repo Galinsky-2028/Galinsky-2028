@@ -12,7 +12,7 @@
   "progressEvidenceNote": "Source-reviewed software implementation: 59/72; distinct fully scoped, release-evidenced accepted packages: 13/72. PR acceptance uses mergedAt for all 137 merged PRs. Yellow depicts accepted contributions to packages without full-scope acceptance, not unwritten software. Open production and protected-data gates remain separate. See docs/evidence/ROADMAP_RECONCILIATION_20261101.md.",
   "schemaVersion": 1,
   "roadmapVersion": 7,
-  "observedAt": "2026-11-10T01:03:52.946Z",
+  "observedAt": "2026-11-10T01:41:32.903Z",
   "units": [
     {
       "id": "G28-001",
@@ -2654,15 +2654,15 @@
       "number": 151,
       "title": "Restore campaign deployment in connected Render and Neon accounts",
       "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/151",
-      "state": "open",
+      "state": "closed",
       "draft": false,
       "createdAt": "2026-11-10T01:03:13Z",
-      "updatedAt": "2026-11-10T01:03:13Z",
-      "closedAt": null,
-      "mergedAt": null,
-      "headSha": "124d9c2bc098eaf330d61abadc358dc13b219693",
+      "updatedAt": "2026-11-10T01:19:20Z",
+      "closedAt": "2026-11-10T01:19:20Z",
+      "mergedAt": "2026-11-10T01:19:20Z",
+      "headSha": "abe6bdca2b2d445a0642ae00af258c4e5dd8bf49",
       "baseRef": "main",
-      "mergeCommitSha": "636abb21408e6c8750b8d1e9bc3a5f946390aa4d"
+      "mergeCommitSha": "a5eb39ed41750e245a07046be67089e2139d1496"
     },
     {
       "id": 5139421455,
