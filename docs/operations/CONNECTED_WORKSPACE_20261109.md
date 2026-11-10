@@ -33,3 +33,11 @@ The old Render services were successfully deleted using the GitHub-held credenti
 Local source checks, unit tests and both production builds were run. Node 24 is supplied by this execution environment; deployed services and GitHub CI use the pinned Node 22.23.3. Browser verification uses Chromium and a synthetic WebAuthn authenticator against the deployed portal, with the environment proxy CA explicitly trusted.
 
 Public launch remains incomplete: final issue videos/captions and canonical destinations, approved current volunteer materials/training, protected recipient/device encryption and recovery, treasury reconciliation/exception/recurring-donor workflows and configured staff/mail delivery remain separately tracked in `registry/prs.json` and `docs/evidence/CURRENT_IMPLEMENTATION_REVIEW.md`. No full-platform completion or public fundraising release is claimed.
+
+## Final verified release
+
+Both services are live on `4599245d56a43c64653d229ee1e61dcb84bc3a8f`. See `docs/evidence/CONNECTED_RELEASE_20261109.json` for exact deploy IDs, source-bound CI and actual hosted outcomes. Nineteen guides were published with nineteen append-only audit events; all nineteen live body SHA-256 values matched source. Real passkey accounts exercised search, category filters, downloads, persistent bookmarks/acknowledgments, orientation and account closure. Synthetic accounts were removed. No regulated activity module was created.
+
+The initial opaque publication attempt was rejected by automatic approval review. After checking the empty target, publication used an explicit insert-only CTE with `ON CONFLICT DO NOTHING` and append-only audit; no existing record, schema, role or credential was changed by publication. The live exact-body comparison passed.
+
+The preview password generated during this session was refreshed on both new services for final authenticated verification. Retrieve it privately from Render `PREVIEW_ACCESS_PASSWORD`; do not print or commit it. The old Render services were deleted; the old Neon project still returns 404 with connected credentials.
