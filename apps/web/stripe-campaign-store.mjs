@@ -1,3 +1,4 @@
+import {recordSignedCardEvent} from './card-signed-webhook.mjs';
 import {createHash} from 'node:crypto';
 import {recordStripeRemedy} from './stripe-remedies.mjs';
 import {verifyStripeWebhook} from '../../packages/core/stripe-campaign.mjs';
@@ -28,6 +29,7 @@ export class StripeCampaignStore {
   if(!result.valid)return {status:400,outcome:'invalid_signature'};
   const e=result.event;
   if(e.livemode===sandbox)return {status:400,outcome:'environment_mismatch'};
+  if(e.manualCard)return recordSignedCardEvent(this.pool,e,raw);
   if(e.remedy)return recordStripeRemedy(this.pool,e,raw);
   const confirmed=e.type==='checkout.session.completed'||e.type==='checkout.session.async_payment_succeeded';
   const nonPaymentState=e.type==='checkout.session.expired'?'expired':

@@ -48,10 +48,10 @@ export function loadConfig(env=process.env){
  if(signup){assert(deliveryKey&&Buffer.from(deliveryKey,'base64').length===32&&pepper.length>=32&&mailReady,'signup_unready','Account delivery and authentication configuration are incomplete.',503);}
  // These flags may not bypass missing reviewed adapters or release evidence.
  const protectedContent=env.PROTECTED_CONTENT_ENABLED==='true';
- // The current static OpenPGP prototype has no forward-secret group ratchet.
- // It is not an eligible messaging profile in the pinned E2EESA catalog.
- // No environment flag or staff enrollment can waive that protocol requirement.
- assert(!protectedContent,'protected_unavailable','Protected reporting remains unavailable until a reviewed ratcheted messaging adapter replaces the static OpenPGP prototype.',503);
+ // Ratcheted MLS and device lifecycle source/tests are installed. Activation
+ // still requires the pinned executable web-release/update/transparency and
+ // transport controls; a boolean cannot waive those endpoint obligations.
+ assert(!protectedContent,'protected_unavailable','Protected reporting remains unavailable until executable web-release, update, independently witnessed transparency and transport controls are verified.',503);
  assert(!staffIdentity||adminLoginReady,'staff_unavailable','Staff passkeys require configured verified-email staff access.',503);
  assert(env.DONATIONS_ENABLED!=='true','fundraising_unavailable','A production fundraising adapter and release evidence are not installed.',503);
  if(production)assert(env.DATABASE_URL,'database_required','Production requires the assigned database.',503);

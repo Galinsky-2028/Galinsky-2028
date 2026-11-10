@@ -9,15 +9,17 @@ const SAFE_NAME='Phillip Galinsky for America';
 const approved=(reference)=>({accepted:true,reference});
 const releaseKeys=['processorAccount','treasurerApproval','electionRules','processorContract','securityReview','reconciliationTest'];
 const policyKeys=['stripeRestrictedBusinessApproval','federalCommitteeIdentity','cardSourcePolicy','donorAttestations','directCheckoutRules','recurringControls'];
-const dollarLimit=x=>typeof x==='string'&&/^[1-9]\d{0,7}$/.test(x)&&Number(x)<=100000000?Number(x):null;
+const dollarLimit=x=>typeof x==='string'&&/^[1-9]\d{0,7}$/.test(x)&&Number(x)<=99999999?Number(x):null;
 const literal=x=>String(x).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const routeBlocked=()=>new Error('Stripe Checkout is not configured or approved for this campaign.');
 
 export function stripeSettings(env){
  const sandbox=env.G28_PUBLIC_MODE==='preview'&&env.G28_STRIPE_TEST_ENABLED==='true';
- const live=env.G28_PUBLIC_MODE==='production'&&env.DONATIONS_ENABLED==='true'&&
-  env.DONATIONS_TREASURER_APPROVED==='true'&&env.G28_STRIPE_LIVE_APPROVED==='true';
- if(!sandbox&&!live)return null;
+ // Native auto-capture Checkout cannot enforce the current all-channel
+ // reservation and personal-credit-card review before collection. No set of
+ // environment approvals may activate that old live entry point.
+ const live=false;
+ if(!sandbox)return null;
  const key=env.STRIPE_SECRET_KEY;
  if(typeof key!=='string'||!(sandbox?/^sk_test_[A-Za-z0-9_]{12,}$/:/^sk_live_[A-Za-z0-9_]{12,}$/).test(key))
   return null;
@@ -31,25 +33,10 @@ export function stripeSettings(env){
   origin.pathname!=='/'||origin.search||origin.hash||!origin.hostname.includes('.'))return null;
  const primary=dollarLimit(env.G28_STRIPE_PRIMARY_LIMIT_CENTS);
  const general=dollarLimit(env.G28_STRIPE_GENERAL_LIMIT_CENTS);
- if(!sandbox&&!general)return null;
- const limits=sandbox?{primary:Math.min(primary||10000,100000000),general:Math.min(general||10000,100000000)}:{primary,general};
- let release,policyEvidence;
- if(sandbox){
-  release={enabled:true,evidence:Object.fromEntries(releaseKeys.map(k=>[k,approved('stripe-sandbox-only')] ))};
-  release.evidence.validUntil='2099-01-01T00:00:00Z';
-  policyEvidence=Object.fromEntries(policyKeys.map(k=>[k,approved('stripe-sandbox-only')]));
- }else{
-  // Evidence must be independently validated by the campaign's treasurer.
-  // Never infer approval from the mere presence of an API key.
-  try{
-   release=JSON.parse(env.G28_STRIPE_RELEASE_JSON);
-   policyEvidence=JSON.parse(env.G28_STRIPE_POLICY_EVIDENCE_JSON);
-  }catch{return null;}
-  if(release?.enabled!==true||releaseKeys.some(k=>release.evidence?.[k]?.accepted!==true||
-      typeof release.evidence[k].reference!=='string'||release.evidence[k].reference.length<8)||
-     policyKeys.some(k=>policyEvidence?.[k]?.accepted!==true||
-      typeof policyEvidence[k].reference!=='string'||policyEvidence[k].reference.length<8))return null;
- }
+ const limits={primary:primary||10000,general:general||10000};
+ const release={enabled:true,evidence:Object.fromEntries(releaseKeys.map(k=>[k,approved('stripe-sandbox-only')]))};
+ release.evidence.validUntil='2099-01-01T00:00:00Z';
+ const policyEvidence=Object.fromEntries(policyKeys.map(k=>[k,approved('stripe-sandbox-only')]));
  return {sandbox,live,secretKey:key,origin:origin.origin,limits,
   policy:{publicOrigin:origin.origin,committeeName:env.G28_STRIPE_COMMITTEE_NAME||SAFE_NAME,
     limits,recurringEnabled:false,evidence:policyEvidence},release};

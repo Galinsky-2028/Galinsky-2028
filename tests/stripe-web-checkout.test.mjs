@@ -21,6 +21,8 @@ test('sandbox is explicit, isolated from real money and legal release keys',()=>
  assert.equal(stripeSettings({...sandbox(),G28_STRIPE_RETURN_ORIGIN:'http://preview.example.test'}),null);
  assert.equal(stripeSettings({...sandbox(),G28_PUBLIC_MODE:'production',DONATIONS_ENABLED:'true',
   DONATIONS_TREASURER_APPROVED:'true',G28_STRIPE_LIVE_APPROVED:'true'}),null);
+ const accepted=Object.fromEntries(['processorAccount','treasurerApproval','electionRules','processorContract','securityReview','reconciliationTest','stripeRestrictedBusinessApproval','federalCommitteeIdentity','cardSourcePolicy','donorAttestations','directCheckoutRules','recurringControls'].map(k=>[k,{accepted:true,reference:'synthetic-copy-of-all-former-release-flags'}]));
+ assert.equal(stripeSettings({...sandbox(),G28_PUBLIC_MODE:'production',STRIPE_SECRET_KEY:'sk_live_synthetic_blocked_12345678',DONATIONS_ENABLED:'true',DONATIONS_TREASURER_APPROVED:'true',G28_STRIPE_LIVE_APPROVED:'true',G28_STRIPE_PRIMARY_LIMIT_CENTS:'10000',G28_STRIPE_GENERAL_LIMIT_CENTS:'10000',G28_STRIPE_RELEASE_JSON:JSON.stringify({enabled:true,evidence:{...accepted,validUntil:'2099-01-01T00:00:00Z'}}),G28_STRIPE_POLICY_EVIDENCE_JSON:JSON.stringify(accepted)}),null,'all former flags and approval objects cannot open automatic live capture');
  const cfg=stripeSettings(sandbox());
  assert.equal(cfg.sandbox,true);assert.equal(cfg.live,false);
  assert.equal(cfg.policy.recurringEnabled,false);

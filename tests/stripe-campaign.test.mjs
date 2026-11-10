@@ -86,6 +86,7 @@ test('Stripe request has idempotency and validates hosted response without live 
   return {ok:true,json:async()=>({id:'cs_test_ABCDEFGHIJKLM',url:'https://checkout.stripe.com/c/pay/abc'})};
  };
  const result=await createStripeCheckout({plan,secretKey:'sk_test_1234567890123456',transport:fake});
+ await assert.rejects(createStripeCheckout({plan,secretKey:'sk_live_synthetic_never_send_12345',transport:fake}),e=>e.code==='stripe_credentials');
  assert.equal(called,1);
  assert.equal(result.paymentConfirmed,false);
  assert.equal(result.hostedCheckoutUrl,'https://checkout.stripe.com/c/pay/abc');

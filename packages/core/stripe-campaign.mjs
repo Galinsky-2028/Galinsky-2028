@@ -1,6 +1,7 @@
 // Stripe political-campaign adapter. NEVER enables itself: the campaign's
 // restricted-business onboarding, treasury/legal rules and reliable finance
 // ledger must be signed off separately before any live checkout route exists.
+import {cardWebhookFacts} from './card-webhook-facts.mjs';
 import {createHmac,timingSafeEqual} from 'node:crypto';
 import {assert,DomainError} from './validation.mjs';
 import {releaseDecision} from './finance.mjs';
@@ -14,6 +15,7 @@ const EVENT_TYPES=new Set([
  'checkout.session.async_payment_failed','checkout.session.expired','payment_intent.succeeded',
  'payment_intent.payment_failed','charge.refunded','charge.dispute.created',
  'invoice.paid','invoice.payment_failed','customer.subscription.deleted',
+ 'payment_intent.created','payment_intent.amount_capturable_updated','payment_intent.canceled','payment_intent.requires_action',
  'refund.created','refund.updated','refund.failed','charge.dispute.closed'
 ]);
 
@@ -35,7 +37,7 @@ export function stripeCheckoutPlan({contribution,policy,release}){
  assert(contribution&&typeof contribution==='object'&&!Array.isArray(contribution),
   'invalid_contribution','Invalid contribution request.');
  const {amountCents,frequency,election,clientRef,attestations,termsVersion}=contribution;
- assert(Number.isSafeInteger(amountCents)&&amountCents>0&&amountCents<=100000000,
+ assert(Number.isSafeInteger(amountCents)&&amountCents>0&&amountCents<=99999999,
   'invalid_amount','Enter a permitted positive amount in cents.');
  assert(frequency==='once'||frequency==='monthly','invalid_frequency','Choose one-time or monthly giving.');
  assert(ELECTION.test(election),'invalid_election','Choose a valid election designation.');
@@ -94,8 +96,8 @@ export function stripeCheckoutPlan({contribution,policy,release}){
   processingUrl:fields.success_url};
 }
 export async function createStripeCheckout({plan,secretKey,transport=fetch,signal}){
- assert(typeof secretKey==='string'&&/^(sk_test|sk_live)_[A-Za-z0-9_]{12,}$/.test(secretKey),
-  'stripe_credentials','Valid server-side Stripe credentials are required.',503);
+ assert(typeof secretKey==='string'&&/^sk_test_[A-Za-z0-9_]{12,}$/.test(secretKey),
+  'stripe_credentials','Only TEST automatic Checkout is installed; live contributions require the manual-capture workflow.',503);
  assert(plan?.endpoint===CHECKOUT_ENDPOINT&&plan.method==='POST'&&plan.body instanceof URLSearchParams,
   'invalid_plan','Checkout plan must be constructed by the approved adapter.');
  let response;
@@ -144,7 +146,7 @@ export function verifyStripeWebhook(raw,signature,secret,{now=Math.floor(Date.no
  // Only IDs and event type leave the adapter; donor names, addresses,
  // emails, card details and full raw payloads must not reach ordinary logs.
  return {valid:true,event:{id:event.id,type:event.type,livemode:event.livemode,
-  objectId:data.id,created:event.created,amountTotal:Number.isSafeInteger(data.amount_total)?data.amount_total:null,
+  objectId:data.id,created:event.created,...(data.metadata?.g28_profile==='stripe-manual-capture-v1'?{manualCard:cardWebhookFacts(data,event.type)}:{}),amountTotal:Number.isSafeInteger(data.amount_total)?data.amount_total:null,
   paymentIntentId:typeof data.payment_intent==='string'&&/^pi_[A-Za-z0-9]{5,100}$/.test(data.payment_intent)?data.payment_intent:null,
   remedy:['refund.created','refund.updated','refund.failed','charge.dispute.created','charge.dispute.closed'].includes(event.type)?{
    reference:data.id,amountCents:Number.isSafeInteger(data.amount)?data.amount:null,
