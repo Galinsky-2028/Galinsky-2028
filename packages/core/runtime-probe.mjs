@@ -6,9 +6,9 @@ export async function runtimeProbe({port,kind,env=process.env}){
  const commit=safeReleaseCommit(env.RENDER_GIT_COMMIT);
  if(!commit||!env.PREVIEW_ACCESS_PASSWORD)throw Error('Runtime probe requires release identity and private access.');
  const base='http://127.0.0.1:'+port,auth='Basic '+Buffer.from((env.PREVIEW_ACCESS_USER||'preview')+':'+env.PREVIEW_ACCESS_PASSWORD).toString('base64');
- const get=async(path,authenticated=true)=>{
-  const response=await fetch(base+path,{headers:authenticated?{Authorization:auth}:{},redirect:'error',signal:AbortSignal.timeout(10000)});
-  return {status:response.status,body:await response.text()};
+ const get=async(path,authenticated=true,head=false)=>{
+  const response=await fetch(base+path,{method:head?'HEAD':'GET',headers:authenticated?{Authorization:auth}:{},redirect:'error',signal:AbortSignal.timeout(10000)});
+  return {status:response.status,body:head?'':await response.text()};
  };
  let checks=0;const verify=(ok)=>{if(!ok)throw Error('Runtime application probe failed.');checks++;};
  verify((await get('/healthz',false)).status===401);
@@ -17,7 +17,7 @@ export async function runtimeProbe({port,kind,env=process.env}){
  const paths=kind==='web'?['/','/volunteer/','/donate/','/issues/kirk-evers/','/issues/garden/','/issues/cornerstone/']:['/','/roles','/materials'];
  for(const path of paths){const page=await get(path);verify(page.status===200&&(kind==='web'?/<main\b/.test(page.body):/id=["']root["']/.test(page.body)));
   const assets=[...page.body.matchAll(/(?:src|href)="(\/assets\/[^"?#]+)(?:[?#][^"]*)?"/g)].map(x=>x[1]);
-  verify(assets.length>0);for(const asset of new Set(assets))verify((await get(asset)).status===200);
+  verify(assets.length>0);for(const asset of new Set(assets))verify((await get(asset,true,true)).status===200);
  }
  if(kind==='portal'){
   verify((await get('/readyz')).status===200);
