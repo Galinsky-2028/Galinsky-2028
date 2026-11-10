@@ -92,7 +92,7 @@ try {
   const rules = section('Treasurer-approved rules and accounting mapping');
   await rules
     .getByLabel('Rules valid until (UTC)')
-    .fill(new Date(now + 30 * 86400000).toISOString().slice(0, -1));
+    .fill(new Date(now + 30 * 86400000).toISOString().slice(0, 16));
   await rules.getByLabel('Approved rules evidence').selectOption(evidence);
   await rules.getByLabel('Primary election aggregate limit (USD)').fill('1000.00');
   await rules.getByLabel('General election aggregate limit (USD)').fill('1000.00');
@@ -129,7 +129,7 @@ try {
     .fill('synthetic-browser-gift');
   await journal.getByLabel('Amount (USD)', { exact: true }).fill('10.00');
   await journal.getByLabel('Documented contributor reference').fill(donorId);
-  const received = new Date(now - 60000).toISOString().slice(0, -1);
+  const received = new Date(now - 60000).toISOString().slice(0, 16);
   await journal.getByLabel('Made date/time (UTC)').fill(received);
   await journal.getByLabel('Received date/time (UTC)').fill(received);
   await journal.getByLabel('Source or final processor outcome evidence').selectOption(evidence);
@@ -154,10 +154,10 @@ try {
   await report.locator('summary').first().click();
   await report
     .getByLabel('Accounting period begins (UTC, inclusive)')
-    .fill(new Date(now - 86400000).toISOString().slice(0, -1));
+    .fill(new Date(now - 86400000).toISOString().slice(0, 16));
   await report
     .getByLabel('Accounting period ends (UTC, exclusive)')
-    .fill(new Date(now + 86400000).toISOString().slice(0, -1));
+    .fill(new Date(now + 86400000).toISOString().slice(0, 16));
   await report.getByLabel('Explicitly include authorized contributor identity fields').check();
   await report
     .getByLabel('Type “export approved treasury report”')
