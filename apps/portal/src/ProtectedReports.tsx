@@ -14,7 +14,9 @@ type Device = {
   identityHash: string;
 };
 type Client = ReturnType<typeof createProtectedClient>;
-type Own = ReturnType<Client['publicState']>;
+type Own = Omit<ReturnType<Client['publicState']>, 'devices'> & {
+  devices: { id: string; generation: number; fingerprint: string; state: string }[];
+};
 type Opened = {
   id: string;
   kind: string;
@@ -61,6 +63,10 @@ export function ProtectedReports({
     [busy, setBusy] = useState(false),
     [holdDigest, setHoldDigest] = useState('');
   const [lossAccepted, setLossAccepted] = useState(false);
+  const [authorityDevice, setAuthorityDevice] = useState(''),
+    [authorityFingerprint, setAuthorityFingerprint] = useState(''),
+    [irreversible, setIrreversible] = useState(''),
+    [replacementPhrase, setReplacementPhrase] = useState('');
   const [linkRequest, setLinkRequest] = useState(''),
     [newFingerprint, setNewFingerprint] = useState('');
   const client = useMemo(
@@ -74,6 +80,8 @@ export function ProtectedReports({
           setText('');
           setFile(null);
           setPhrase('');
+          setReplacementPhrase('');
+          setLossAccepted(false);
           setComparison('');
           setIndependent(false);
           setPeer(null);
@@ -118,6 +126,11 @@ export function ProtectedReports({
       await action();
     } catch (e) {
       setPeer(null);
+      try {
+        setOwn(client.publicState());
+      } catch {
+        setOwn(null);
+      }
       setError((e as Error).message || 'This operation could not be authenticated.');
     } finally {
       setBusy(false);
@@ -417,6 +430,281 @@ export function ProtectedReports({
                 )}
               </>
             )}
+            {own && (
+              <>
+                <h3>Device key changes</h3>
+                <p>
+                  Rotation creates fresh keys and permanently deletes this browser’s old thread keys
+                  and history. The account root stays the same. Fresh staff approval and a new group
+                  are required.
+                </p>
+                <label>
+                  New local unlock phrase for rotated keys
+                  <input
+                    type="password"
+                    autoComplete="off"
+                    minLength={16}
+                    maxLength={256}
+                    value={phrase}
+                    onChange={(e) => setPhrase(e.target.value)}
+                  />
+                </label>
+                <label className="check">
+                  <input
+                    type="checkbox"
+                    checked={lossAccepted}
+                    onChange={(e) => setLossAccepted(e.target.checked)}
+                  />
+                  <span>
+                    I acknowledge permanent old thread key/history loss and no recovery backup.
+                  </span>
+                </label>
+                <label>
+                  Type “rotate device and permanently lose old local history” to confirm
+                  <input value={irreversible} onChange={(e) => setIrreversible(e.target.value)} />
+                </label>
+                <button
+                  className="btn outline"
+                  disabled={
+                    busy ||
+                    phrase.length < 16 ||
+                    !lossAccepted ||
+                    irreversible !== 'rotate device and permanently lose old local history'
+                  }
+                  onClick={() => {
+                    const password = phrase;
+                    setPhrase('');
+                    void run(async () => {
+                      const result = await client.rotateDevice(
+                        password,
+                        label,
+                        lossAccepted,
+                        irreversible,
+                      );
+                      setIrreversible('');
+                      if (result.completed) {
+                        setOwn(result.own);
+                        setMessage(
+                          'Device rotated. Old local history removed; fresh approval and a new group are required.',
+                        );
+                        await refresh();
+                      } else {
+                        setOwn(null);
+                        setLinkRequest(JSON.stringify(result.request));
+                        setNewFingerprint(result.deviceFingerprint);
+                        setMessage(
+                          'Public rotation request prepared. Authorize it on the root device, then unlock here with the new phrase.',
+                        );
+                      }
+                    });
+                  }}
+                >
+                  Rotate this exact device’s keys
+                </button>
+                {own.hasRoot && (
+                  <>
+                    <h3>Cryptographically revoke a device</h3>
+                    <p>
+                      A root-signed revocation withdraws that device’s future authority. At least
+                      one device must remain active. If the root key is compromised, replace the
+                      root. Previously saved copies cannot be recalled.
+                    </p>
+                    <label>
+                      Exact device to revoke
+                      <select
+                        value={authorityDevice}
+                        onChange={(e) => {
+                          setAuthorityDevice(e.target.value);
+                          setAuthorityFingerprint('');
+                        }}
+                      >
+                        <option value="">Choose device</option>
+                        {own.devices
+                          .filter((d) => d.state === 'active')
+                          .map((d) => (
+                            <option key={d.id} value={d.id}>
+                              {d.id} · generation {d.generation}
+                            </option>
+                          ))}
+                      </select>
+                    </label>
+                    <label>
+                      Exact current device fingerprint for signed revocation
+                      <input
+                        value={authorityFingerprint}
+                        onChange={(e) => setAuthorityFingerprint(e.target.value)}
+                        maxLength={64}
+                      />
+                    </label>
+                    <button
+                      className="btn outline"
+                      disabled={
+                        busy ||
+                        !authorityDevice ||
+                        !authorityFingerprint ||
+                        own.devices.filter((d) => d.state === 'active').length < 2
+                      }
+                      onClick={() =>
+                        void run(async () => {
+                          setOwn(
+                            await client.revokeDevice(
+                              authorityDevice,
+                              authorityFingerprint,
+                              'revoke this exact device',
+                            ),
+                          );
+                          setAuthorityDevice('');
+                          setAuthorityFingerprint('');
+                          setMessage(
+                            'Exact device revoked by the account root. Prior copies cannot be erased.',
+                          );
+                          await refresh();
+                        })
+                      }
+                    >
+                      Permanently revoke this exact device
+                    </button>
+                    {own.pendingAuthority && (
+                      <button
+                        className="btn outline"
+                        disabled={busy}
+                        onClick={() =>
+                          void run(async () => {
+                            setOwn(await client.retryAuthority());
+                            setMessage('Exact pending root change acknowledged.');
+                          })
+                        }
+                      >
+                        Retry exact pending root-authority change
+                      </button>
+                    )}
+                  </>
+                )}
+              </>
+            )}
+            <h3>Pending device requests</h3>
+            <p>
+              If the account root approved another device while your public request was waiting,
+              refresh this request against the current signed history. Your private keys remain in
+              this browser. After authorization, unlock to finish.
+            </p>
+            <label>
+              Pending vault’s local unlock phrase
+              <input
+                type="password"
+                autoComplete="off"
+                minLength={16}
+                maxLength={256}
+                value={phrase}
+                onChange={(e) => setPhrase(e.target.value)}
+              />
+            </label>
+            <button
+              className="btn outline"
+              disabled={busy || phrase.length < 16}
+              onClick={() => {
+                const password = phrase;
+                setPhrase('');
+                void run(async () => {
+                  const result = await client.refreshPendingDevice(password);
+                  if (result.completed) {
+                    setOwn(result.own);
+                    setLinkRequest('');
+                    setMessage('Exact pending device authorization completed.');
+                  } else {
+                    setLinkRequest(JSON.stringify(result.request));
+                    setNewFingerprint(result.deviceFingerprint);
+                    setMessage(
+                      'Public request refreshed. Compare its device fingerprint and authorize this exact new request on the root device.',
+                    );
+                  }
+                });
+              }}
+            >
+              Refresh exact public device request
+            </button>
+            <p>
+              Deleting pending local keys cannot undo a server authorization. If a response was
+              lost, deleting its private keys can permanently lose an already authorized device.
+            </p>
+            <label>
+              Type “delete pending local keys even if already authorized” to confirm
+              <input value={irreversible} onChange={(e) => setIrreversible(e.target.value)} />
+            </label>
+            <button
+              className="btn outline"
+              disabled={
+                busy || irreversible !== 'delete pending local keys even if already authorized'
+              }
+              onClick={() =>
+                void run(async () => {
+                  await client.discardPendingDevice(irreversible);
+                  setIrreversible('');
+                  setLinkRequest('');
+                  setNewFingerprint('');
+                  setMessage(
+                    'Only pending local keys deleted. Existing accepted local keys and other accounts were not changed.',
+                  );
+                })
+              }
+            >
+              Delete pending local device keys permanently
+            </button>
+            <h3>New unverified root after total key loss</h3>
+            <p>
+              Replacement changes your cryptographic identity, quarantines old routing and deletes
+              this browser’s old protected history. Other people must independently verify the new
+              root. Login recovery cannot restore old decryption keys or staff approval. Previously
+              saved copies on other devices cannot be recalled.
+            </p>
+            <label>
+              New root’s local unlock phrase
+              <input
+                type="password"
+                autoComplete="off"
+                minLength={16}
+                maxLength={256}
+                value={replacementPhrase}
+                onChange={(e) => setReplacementPhrase(e.target.value)}
+              />
+            </label>
+            <label className="check">
+              <input
+                type="checkbox"
+                checked={lossAccepted}
+                onChange={(e) => setLossAccepted(e.target.checked)}
+              />
+              <span>I acknowledge permanent local key/history loss and no recovery backup.</span>
+            </label>
+            <label>
+              Type “replace root and permanently lose old local history” to confirm
+              <input value={irreversible} onChange={(e) => setIrreversible(e.target.value)} />
+            </label>
+            <button
+              className="btn outline"
+              disabled={
+                busy ||
+                replacementPhrase.length < 16 ||
+                !lossAccepted ||
+                irreversible !== 'replace root and permanently lose old local history'
+              }
+              onClick={() => {
+                const password = replacementPhrase;
+                setReplacementPhrase('');
+                void run(async () => {
+                  setOwn(await client.replaceRoot(password, label, lossAccepted, irreversible));
+                  setIrreversible('');
+                  setLinkRequest('');
+                  setNewFingerprint('');
+                  setMessage(
+                    'New unverified root created. Old verification, approvals and history did not transfer.',
+                  );
+                  await refresh();
+                });
+              }}
+            >
+              Replace root and discard old local history
+            </button>
             <p className="fine">
               The vault locks when this page is hidden or after ten minutes without interaction.
               Revocation stops future routing access; it cannot erase copies already decrypted or
@@ -748,6 +1036,34 @@ export function ProtectedReports({
                             ))}
                           </>
                         )}
+                        <button
+                          className="btn outline"
+                          disabled={busy}
+                          onClick={() =>
+                            void run(async () => {
+                              const result = await client.exportCiphertext(
+                                  opened.id,
+                                  'export exact original-recipient ciphertext',
+                                ),
+                                url = URL.createObjectURL(
+                                  new Blob([JSON.stringify(result)], {
+                                    type: 'application/octet-stream',
+                                  }),
+                                ),
+                                a = document.createElement('a');
+                              a.href = url;
+                              a.download =
+                                'galinsky-original-recipient-ciphertext-' + opened.id + '.json';
+                              a.click();
+                              setTimeout(() => URL.revokeObjectURL(url), 1000);
+                              setMessage(
+                                'Exact original-recipient ciphertext exported and audited. This evidence copy does not recreate erased epoch keys.',
+                              );
+                            })
+                          }
+                        >
+                          Export this exact original-recipient ciphertext
+                        </button>
                         <button
                           className="btn outline"
                           onClick={() => {

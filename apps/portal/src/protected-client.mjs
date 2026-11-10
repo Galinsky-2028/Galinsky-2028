@@ -13,7 +13,11 @@ import {
   applyProtectedIdentityEvent,
   identityStateHash,
 } from '../../../packages/core/protected-identity.mjs';
-import { newMlsSigningKeys, newMlsKeyPackage } from '../../../packages/core/protected-mls.mjs';
+import {
+  MLS_PROFILE,
+  newMlsSigningKeys,
+  newMlsKeyPackage,
+} from '../../../packages/core/protected-mls.mjs';
 import {
   createProtectedDeviceVault,
   unlockProtectedDeviceVault,
@@ -31,6 +35,7 @@ import {
   deviceEntry,
   pendingDeviceEntry,
   protectedLocalGet,
+  protectedLocalList,
   protectedLocalCommit,
   withProtectedLock,
 } from './protected-local.mjs';
@@ -72,7 +77,12 @@ export function createProtectedClient({ account, api, onLock = () => {} }) {
         row && row.device === session.device,
         'This browser’s device changed. Lock and unlock again.',
       );
-      await resumeProtectedDeviceVault(row.envelope, session);
+      try {
+        await resumeProtectedDeviceVault(row.envelope, session);
+      } catch {
+        lock();
+        throw Error('This browser’s encrypted vault changed. Unlock the current device again.');
+      }
       guard(token);
       await expireProtectedLocalThreads(account, session, token, guard);
       guard(token);
@@ -134,7 +144,7 @@ export function createProtectedClient({ account, api, onLock = () => {} }) {
       );
     return { state, hash };
   }
-  async function enroll(password, label, acknowledgeNoRecovery = false) {
+  async function enroll(password, label, acknowledgeNoRecovery = false, replace = false) {
     need(
       acknowledgeNoRecovery === true,
       'Acknowledge permanent key loss without a recovery backup before creating keys.',
@@ -147,7 +157,7 @@ export function createProtectedClient({ account, api, onLock = () => {} }) {
     return withProtectedLock(account, async () => {
       guard(token);
       need(
-        !(await protectedLocalGet(deviceEntry(account))),
+        replace || !(await protectedLocalGet(deviceEntry(account))),
         'This browser already has a protected device. Unlock it instead.',
       );
       const pending = await protectedLocalGet(pendingDeviceEntry(account));
@@ -158,7 +168,7 @@ export function createProtectedClient({ account, api, onLock = () => {} }) {
       const current = await api(prefix + '/identity');
       guard(token);
       need(
-        !current.identity,
+        replace ? !!current.identity : !current.identity,
         'This account already has an identity. Enroll from an authorized root device or explicitly replace the identity.',
       );
       const rootSecret = secret(),
@@ -193,8 +203,10 @@ export function createProtectedClient({ account, api, onLock = () => {} }) {
         rootSignature: await signProtected(event, rootKey),
         deviceSignature: await signProtected(event, deviceKey),
         label,
-        replace: false,
-        confirm: 'authorize this signed device transition',
+        replace,
+        confirm: replace
+          ? 'start a new unverified identity'
+          : 'authorize this signed device transition',
       };
       const state = await applyProtectedIdentityEvent(
           initial,
@@ -289,9 +301,17 @@ export function createProtectedClient({ account, api, onLock = () => {} }) {
       generation: updated.generation,
       envelope: updated.envelope,
     };
+    const replacing = transition.replace === true || transition.event.action === 'rotate',
+      previous = await protectedLocalGet(next.key);
+    need(replacing || !previous, 'A different protected device already exists in this browser.');
+    const oldThreads = replacing
+      ? (await protectedLocalList(account)).filter((r) => r.key.startsWith('thread:'))
+      : [];
+    guard(token);
     await protectedLocalCommit([
       { key: row.key, expected: row.generation, next: null },
-      { key: next.key, expected: 0, next },
+      { key: next.key, expected: previous?.generation || 0, next },
+      ...oldThreads.map((r) => ({ key: r.key, expected: r.generation, next: null })),
     ]);
     guard(token);
     session.generation = next.generation;
@@ -360,6 +380,13 @@ export function createProtectedClient({ account, api, onLock = () => {} }) {
       deviceFingerprint: p.identity.devices.find((d) => d.id === session.device).fingerprint,
       hasRoot: !!p.root,
       sequence: p.identity.sequence,
+      devices: p.identity.devices.map((d) => ({
+        id: d.id,
+        generation: d.generation,
+        state: d.state,
+        fingerprint: d.fingerprint,
+      })),
+      pendingAuthority: !!p.pendingAuthority,
     };
   }
   async function peer(identityId, fingerprint) {
@@ -528,12 +555,20 @@ export function createProtectedClient({ account, api, onLock = () => {} }) {
     return exclusive(async ({ row, token, payload }) => {
       need(payload.root, 'Use the device holding this account root to authorize enrollment.');
       need(
+        request &&
+          typeof request === 'object' &&
+          !Array.isArray(request) &&
+          Object.keys(request).sort().join(',') ===
+            'confirm,deviceSignature,event,identityId,label,replace,rootPublicKey,rootSignature',
+        'Use only the exact public signed device request; unexpected fields are never sent.',
+      );
+      need(
         request?.rootSignature === null &&
           request.replace === false &&
           request.identityId === payload.identity.identityId &&
           request.rootPublicKey === payload.identity.rootPublicKey &&
-          request.event?.action === 'enroll' &&
-          request.event.subject.generation === 1,
+          ['enroll', 'rotate'].includes(request.event?.action) &&
+          Number.isSafeInteger(request.event.subject.generation),
         'Review an exact new-device enrollment request for this root.',
       );
       const publicKey = await publicProtectedKey(request.event.subject.publicKey);
@@ -583,6 +618,300 @@ export function createProtectedClient({ account, api, onLock = () => {} }) {
       return { authorized: true };
     });
   }
+  async function rotateDevice(password, label, acknowledgeNoRecovery, confirmation) {
+    need(
+      acknowledgeNoRecovery === true &&
+        confirmation === 'rotate device and permanently lose old local history',
+      'Confirm that rotation permanently removes this browser’s old thread keys and local history.',
+    );
+    return exclusive(async ({ row, payload, token }) => {
+      need(
+        !payload.pendingAuthority && !(await protectedLocalGet(pendingDeviceEntry(account))),
+        'Finish the existing pending authority/device change first.',
+      );
+      const packet = await api(prefix + '/identity');
+      guard(token);
+      const checked = await history(packet, {
+          identityId: payload.identity.identityId,
+          sequence: payload.identity.sequence,
+          hash: payload.identityHash,
+        }),
+        own = checked.state.devices.find((d) => d.id === session.device);
+      need(own?.state === 'active', 'Only an active original device can request rotation.');
+      const deviceSecret = secret(),
+        device = await newProtectedKey(account, deviceSecret),
+        mls = await newMlsSigningKeys(),
+        event = await protectedIdentityEvent(checked.state, {
+          id: crypto.randomUUID(),
+          action: 'rotate',
+          subject: {
+            id: own.id,
+            generation: own.generation + 1,
+            publicKey: device.publicKey,
+            mlsSigningKey: mls.publicKey,
+          },
+        }),
+        deviceKey = await unlockProtectedKey(device.privateKey, deviceSecret),
+        rootKey = payload.root
+          ? await unlockProtectedKey(payload.root.privateKey, payload.root.secret)
+          : null,
+        transition = {
+          identityId: checked.state.identityId,
+          rootPublicKey: checked.state.rootPublicKey,
+          event,
+          rootSignature: rootKey ? await signProtected(event, rootKey) : null,
+          deviceSignature: await signProtected(event, deviceKey),
+          label,
+          replace: false,
+          confirm: 'authorize this signed device transition',
+        },
+        state = rootKey
+          ? await applyProtectedIdentityEvent(
+              checked.state,
+              event,
+              transition.rootSignature,
+              transition.deviceSignature,
+            )
+          : checked.state,
+        nextPayload = {
+          version: 1,
+          root: payload.root,
+          device: { ...device, secret: deviceSecret, id: own.id },
+          mls,
+          identity: state,
+          identityHash: await identityStateHash(state),
+          contacts: payload.contacts,
+          packages: {},
+          pendingTransition: transition,
+          pendingAuthority: null,
+        },
+        vault = await createProtectedDeviceVault({
+          account,
+          device: own.id,
+          password,
+          payload: nextPayload,
+          generation: row.generation + 1,
+        });
+      try {
+        guard(token);
+        const pending = {
+          key: pendingDeviceEntry(account),
+          account,
+          device: own.id,
+          generation: vault.envelope.header.generation,
+          envelope: vault.envelope,
+        };
+        await protectedLocalCommit([{ key: pending.key, expected: 0, next: pending }]);
+        guard(token);
+        if (rootKey) {
+          lockProtectedVault(session);
+          session = vault.session;
+          const own = await finishEnrollment(pending, token);
+          return { completed: true, own };
+        }
+        lock();
+        return {
+          completed: false,
+          request: transition,
+          deviceFingerprint: (await publicProtectedKey(device.publicKey)).fingerprint,
+        };
+      } catch (error) {
+        if (session === vault.session) lock();
+        throw error;
+      } finally {
+        if (session !== vault.session) lockProtectedVault(vault.session);
+      }
+    });
+  }
+  async function refreshPendingDevice(password) {
+    lock();
+    const token = epoch;
+    return withProtectedLock(account, async () => {
+      const row = await protectedLocalGet(pendingDeviceEntry(account));
+      guard(token);
+      need(row, 'No public device request is pending.');
+      const opened = await unlockProtectedDeviceVault(row.envelope, password, {
+        account,
+        device: row.device,
+        minGeneration: row.generation,
+      });
+      try {
+        guard(token);
+        const payload = structuredClone(opened.payload),
+          old = payload.pendingTransition;
+        need(
+          old &&
+            !old.rootSignature &&
+            !old.replace &&
+            ['enroll', 'rotate'].includes(old.event.action),
+          'Unlock and retry this signed root transition exactly; it cannot be replaced by an unsigned request.',
+        );
+        const packet = await api(prefix + '/identity');
+        guard(token);
+        const checked = await history(packet, {
+          identityId: payload.identity.identityId,
+          sequence: payload.identity.sequence,
+          hash: payload.identityHash,
+        });
+        if (packet.history.events.some((e) => e.document.id === old.event.id)) {
+          session = opened;
+          return { completed: true, own: await finishEnrollment(row, token) };
+        }
+        const event = await protectedIdentityEvent(checked.state, {
+            id: crypto.randomUUID(),
+            action: old.event.action,
+            subject: old.event.subject,
+          }),
+          key = await unlockProtectedKey(payload.device.privateKey, payload.device.secret),
+          request = { ...old, event, deviceSignature: await signProtected(event, key) };
+        payload.identity = checked.state;
+        payload.identityHash = checked.hash;
+        payload.pendingTransition = request;
+        const updated = await updateProtectedDeviceVault(row.envelope, opened, payload);
+        guard(token);
+        await protectedLocalCommit([
+          {
+            key: row.key,
+            expected: row.generation,
+            next: { ...row, generation: updated.generation, envelope: updated.envelope },
+          },
+        ]);
+        guard(token);
+        return {
+          completed: false,
+          request,
+          deviceFingerprint: (await publicProtectedKey(payload.device.publicKey)).fingerprint,
+        };
+      } catch (error) {
+        if (session === opened) lock();
+        throw error;
+      } finally {
+        if (session !== opened) lockProtectedVault(opened);
+      }
+    });
+  }
+  async function discardPendingDevice(confirmation) {
+    need(
+      confirmation === 'delete pending local keys even if already authorized',
+      'Confirm irreversible pending-key deletion, including keys whose acknowledgement may have been lost.',
+    );
+    lock();
+    const token = epoch;
+    return withProtectedLock(account, async () => {
+      const row = await protectedLocalGet(pendingDeviceEntry(account));
+      guard(token);
+      need(row, 'No pending device keys exist.');
+      await protectedLocalCommit([{ key: row.key, expected: row.generation, next: null }]);
+      guard(token);
+      return { deleted: true };
+    });
+  }
+  async function finishAuthority(row, payload, token) {
+    const transition = payload.pendingAuthority;
+    need(transition, 'No signed root-authority transition is pending.');
+    await api(prefix + '/identity', transition);
+    guard(token);
+    const packet = await api(prefix + '/identity');
+    guard(token);
+    const checked = await history(packet, {
+      identityId: payload.identity.identityId,
+      sequence: payload.identity.sequence,
+      hash: payload.identityHash,
+    });
+    const accepted = packet.history.events.find((e) => e.document.id === transition.event.id);
+    need(
+      accepted && canonical(accepted.document) === canonical(transition.event),
+      'The root authority acknowledgement does not match this exact transition.',
+    );
+    await save(
+      row,
+      { ...payload, identity: checked.state, identityHash: checked.hash, pendingAuthority: null },
+      token,
+    );
+    return publicState();
+  }
+  async function revokeDevice(deviceId, fingerprint, confirmation) {
+    need(
+      confirmation === 'revoke this exact device',
+      'Confirm revoking this exact device; downloaded copies cannot be erased.',
+    );
+    return exclusive(async ({ row, payload, token }) => {
+      need(payload.root, 'Use the account-root device for a signed cryptographic revocation.');
+      need(
+        !payload.pendingAuthority,
+        'Retry the existing root-authority change before creating another.',
+      );
+      const packet = await api(prefix + '/identity');
+      guard(token);
+      const checked = await history(packet, {
+          identityId: payload.identity.identityId,
+          sequence: payload.identity.sequence,
+          hash: payload.identityHash,
+        }),
+        device = checked.state.devices.find((d) => d.id === deviceId);
+      need(
+        device?.state === 'active' && device.fingerprint === fingerprint,
+        'Confirm the exact current device fingerprint before revoking.',
+      );
+      const event = await protectedIdentityEvent(checked.state, {
+          id: crypto.randomUUID(),
+          action: 'revoke',
+          subject: { id: device.id, generation: device.generation },
+        }),
+        rootKey = await unlockProtectedKey(payload.root.privateKey, payload.root.secret),
+        rootSignature = await signProtected(event, rootKey);
+      await applyProtectedIdentityEvent(checked.state, event, rootSignature, null);
+      guard(token);
+      payload.identity = checked.state;
+      payload.identityHash = checked.hash;
+      payload.pendingAuthority = {
+        identityId: checked.state.identityId,
+        rootPublicKey: checked.state.rootPublicKey,
+        event,
+        rootSignature,
+        deviceSignature: null,
+        label: 'Root-revoked device',
+        replace: false,
+        confirm: 'authorize this signed device transition',
+      };
+      row = await save(row, payload, token);
+      return finishAuthority(row, payload, token);
+    });
+  }
+  async function retryAuthority() {
+    return exclusive(async ({ row, payload, token }) => finishAuthority(row, payload, token));
+  }
+  async function exportCiphertext(id, confirmation) {
+    need(
+      confirmation === 'export exact original-recipient ciphertext',
+      'Confirm exporting this exact record’s original-recipient ciphertext. This does not recreate erased epoch keys.',
+    );
+    return exclusive(async ({ payload, token }) => {
+      const response = await api(prefix + '/records/' + id + '?deviceId=' + session.device);
+      guard(token);
+      const own = payload.identity.devices.find((d) => d.id === session.device),
+        version = response.record.messages.length,
+        proof = {
+          action: 'export',
+          profile: MLS_PROFILE,
+          recordId: id,
+          version,
+          deviceId: session.device,
+          generation: own.generation,
+        },
+        key = await unlockProtectedKey(payload.device.privateKey, payload.device.secret),
+        signature = await signProtected(proof, key);
+      guard(token);
+      const result = await api(prefix + '/records/' + id + '/export', {
+        deviceId: session.device,
+        version,
+        signature,
+        confirm: 'export exact encrypted record',
+      });
+      guard(token);
+      return result;
+    });
+  }
   async function publishPackages(count = 4) {
     need(
       Number.isInteger(count) && count >= 1 && count <= 8,
@@ -622,7 +951,22 @@ export function createProtectedClient({ account, api, onLock = () => {} }) {
       getSession: () => session,
       history,
     }),
-    enroll,
+    enroll: (password, label, acknowledgeNoRecovery) =>
+      enroll(password, label, acknowledgeNoRecovery, false),
+    replaceRoot: async (password, label, acknowledgeNoRecovery, confirmation) => {
+      need(
+        confirmation === 'replace root and permanently lose old local history',
+        'Confirm permanent loss of this browser’s old protected history and all old-root verification before replacing the root.',
+      );
+      lock();
+      return enroll(password, label, acknowledgeNoRecovery, true);
+    },
+    refreshPendingDevice,
+    discardPendingDevice,
+    rotateDevice,
+    revokeDevice,
+    retryAuthority,
+    exportCiphertext,
     prepareLinked,
     authorizeLinked,
     unlock,

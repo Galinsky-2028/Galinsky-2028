@@ -46,6 +46,7 @@ try {
       noDiscovery: true,
       include: [
         'react',
+        '@simplewebauthn/browser',
         'react-dom/client',
         'react/jsx-dev-runtime',
         '@noble/hashes/argon2.js',
@@ -559,6 +560,20 @@ try {
     }, linking.request),
     /fingerprint/,
   );
+  assert.match(
+    await a.page.evaluate(async (linking) => {
+      try {
+        await window.client.authorizeLinked(
+          { ...linking.request, privateKey: 'MUST_NOT_SEND_PRIVATE_FIELD_7210' },
+          linking.deviceFingerprint,
+        );
+        return 'unexpected';
+      } catch (e) {
+        return e.message;
+      }
+    }, linking),
+    /unexpected fields/,
+  );
   await a.page.evaluate(
     async (linking) => window.client.authorizeLinked(linking.request, linking.deviceFingerprint),
     linking,
@@ -594,6 +609,153 @@ try {
     ).rows[0].n,
     2,
     'lost root-approval acknowledgement retries without another signed event',
+  );
+  const linkedRotation = await linkedPage.evaluate(
+    async (password) =>
+      window.client.rotateDevice(
+        password,
+        'Rotated linked browser',
+        true,
+        'rotate device and permanently lose old local history',
+      ),
+    password + ' linked rotation',
+  );
+  assert.equal(linkedRotation.completed, false);
+  const thirdContext = await browser.newContext();
+  await thirdContext.addCookies(await a.context.cookies());
+  const thirdPage = await thirdContext.newPage();
+  await thirdPage.goto(origin + '/local-test');
+  await thirdPage.evaluate(
+    async ({ account, csrf }) => {
+      const { createProtectedClient } = await import('/apps/portal/src/protected-client.mjs');
+      window.client = createProtectedClient({
+        account,
+        api: async (path, body) => {
+          const r = await fetch(path, {
+            method: body ? 'POST' : 'GET',
+            headers: body ? { 'Content-Type': 'application/json', 'x-csrf-token': csrf } : {},
+            body: body ? JSON.stringify(body) : undefined,
+          });
+          const v = await r.json();
+          if (!r.ok) throw Error(v.message || v.error);
+          return v;
+        },
+      });
+    },
+    { account: a.account, csrf },
+  );
+  const third = await thirdPage.evaluate(
+    async ({ password, first }) =>
+      window.client.prepareLinked(
+        password,
+        first.identityId,
+        first.rootFingerprint,
+        'Third synthetic device',
+        true,
+      ),
+    { password, first },
+  );
+  await a.page.evaluate(
+    async (r) => window.client.authorizeLinked(r.request, r.deviceFingerprint),
+    third,
+  );
+  assert.match(
+    await a.page.evaluate(async (r) => {
+      try {
+        await window.client.authorizeLinked(r.request, r.deviceFingerprint);
+        return 'unexpected';
+      } catch (e) {
+        return e.message;
+      }
+    }, linkedRotation),
+    /unauthorized|stale/,
+  );
+  const refreshedRotation = await linkedPage.evaluate(
+    async (password) => window.client.refreshPendingDevice(password),
+    password + ' linked rotation',
+  );
+  assert.notEqual(refreshedRotation.request.event.id, linkedRotation.request.event.id);
+  assert.equal(refreshedRotation.deviceFingerprint, linkedRotation.deviceFingerprint);
+
+  await a.page.evaluate(
+    async (r) => window.client.authorizeLinked(r.request, r.deviceFingerprint),
+    refreshedRotation,
+  );
+  const revokedLinked = await linkedPage.evaluate(
+    async (password) => window.client.unlock(password),
+    password + ' linked rotation',
+  );
+  assert.equal(revokedLinked.hasRoot, false);
+  assert.equal(revokedLinked.devices.find((d) => d.id === linked.deviceId).generation, 2);
+  await a.page.evaluate(() => {
+    window.loseAck = true;
+  });
+  assert.match(
+    await a.page.evaluate(async (linked) => {
+      try {
+        await window.client.revokeDevice(
+          linked.deviceId,
+          linked.deviceFingerprint,
+          'revoke this exact device',
+        );
+        return 'unexpected';
+      } catch (e) {
+        return e.message;
+      }
+    }, revokedLinked),
+    /lost acknowledgement/,
+  );
+  assert.equal((await a.page.evaluate(() => window.client.publicState())).pendingAuthority, true);
+  assert.equal((await a.page.evaluate(async () => window.client.retryAuthority())).sequence, 5);
+  assert.match(
+    await linkedPage.evaluate(async () => {
+      try {
+        await window.client.publishPackages(1);
+        return 'unexpected';
+      } catch (e) {
+        return e.message;
+      }
+    }),
+    /retired|quarantined/,
+  );
+  await thirdPage.evaluate(async () =>
+    window.client.discardPendingDevice('delete pending local keys even if already authorized'),
+  );
+  assert.match(
+    await thirdPage.evaluate(async (password) => {
+      try {
+        await window.client.unlock(password);
+        return 'unexpected';
+      } catch (e) {
+        return e.message;
+      }
+    }, password),
+    /No protected device/,
+  );
+  await thirdContext.close();
+  await a.page.evaluate(
+    async (third) =>
+      window.client.revokeDevice(
+        third.request.event.subject.id,
+        third.deviceFingerprint,
+        'revoke this exact device',
+      ),
+    third,
+  );
+  assert.match(
+    await a.page.evaluate(async (first) => {
+      try {
+        await window.client.revokeDevice(
+          first.deviceId,
+          first.deviceFingerprint,
+          'revoke this exact device',
+        );
+        return 'unexpected';
+      } catch (e) {
+        return e.message;
+      }
+    }, first),
+    /unauthorized|stale/,
   );
   await linkedContext.close();
   const tab = await a.context.newPage();
@@ -637,6 +799,22 @@ try {
   await a.page.getByRole('button', { name: new RegExp(record.id + ' ·') }).click();
   await a.page.getByText('BROWSER_MLS_PRIVATE_NARRATIVE_7210', { exact: true }).waitFor();
   await a.page.getByText('BROWSER_MLS_PRIVATE_REPLY_7210', { exact: true }).waitFor();
+  const exportDownload = a.page.waitForEvent('download');
+  await a.page
+    .getByRole('button', { name: 'Export this exact original-recipient ciphertext', exact: true })
+    .click();
+  const exported = await exportDownload,
+    exportBytes = await readFile(await exported.path(), 'utf8');
+  assert(!exportBytes.includes('BROWSER_MLS_PRIVATE_NARRATIVE_7210'));
+  assert(!exportBytes.includes('PRIVATE KEY'));
+  assert(
+    (
+      await pool.query(
+        "SELECT count(*)::int AS n FROM g28.protected_lifecycle_events WHERE record_id=$1 AND action='mls_ciphertext_export'",
+        [record.id],
+      )
+    ).rows[0].n >= 1,
+  );
   await a.page.setViewportSize({ width: 360, height: 800 });
   assert(await a.page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1));
   assert.equal(await a.page.locator('iframe').count(), 0);
@@ -647,14 +825,237 @@ try {
     'locking clears rendered plaintext',
   );
   await a.page.evaluate(() => window.unmountProtected());
+  const rotatedPhrase = password + ' rotated',
+    rotated = await b.page.evaluate(
+      async (password) =>
+        window.client.rotateDevice(
+          password,
+          'Rotated synthetic root device',
+          true,
+          'rotate device and permanently lose old local history',
+        ),
+      rotatedPhrase,
+    );
+  assert.equal(rotated.completed, true);
+  assert.equal(rotated.own.rootFingerprint, second.rootFingerprint);
+  assert.equal(rotated.own.deviceId, second.deviceId);
+  assert.notEqual(rotated.own.deviceFingerprint, second.deviceFingerprint);
+  assert.equal(rotated.own.devices.find((d) => d.id === second.deviceId).generation, 2);
+  const rotationLocal = await b.page.evaluate(async (account) => {
+    const { protectedLocalList } = await import('/apps/portal/src/protected-local.mjs');
+    return (await protectedLocalList(account)).map((r) => r.key);
+  }, b.account);
+  assert(
+    rotationLocal.every((key) => !key.startsWith('thread:')),
+    'rotation atomically deletes old local epoch/history vaults',
+  );
+  await b.page.evaluate(() => window.client.lock());
+  await b.page.evaluate(async (password) => window.client.unlock(password), rotatedPhrase);
+  const rotatedRow = (
+    await pool.query('SELECT state,scope FROM g28.protected_devices WHERE id=$1', [second.deviceId])
+  ).rows[0];
+  assert.equal(rotatedRow.state, 'enrolled');
+  assert.equal(rotatedRow.scope, null, 'key rotation never inherits staff recipient approval');
+  assert.match(
+    await b.page.evaluate(async (id) => {
+      try {
+        await window.client.synchronize(id);
+        return 'unexpected';
+      } catch (e) {
+        return e.message;
+      }
+    }, record.id),
+    /original authority/,
+  );
+  await a.page.evaluate(async (password) => {
+    window.client = window.makeClient();
+    return window.client.unlock(password);
+  }, password);
+  const unchangedRoot = await a.page.evaluate(
+    async (second) => window.client.peer(second.identityId, second.rootFingerprint),
+    second,
+  );
+  assert.equal(
+    unchangedRoot.verification.status,
+    'verified',
+    'ordinary root-authorized device rotation preserves root verification',
+  );
+  assert.match(
+    await a.page.evaluate(async (id) => {
+      try {
+        await window.client.synchronize(id);
+        return 'unexpected';
+      } catch (e) {
+        return e.message;
+      }
+    }, record.id),
+    /original recipient device changed/,
+  );
+  const replacementPhrase = password + ' replacement';
+  await b.page.evaluate(() => {
+    window.loseAck = true;
+  });
+  assert.match(
+    await b.page.evaluate(async (password) => {
+      try {
+        await window.client.replaceRoot(
+          password,
+          'Replacement synthetic root',
+          true,
+          'replace root and permanently lose old local history',
+        );
+        return 'unexpected';
+      } catch (e) {
+        return e.message;
+      }
+    }, replacementPhrase),
+    /lost acknowledgement/,
+  );
+  const replacement = await b.page.evaluate(
+    async (password) => window.client.unlock(password),
+    replacementPhrase,
+  );
+  assert.notEqual(replacement.identityId, second.identityId);
+  assert.notEqual(replacement.rootFingerprint, second.rootFingerprint);
+  const changedRoot = await a.page.evaluate(
+    async (replacement) => window.client.peer(replacement.identityId, replacement.rootFingerprint),
+    replacement,
+  );
+  assert.equal(
+    changedRoot.verification.status,
+    'invalidated',
+    'root replacement cannot inherit verified contact trust',
+  );
+  assert.equal(
+    (
+      await pool.query('SELECT current FROM g28.protected_identities WHERE id=$1', [
+        second.identityId,
+      ])
+    ).rows[0].current,
+    false,
+  );
+  const afterReplacement = await b.page.evaluate(async (account) => {
+    const { protectedLocalList } = await import('/apps/portal/src/protected-local.mjs');
+    return (await protectedLocalList(account)).map((r) => r.key);
+  }, b.account);
+  assert(
+    afterReplacement.every((key) => !key.startsWith('thread:')),
+    'explicit rotation/replacement deletes only the owner’s old local thread vaults',
+  );
   // A second account in the same browser gets a distinct encrypted storage key.
   const isolated = await a.page.evaluate(async (account) => {
     const { protectedLocalGet, deviceEntry } = await import('/apps/portal/src/protected-local.mjs');
     return await protectedLocalGet(deviceEntry(account));
   }, b.account);
   assert.equal(isolated, null);
+  // Exercise the actual portal Shell/Settings, not a mocked logout helper.
+  await a.page.setViewportSize({ width: 1280, height: 900 });
+  await a.page.evaluate(async () => {
+    window.client.close();
+    history.replaceState({}, '', '/protected');
+    const div = document.createElement('div');
+    div.id = 'root';
+    document.body.append(div);
+    await import('/apps/portal/src/main.tsx');
+  });
+  await a.page.getByLabel('Local unlock phrase (16 characters minimum)').fill(password);
+  await a.page.getByRole('button', { name: 'Unlock this browser’s device', exact: true }).click();
+  await a.page.getByText(/Device unlocked locally/).waitFor();
+  const beforeLogout = await a.page.evaluate(async (account) => {
+    const { protectedLocalGet, deviceEntry } = await import('/apps/portal/src/protected-local.mjs');
+    return protectedLocalGet(deviceEntry(account));
+  }, a.account);
+  await a.page.getByRole('button', { name: 'Sign out', exact: true }).click();
+  await a.page.getByRole('heading', { name: 'Start here.', exact: true }).waitFor();
+  assert.deepEqual(
+    await a.page.evaluate(async (account) => {
+      const { protectedLocalGet, deviceEntry } =
+        await import('/apps/portal/src/protected-local.mjs');
+      return protectedLocalGet(deviceEntry(account));
+    }, a.account),
+    beforeLogout,
+    'normal sign-out must lock without deleting or rewriting encrypted protected keys',
+  );
+  const returnToken = randomToken(),
+    returnCsrf = randomToken();
+  await pool.query(
+    'INSERT INTO g28.sessions(token_hash,account_id,csrf_token,expires_at) VALUES($1,$2,$3,$4)',
+    [tokenHash(returnToken), a.account, returnCsrf, new Date(Date.now() + 86400000)],
+  );
+  await a.context.addCookies([
+    { name: 'g28-local', value: returnToken, url: origin, httpOnly: true, sameSite: 'Lax' },
+  ]);
+  await a.page.goto(origin + '/local-test');
+  await a.page.evaluate(async () => {
+    history.replaceState({}, '', '/settings');
+    const div = document.createElement('div');
+    div.id = 'root';
+    document.body.append(div);
+    await import('/apps/portal/src/main.tsx');
+  });
+  await a.page.getByRole('heading', { name: 'Account settings.', exact: true }).waitFor();
+  await a.page.getByRole('button', { name: 'Sign out everywhere', exact: true }).click();
+  await a.page.getByRole('heading', { name: 'Start here.', exact: true }).waitFor();
+  assert.deepEqual(
+    await a.page.evaluate(async (account) => {
+      const { protectedLocalGet, deviceEntry } =
+        await import('/apps/portal/src/protected-local.mjs');
+      return protectedLocalGet(deviceEntry(account));
+    }, a.account),
+    beforeLogout,
+    'global session revocation must preserve encrypted local keys too',
+  );
+  await b.page.evaluate(async () => {
+    window.client.close();
+    history.replaceState({}, '', '/settings');
+    const div = document.createElement('div');
+    div.id = 'root';
+    document.body.append(div);
+    await import('/apps/portal/src/main.tsx');
+  });
+  await b.page.getByRole('heading', { name: 'Account settings.', exact: true }).waitFor();
+  await b.page.getByLabel('Type “close my account” to confirm').fill('close my account');
+  await b.page.getByRole('button', { name: 'Close my account', exact: true }).click();
+  await b.page
+    .getByText('Administrator accounts require a reviewed offboarding process.', { exact: true })
+    .waitFor();
+  assert(
+    await b.page.evaluate(async (account) => {
+      const { protectedLocalGet, deviceEntry } =
+        await import('/apps/portal/src/protected-local.mjs');
+      return !!(await protectedLocalGet(deviceEntry(account)));
+    }, b.account),
+    'a rejected staff-account closure cannot erase local keys',
+  );
+  config.adminOwnerEmailKey = tokenHash(randomUUID());
+  await b.page.getByRole('button', { name: 'Close my account', exact: true }).click();
+  await b.page.getByRole('heading', { name: 'Start here.', exact: true }).waitFor();
+  assert.equal(
+    await b.page.evaluate(async (account) => {
+      const { protectedLocalGet, deviceEntry } =
+        await import('/apps/portal/src/protected-local.mjs');
+      return protectedLocalGet(deviceEntry(account));
+    }, b.account),
+    null,
+    'explicit account closure removes its encrypted local keys',
+  );
+  for (const actor of actors)
+    for (const body of actor.requests) {
+      for (const forbidden of [
+        password,
+        'PRIVATE KEY',
+        'privateKey',
+        'MUST_NOT_SEND_PRIVATE_FIELD_7210',
+        'BROWSER_MLS_PRIVATE_NARRATIVE_7210',
+        'PRIVATE_FILE_CANARY_7210',
+      ])
+        assert(
+          !body.includes(forbidden),
+          'all lifecycle network bodies exclude private material: ' + forbidden,
+        );
+    }
   console.log(
-    'Protected local browser passed: encrypted-only IndexedDB, no private-key/report/attachment egress, lost enrollment/message ACK retries, root/device linking without inherited history, mutual verification, actual MLS replies, concurrent epoch reconciliation, inert attachments, cross-tab lock and mobile UI plaintext clearing.',
+    'Protected local/lifecycle browser passed (signed revocation retry, root/linked-device rotation, no approval/history inheritance, lost-ACK root replacement and audited item export): encrypted-only IndexedDB, no private-key/report/attachment egress, lost enrollment/message ACK retries, root/device linking without inherited history, mutual verification, actual MLS replies, concurrent epoch reconciliation, inert attachments, cross-tab lock and mobile UI plaintext clearing.',
   );
 } finally {
   await browser?.close();

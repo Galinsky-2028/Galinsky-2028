@@ -32,3 +32,7 @@ Attachment master keys, filenames and manifests stay inside MLS payloads. The ou
 - Existing core suites cover actual MLS ratchets, attachment fixtures, failed-message state preservation, identity raw-key nonreuse, vault integrity and opaque-session locking.
 
 This review is AI-assisted, owner-authorized and source-bound, not an independent human audit or certification. The endpoint transparency/TLS deployment obligations, policy selection and remaining device lifecycle UI must still be completed before activation. G28-044 recurring future-charge enforcement and missing actual staff/mail/merchant inputs remain separate work; this change does not enable them.
+
+## Subsequent device lifecycle follow-up
+
+The root-authorized rotation, revocation, replacement and controlled item-export UI is implemented and browser-tested in the follow-up source described by [the lifecycle review](RATCHETED_PROTECTED_DEVICE_LIFECYCLE.md). PR157 itself is now merged and deployed on both private services, with migration024 installed; see the exact release record. Endpoint executable-release/transparency/transport integration and real activation inputs remain separate.

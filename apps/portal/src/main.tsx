@@ -1,4 +1,4 @@
-import {deleteProtectedLocalAccount} from './protected-local.mjs';
+import {deleteProtectedLocalAccount,lockProtectedLocalAccount} from './protected-local.mjs';
 import {TaskBoard,OperationsAdmin} from './Operations';
 import {ActivityReview} from './ActivityReview';
 import {StaffSecurity} from './StaffSecurity';
@@ -63,7 +63,7 @@ function PasskeyEntry(){
 }
 function Verify(){const{refresh}=useContext(Context);const[,navigate]=usePath();const[token]=useState(()=>{const value=new URLSearchParams(location.hash.slice(1)).get('token')||'';history.replaceState({},'',location.pathname);return value;});const[error,setError]=useState(''),[busy,setBusy]=useState(false);async function verify(){setBusy(true);try{await request('/api/auth/verify',{token});await refresh();navigate('/');}catch(e){setError((e as Error).message);}finally{setBusy(false);}}return <div className="narrow panel"><span className="eyebrow">WELCOME TO THE TEAM</span><h1>Confirm your sign-in.</h1><p>Continue only if you requested this email in this browser. Opening the email alone does not create a session.</p>{error&&<Notice error>{error}</Notice>}<button className="btn" onClick={verify} disabled={busy||!token}>{busy?'Confirming...':'Continue to my workspace'}</button><p className="fine">Links expire after 15 minutes and can be used once.</p><Link to="/join" className="textlink">Request a new link</Link></div>;}
 const nav=[['/','Your first action'],['/materials','Materials library'],['/roles','Find your role'],['/orientation','First-hour orientation'],['/tasks','Available actions'],['/forms','Forms & practice'],['/activity','Activity status'],['/teams','Teams & events'],['/help','Help & corrections'],['/settings','Account settings']];
-function Shell({children,path}:{children:React.ReactNode;path:string}){const{session,refresh,config}=useContext(Context);const[,navigate]=usePath();const[error,setError]=useState('');async function out(){try{await request('/api/auth/logout',{},session?.csrf);if(session?.account.id)await deleteProtectedLocalAccount(session.account.id);sessionStorage.removeItem('g28-bookmarks');await refresh();navigate('/join');}catch(e){setError((e as Error).message);}}return <div className="workspace"><aside><span className="eyebrow">VOLUNTEER WORKSPACE</span><nav aria-label="Volunteer navigation">{nav.map(([p,t])=><Link key={p} to={p} className={path===p?'active':''} aria-current={path===p?'page':undefined}>{t}</Link>)}{['owner','treasurer','auditor'].includes(session?.account.role||'')&&<Link to="/admin" className={path==='/admin'?'active':''}>Treasury administration</Link>}{['owner','auditor'].includes(session?.account.role||'')&&<Link to="/operations" className={path==='/operations'?'active':''}>Operations status</Link>}{config?.features.campaignEditor===true&&['owner','editor'].includes(session?.account.role||'')&&<a href="/editor/campaigns">Campaign content editor</a>}{['owner','auditor'].includes(session?.account.role||'')&&<Link to="/visitors" className={path==='/visitors'?'active':''}>Visitor analytics</Link>}{config?.features.staff&&session?.account.role!=='volunteer'&&<><Link to="/security">Staff security</Link><Link to="/activity-review">Activity review</Link><Link to="/assignments-admin">Assignments & training</Link></>}<Link to="/protected">Protected messages</Link></nav><div className="sidebar-note"><strong>Read. Learn. Act responsibly.</strong><p>Materials access is not authorization for restricted activities.</p></div><button className="text-button" onClick={out}>Sign out</button>{error&&<p role="alert">{error}</p>}</aside><div className="work-main">{children}</div></div>;}
+function Shell({children,path}:{children:React.ReactNode;path:string}){const{session,refresh,config}=useContext(Context);const[,navigate]=usePath();const[error,setError]=useState('');async function out(){if(session?.account.id)lockProtectedLocalAccount(session.account.id);try{await request('/api/auth/logout',{},session?.csrf);sessionStorage.removeItem('g28-bookmarks');await refresh();navigate('/join');}catch(e){setError((e as Error).message);}}return <div className="workspace"><aside><span className="eyebrow">VOLUNTEER WORKSPACE</span><nav aria-label="Volunteer navigation">{nav.map(([p,t])=><Link key={p} to={p} className={path===p?'active':''} aria-current={path===p?'page':undefined}>{t}</Link>)}{['owner','treasurer','auditor'].includes(session?.account.role||'')&&<Link to="/admin" className={path==='/admin'?'active':''}>Treasury administration</Link>}{['owner','auditor'].includes(session?.account.role||'')&&<Link to="/operations" className={path==='/operations'?'active':''}>Operations status</Link>}{config?.features.campaignEditor===true&&['owner','editor'].includes(session?.account.role||'')&&<a href="/editor/campaigns">Campaign content editor</a>}{['owner','auditor'].includes(session?.account.role||'')&&<Link to="/visitors" className={path==='/visitors'?'active':''}>Visitor analytics</Link>}{config?.features.staff&&session?.account.role!=='volunteer'&&<><Link to="/security">Staff security</Link><Link to="/activity-review">Activity review</Link><Link to="/assignments-admin">Assignments & training</Link></>}<Link to="/protected">Protected messages</Link></nav><div className="sidebar-note"><strong>Read. Learn. Act responsibly.</strong><p>Materials access is not authorization for restricted activities.</p></div><button className="text-button" onClick={out}>Sign out</button>{error&&<p role="alert">{error}</p>}</aside><div className="work-main">{children}</div></div>;}
 function Home(){return <><span className="eyebrow">WELCOME TO THE TEAM</span><h1>Make your first<br/><em>move count.</em></h1><p className="lead">You do not need to do everything. Start with one action you can do well.</p><div className="first-action"><div><span className="eyebrow">YOUR FIRST HOUR</span><h2>A strong start,<br/>at your pace.</h2><p>Understand the principle. Choose a role. Practice one conversation.</p><Link className="btn" to="/orientation">Start orientation &rarr;</Link></div><ol><li><strong>Learn the principle</strong><p>Justice for All: protect rights, identify actual harm and repair it without creating another injustice.</p></li><li><strong>Choose a manageable role</strong><p>Match your time and interests to a useful first step.</p></li><li><strong>Use current materials</strong><p>Check the source, version and activity status before taking action.</p></li></ol></div><div className="cards two"><Link to="/materials" className="panel card-link"><h2>Your materials.</h2><p>Find approved guides in readable, searchable form.</p><span className="textlink">Open the library &rarr;</span></Link><Link to="/forms/action-card" className="panel card-link"><h2>Practice first.</h2><p>Turn a good intention into a clear plan, without collecting anyone else's information.</p><span className="textlink">Make an action card &rarr;</span></Link></div><Notice>No petitioning or other regulated activity is active without its exact current approval. Training does not substitute for authorization.</Notice></>;}
 function Roles(){
  const {session}=useContext(Context);
@@ -370,10 +370,11 @@ function Settings(){
   finally{setExportBusy(false);}
  }
  async function signOutEverywhere(){
+  if(session?.account.id)lockProtectedLocalAccount(session.account.id);
   setError('');setMessage('');setSignoutBusy(true);
   try{
    await request('/api/account/revoke-sessions',{confirm:'sign out everywhere'},session?.csrf);
-   if(session?.account.id)await deleteProtectedLocalAccount(session.account.id);sessionStorage.removeItem('g28-bookmarks');await refresh();navigate('/join');
+   sessionStorage.removeItem('g28-bookmarks');await refresh();navigate('/join');
   }catch(e){setError((e as Error).message);}
   finally{setSignoutBusy(false);}
  }
@@ -381,7 +382,7 @@ function Settings(){
   setError('');setMessage('');
   try{
    await request('/api/account/close',{confirm},session?.csrf);
-   if(session?.account.id)await deleteProtectedLocalAccount(session.account.id);sessionStorage.removeItem('g28-bookmarks');await refresh();navigate('/join');
+   if(session?.account.id){try{await deleteProtectedLocalAccount(session.account.id);}catch{window.alert('Your account is closed. This browser could not erase its encrypted local keys and messages. Clear this site’s storage in your browser’s privacy settings.');}}sessionStorage.removeItem('g28-bookmarks');await refresh();navigate('/join');
   }catch(e){setError((e as Error).message);}
  }
  return <>
@@ -400,12 +401,12 @@ function Settings(){
   </div>
   <div className="panel spaced">
    <h2>Sign out of all devices</h2>
-   <p>Immediately revoke every active volunteer session, including this one. Signing in again will require a new verified email link.</p>
+   <p>Immediately revoke every active volunteer session, including this one. Signing in again requires a registered passkey or an enabled verified email link. Protected keys remain encrypted in this browser; signing out locks them.</p>
    <button className="btn outline" disabled={signoutBusy} onClick={signOutEverywhere}>{signoutBusy?'Signing out...':'Sign out everywhere'}</button>
   </div>
   <div className="panel spaced">
    <h2>Close this volunteer account</h2>
-   <p>Closing the account revokes its sessions and deletes its account access records. This does not erase any separately required campaign finance records.</p>
+   <p>Closing the account revokes its sessions and deletes its account access records and this browser’s protected keys and message history. Old protected history cannot be recovered without those keys. Previously saved copies elsewhere cannot be recalled. Records subject to legal retention holds and separately required campaign finance records may remain.</p>
    <label>Type “close my account” to confirm<input value={confirm} onChange={e=>setConfirm(e.target.value)}/></label>
    <button className="btn outline" onClick={close} disabled={confirm!=='close my account'}>Close my account</button>
   </div>

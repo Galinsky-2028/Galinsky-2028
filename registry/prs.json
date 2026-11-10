@@ -12,7 +12,7 @@
   "progressEvidenceNote": "Source-reviewed software implementation: 66/72; full-scope release-evidenced accepted packages: 13/72. Treasury/outreach additions are source-tested; protected ratcheted protocol and recurring enforcement remain real software gaps. Every verified merged PR is accepted separately from package scope and deployment.",
   "schemaVersion": 1,
   "roadmapVersion": 7,
-  "observedAt": "2026-11-10T09:22:19.096Z",
+  "observedAt": "2026-11-10T09:46:52.383Z",
   "units": [
     {
       "id": "G28-001",
@@ -848,11 +848,11 @@
       "externalDependencies": [],
       "externalPrerequisites": [],
       "status": "in_progress",
-      "acceptanceBlocker": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
+      "acceptanceBlocker": "Ratcheted v2 delivery, encrypted local custody, root-authorized device linking/rotation/revocation/replacement, manual trust invalidation and controlled item export are implemented and browser-tested. Remaining source work: hardened executable-release closure/CSP/SRI, authenticated update/log-witness integration and activation guards. Actual staff, recovery-policy selection and hosted security evidence remain separate inputs.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
         "implementation": "remaining_implementation",
-        "reviewedAt": "2026-11-10T09:14:55.784Z",
+        "reviewedAt": "2026-11-10T09:54:08.362Z",
         "sourceFiles": [
           {
             "path": "apps/api/src/protected-mls-routes.mjs",
@@ -864,11 +864,11 @@
           },
           {
             "path": "apps/portal/src/protected-client.mjs",
-            "sha256": "8e01562292c09bf816ac244b6f4589574bea4110267d963ce6ea9c354b480eb1"
+            "sha256": "4b3ad95c1b3a841ae1a4720566d7d99beaa9c4a21139a4b0d36a3a9048b56f7c"
           },
           {
             "path": "apps/portal/src/protected-local.mjs",
-            "sha256": "c343b7ac5651bd4433fdf7462291ba4015816582b7f785db3c5abe2490e624f6"
+            "sha256": "41e518713631c46a93537f339c87e1ee71535948b2b38874e64f5b7203ce0279"
           },
           {
             "path": "apps/portal/src/protected-threads.mjs",
@@ -876,7 +876,7 @@
           },
           {
             "path": "apps/portal/src/ProtectedReports.tsx",
-            "sha256": "95aa99bdc4cadde8af3e8dcd0cd79f1b0fd72a9d8050c064ad6f651bfdee268c"
+            "sha256": "35025230f8e5d72145e4961ccd5498c7f67b2dde6715a92ad93d6c4ddd16eddb"
           },
           {
             "path": "packages/core/protected-mls-envelope.mjs",
@@ -904,12 +904,16 @@
           },
           {
             "path": "tests/browser/protected-local.mjs",
-            "sha256": "e164cf66b81092de0930fc86f274f33b2636271e050cf31bd3a2e0c864932006"
+            "sha256": "f361e83e8fd55cbdf73e2026118ab922e587f8a4152450676de4431be4c50973"
+          },
+          {
+            "path": "apps/portal/src/main.tsx",
+            "sha256": "fe19f4a6aa62f3e0ee2426aaea9b260e346c42a2620981483fd42351a7359aad"
           }
         ],
-        "softwareGap": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
+        "softwareGap": "Ratcheted v2 delivery, encrypted local custody, root-authorized device linking/rotation/revocation/replacement, manual trust invalidation and controlled item export are implemented and browser-tested. Remaining source work: hardened executable-release closure/CSP/SRI, authenticated update/log-witness integration and activation guards. Actual staff, recovery-policy selection and hosted security evidence remain separate inputs.",
         "activationRequirement": "Select no-backup or encrypted-recovery policy; configure actual verified staff and named scoped recipient keys/fingerprints, migration 024 and least-privilege runtime grants; observe hosted TLS/transparency and browser journey. No activation or fabricated staff/mail/merchant inputs.",
-        "verification": "514 unit tests, 93 real PostgreSQL/HTTP integration tests and real Chromium ratcheted browser/UI journey pass locally; see docs/security/RATCHETED_PROTECTED_INTEGRATION.md. Exact CI and deployment remain separately recorded."
+        "verification": "Real Chromium/API/SQL lifecycle journey now covers root/linked rotation, stale public-request refresh, explicit pending-key disposal, signed revocation/lost-ACK retry, replacement without inherited trust/history, and audited UI ciphertext export, plus PR157 message/attachment/concurrency/rollback/egress tests. See docs/security/RATCHETED_PROTECTED_DEVICE_LIFECYCLE.md; CI/deployment separately recorded."
       }
     },
     {
@@ -927,11 +931,11 @@
       "externalDependencies": [],
       "externalPrerequisites": [],
       "status": "in_progress",
-      "acceptanceBlocker": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
+      "acceptanceBlocker": "Ratcheted v2 delivery, encrypted local custody, root-authorized device linking/rotation/revocation/replacement, manual trust invalidation and controlled item export are implemented and browser-tested. Remaining source work: hardened executable-release closure/CSP/SRI, authenticated update/log-witness integration and activation guards. Actual staff, recovery-policy selection and hosted security evidence remain separate inputs.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
         "implementation": "remaining_implementation",
-        "reviewedAt": "2026-11-10T09:14:55.784Z",
+        "reviewedAt": "2026-11-10T09:54:08.362Z",
         "sourceFiles": [
           {
             "path": "apps/api/src/protected-mls-routes.mjs",
@@ -943,11 +947,11 @@
           },
           {
             "path": "apps/portal/src/protected-client.mjs",
-            "sha256": "8e01562292c09bf816ac244b6f4589574bea4110267d963ce6ea9c354b480eb1"
+            "sha256": "4b3ad95c1b3a841ae1a4720566d7d99beaa9c4a21139a4b0d36a3a9048b56f7c"
           },
           {
             "path": "apps/portal/src/protected-local.mjs",
-            "sha256": "c343b7ac5651bd4433fdf7462291ba4015816582b7f785db3c5abe2490e624f6"
+            "sha256": "41e518713631c46a93537f339c87e1ee71535948b2b38874e64f5b7203ce0279"
           },
           {
             "path": "apps/portal/src/protected-threads.mjs",
@@ -955,7 +959,7 @@
           },
           {
             "path": "apps/portal/src/ProtectedReports.tsx",
-            "sha256": "95aa99bdc4cadde8af3e8dcd0cd79f1b0fd72a9d8050c064ad6f651bfdee268c"
+            "sha256": "35025230f8e5d72145e4961ccd5498c7f67b2dde6715a92ad93d6c4ddd16eddb"
           },
           {
             "path": "packages/core/protected-mls-envelope.mjs",
@@ -983,12 +987,16 @@
           },
           {
             "path": "tests/browser/protected-local.mjs",
-            "sha256": "e164cf66b81092de0930fc86f274f33b2636271e050cf31bd3a2e0c864932006"
+            "sha256": "f361e83e8fd55cbdf73e2026118ab922e587f8a4152450676de4431be4c50973"
+          },
+          {
+            "path": "apps/portal/src/main.tsx",
+            "sha256": "fe19f4a6aa62f3e0ee2426aaea9b260e346c42a2620981483fd42351a7359aad"
           }
         ],
-        "softwareGap": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
+        "softwareGap": "Ratcheted v2 delivery, encrypted local custody, root-authorized device linking/rotation/revocation/replacement, manual trust invalidation and controlled item export are implemented and browser-tested. Remaining source work: hardened executable-release closure/CSP/SRI, authenticated update/log-witness integration and activation guards. Actual staff, recovery-policy selection and hosted security evidence remain separate inputs.",
         "activationRequirement": "Select no-backup or encrypted-recovery policy; configure actual verified staff and named scoped recipient keys/fingerprints, migration 024 and least-privilege runtime grants; observe hosted TLS/transparency and browser journey. No activation or fabricated staff/mail/merchant inputs.",
-        "verification": "514 unit tests, 93 real PostgreSQL/HTTP integration tests and real Chromium ratcheted browser/UI journey pass locally; see docs/security/RATCHETED_PROTECTED_INTEGRATION.md. Exact CI and deployment remain separately recorded."
+        "verification": "Real Chromium/API/SQL lifecycle journey now covers root/linked rotation, stale public-request refresh, explicit pending-key disposal, signed revocation/lost-ACK retry, replacement without inherited trust/history, and audited UI ciphertext export, plus PR157 message/attachment/concurrency/rollback/egress tests. See docs/security/RATCHETED_PROTECTED_DEVICE_LIFECYCLE.md; CI/deployment separately recorded."
       }
     },
     {
@@ -1007,11 +1015,11 @@
       "externalDependencies": [],
       "externalPrerequisites": [],
       "status": "in_progress",
-      "acceptanceBlocker": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
+      "acceptanceBlocker": "Ratcheted v2 delivery, encrypted local custody, root-authorized device linking/rotation/revocation/replacement, manual trust invalidation and controlled item export are implemented and browser-tested. Remaining source work: hardened executable-release closure/CSP/SRI, authenticated update/log-witness integration and activation guards. Actual staff, recovery-policy selection and hosted security evidence remain separate inputs.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
         "implementation": "remaining_implementation",
-        "reviewedAt": "2026-11-10T09:14:55.784Z",
+        "reviewedAt": "2026-11-10T09:54:08.362Z",
         "sourceFiles": [
           {
             "path": "apps/api/src/protected-mls-routes.mjs",
@@ -1023,11 +1031,11 @@
           },
           {
             "path": "apps/portal/src/protected-client.mjs",
-            "sha256": "8e01562292c09bf816ac244b6f4589574bea4110267d963ce6ea9c354b480eb1"
+            "sha256": "4b3ad95c1b3a841ae1a4720566d7d99beaa9c4a21139a4b0d36a3a9048b56f7c"
           },
           {
             "path": "apps/portal/src/protected-local.mjs",
-            "sha256": "c343b7ac5651bd4433fdf7462291ba4015816582b7f785db3c5abe2490e624f6"
+            "sha256": "41e518713631c46a93537f339c87e1ee71535948b2b38874e64f5b7203ce0279"
           },
           {
             "path": "apps/portal/src/protected-threads.mjs",
@@ -1035,7 +1043,7 @@
           },
           {
             "path": "apps/portal/src/ProtectedReports.tsx",
-            "sha256": "95aa99bdc4cadde8af3e8dcd0cd79f1b0fd72a9d8050c064ad6f651bfdee268c"
+            "sha256": "35025230f8e5d72145e4961ccd5498c7f67b2dde6715a92ad93d6c4ddd16eddb"
           },
           {
             "path": "packages/core/protected-mls-envelope.mjs",
@@ -1063,12 +1071,16 @@
           },
           {
             "path": "tests/browser/protected-local.mjs",
-            "sha256": "e164cf66b81092de0930fc86f274f33b2636271e050cf31bd3a2e0c864932006"
+            "sha256": "f361e83e8fd55cbdf73e2026118ab922e587f8a4152450676de4431be4c50973"
+          },
+          {
+            "path": "apps/portal/src/main.tsx",
+            "sha256": "fe19f4a6aa62f3e0ee2426aaea9b260e346c42a2620981483fd42351a7359aad"
           }
         ],
-        "softwareGap": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
+        "softwareGap": "Ratcheted v2 delivery, encrypted local custody, root-authorized device linking/rotation/revocation/replacement, manual trust invalidation and controlled item export are implemented and browser-tested. Remaining source work: hardened executable-release closure/CSP/SRI, authenticated update/log-witness integration and activation guards. Actual staff, recovery-policy selection and hosted security evidence remain separate inputs.",
         "activationRequirement": "Select no-backup or encrypted-recovery policy; configure actual verified staff and named scoped recipient keys/fingerprints, migration 024 and least-privilege runtime grants; observe hosted TLS/transparency and browser journey. No activation or fabricated staff/mail/merchant inputs.",
-        "verification": "514 unit tests, 93 real PostgreSQL/HTTP integration tests and real Chromium ratcheted browser/UI journey pass locally; see docs/security/RATCHETED_PROTECTED_INTEGRATION.md. Exact CI and deployment remain separately recorded."
+        "verification": "Real Chromium/API/SQL lifecycle journey now covers root/linked rotation, stale public-request refresh, explicit pending-key disposal, signed revocation/lost-ACK retry, replacement without inherited trust/history, and audited UI ciphertext export, plus PR157 message/attachment/concurrency/rollback/egress tests. See docs/security/RATCHETED_PROTECTED_DEVICE_LIFECYCLE.md; CI/deployment separately recorded."
       }
     },
     {
@@ -1471,11 +1483,11 @@
       "externalDependencies": [],
       "externalPrerequisites": [],
       "status": "in_progress",
-      "acceptanceBlocker": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
+      "acceptanceBlocker": "Ratcheted v2 delivery, encrypted local custody, root-authorized device linking/rotation/revocation/replacement, manual trust invalidation and controlled item export are implemented and browser-tested. Remaining source work: hardened executable-release closure/CSP/SRI, authenticated update/log-witness integration and activation guards. Actual staff, recovery-policy selection and hosted security evidence remain separate inputs.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
         "implementation": "remaining_implementation",
-        "reviewedAt": "2026-11-10T09:14:55.784Z",
+        "reviewedAt": "2026-11-10T09:54:08.362Z",
         "sourceFiles": [
           {
             "path": "apps/api/src/protected-mls-routes.mjs",
@@ -1487,11 +1499,11 @@
           },
           {
             "path": "apps/portal/src/protected-client.mjs",
-            "sha256": "8e01562292c09bf816ac244b6f4589574bea4110267d963ce6ea9c354b480eb1"
+            "sha256": "4b3ad95c1b3a841ae1a4720566d7d99beaa9c4a21139a4b0d36a3a9048b56f7c"
           },
           {
             "path": "apps/portal/src/protected-local.mjs",
-            "sha256": "c343b7ac5651bd4433fdf7462291ba4015816582b7f785db3c5abe2490e624f6"
+            "sha256": "41e518713631c46a93537f339c87e1ee71535948b2b38874e64f5b7203ce0279"
           },
           {
             "path": "apps/portal/src/protected-threads.mjs",
@@ -1499,7 +1511,7 @@
           },
           {
             "path": "apps/portal/src/ProtectedReports.tsx",
-            "sha256": "95aa99bdc4cadde8af3e8dcd0cd79f1b0fd72a9d8050c064ad6f651bfdee268c"
+            "sha256": "35025230f8e5d72145e4961ccd5498c7f67b2dde6715a92ad93d6c4ddd16eddb"
           },
           {
             "path": "packages/core/protected-mls-envelope.mjs",
@@ -1527,12 +1539,16 @@
           },
           {
             "path": "tests/browser/protected-local.mjs",
-            "sha256": "e164cf66b81092de0930fc86f274f33b2636271e050cf31bd3a2e0c864932006"
+            "sha256": "f361e83e8fd55cbdf73e2026118ab922e587f8a4152450676de4431be4c50973"
+          },
+          {
+            "path": "apps/portal/src/main.tsx",
+            "sha256": "fe19f4a6aa62f3e0ee2426aaea9b260e346c42a2620981483fd42351a7359aad"
           }
         ],
-        "softwareGap": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
+        "softwareGap": "Ratcheted v2 delivery, encrypted local custody, root-authorized device linking/rotation/revocation/replacement, manual trust invalidation and controlled item export are implemented and browser-tested. Remaining source work: hardened executable-release closure/CSP/SRI, authenticated update/log-witness integration and activation guards. Actual staff, recovery-policy selection and hosted security evidence remain separate inputs.",
         "activationRequirement": "Select no-backup or encrypted-recovery policy; configure actual verified staff and named scoped recipient keys/fingerprints, migration 024 and least-privilege runtime grants; observe hosted TLS/transparency and browser journey. No activation or fabricated staff/mail/merchant inputs.",
-        "verification": "514 unit tests, 93 real PostgreSQL/HTTP integration tests and real Chromium ratcheted browser/UI journey pass locally; see docs/security/RATCHETED_PROTECTED_INTEGRATION.md. Exact CI and deployment remain separately recorded."
+        "verification": "Real Chromium/API/SQL lifecycle journey now covers root/linked rotation, stale public-request refresh, explicit pending-key disposal, signed revocation/lost-ACK retry, replacement without inherited trust/history, and audited UI ciphertext export, plus PR157 message/attachment/concurrency/rollback/egress tests. See docs/security/RATCHETED_PROTECTED_DEVICE_LIFECYCLE.md; CI/deployment separately recorded."
       }
     },
     {
@@ -1687,11 +1703,11 @@
       "externalDependencies": [],
       "externalPrerequisites": [],
       "status": "in_progress",
-      "acceptanceBlocker": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
+      "acceptanceBlocker": "Ratcheted v2 delivery, encrypted local custody, root-authorized device linking/rotation/revocation/replacement, manual trust invalidation and controlled item export are implemented and browser-tested. Remaining source work: hardened executable-release closure/CSP/SRI, authenticated update/log-witness integration and activation guards. Actual staff, recovery-policy selection and hosted security evidence remain separate inputs.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
         "implementation": "remaining_implementation",
-        "reviewedAt": "2026-11-10T09:14:55.784Z",
+        "reviewedAt": "2026-11-10T09:54:08.362Z",
         "sourceFiles": [
           {
             "path": "apps/api/src/protected-mls-routes.mjs",
@@ -1703,11 +1719,11 @@
           },
           {
             "path": "apps/portal/src/protected-client.mjs",
-            "sha256": "8e01562292c09bf816ac244b6f4589574bea4110267d963ce6ea9c354b480eb1"
+            "sha256": "4b3ad95c1b3a841ae1a4720566d7d99beaa9c4a21139a4b0d36a3a9048b56f7c"
           },
           {
             "path": "apps/portal/src/protected-local.mjs",
-            "sha256": "c343b7ac5651bd4433fdf7462291ba4015816582b7f785db3c5abe2490e624f6"
+            "sha256": "41e518713631c46a93537f339c87e1ee71535948b2b38874e64f5b7203ce0279"
           },
           {
             "path": "apps/portal/src/protected-threads.mjs",
@@ -1715,7 +1731,7 @@
           },
           {
             "path": "apps/portal/src/ProtectedReports.tsx",
-            "sha256": "95aa99bdc4cadde8af3e8dcd0cd79f1b0fd72a9d8050c064ad6f651bfdee268c"
+            "sha256": "35025230f8e5d72145e4961ccd5498c7f67b2dde6715a92ad93d6c4ddd16eddb"
           },
           {
             "path": "packages/core/protected-mls-envelope.mjs",
@@ -1743,12 +1759,16 @@
           },
           {
             "path": "tests/browser/protected-local.mjs",
-            "sha256": "e164cf66b81092de0930fc86f274f33b2636271e050cf31bd3a2e0c864932006"
+            "sha256": "f361e83e8fd55cbdf73e2026118ab922e587f8a4152450676de4431be4c50973"
+          },
+          {
+            "path": "apps/portal/src/main.tsx",
+            "sha256": "fe19f4a6aa62f3e0ee2426aaea9b260e346c42a2620981483fd42351a7359aad"
           }
         ],
-        "softwareGap": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
+        "softwareGap": "Ratcheted v2 delivery, encrypted local custody, root-authorized device linking/rotation/revocation/replacement, manual trust invalidation and controlled item export are implemented and browser-tested. Remaining source work: hardened executable-release closure/CSP/SRI, authenticated update/log-witness integration and activation guards. Actual staff, recovery-policy selection and hosted security evidence remain separate inputs.",
         "activationRequirement": "Select no-backup or encrypted-recovery policy; configure actual verified staff and named scoped recipient keys/fingerprints, migration 024 and least-privilege runtime grants; observe hosted TLS/transparency and browser journey. No activation or fabricated staff/mail/merchant inputs.",
-        "verification": "514 unit tests, 93 real PostgreSQL/HTTP integration tests and real Chromium ratcheted browser/UI journey pass locally; see docs/security/RATCHETED_PROTECTED_INTEGRATION.md. Exact CI and deployment remain separately recorded."
+        "verification": "Real Chromium/API/SQL lifecycle journey now covers root/linked rotation, stale public-request refresh, explicit pending-key disposal, signed revocation/lost-ACK retry, replacement without inherited trust/history, and audited UI ciphertext export, plus PR157 message/attachment/concurrency/rollback/egress tests. See docs/security/RATCHETED_PROTECTED_DEVICE_LIFECYCLE.md; CI/deployment separately recorded."
       }
     },
     {
@@ -2995,15 +3015,15 @@
       "number": 157,
       "title": "Integrate ratcheted reporting with signed devices and encrypted browser state",
       "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/157",
-      "state": "open",
+      "state": "closed",
       "draft": false,
       "createdAt": "2026-11-10T09:19:41Z",
-      "updatedAt": "2026-11-10T09:19:41Z",
-      "closedAt": null,
-      "mergedAt": null,
-      "headSha": "d0b6091e3f413bc572f777e1fb68607b181aa31a",
+      "updatedAt": "2026-11-10T09:39:35Z",
+      "closedAt": "2026-11-10T09:39:34Z",
+      "mergedAt": "2026-11-10T09:39:34Z",
+      "headSha": "029bca1bd922244b9e18552c1f6c04639ef4750b",
       "baseRef": "main",
-      "mergeCommitSha": "c5fdeab395648bbc7896d1a74bde1c0e04a38fca"
+      "mergeCommitSha": "ef307744670ef9c301c58678f10b48ce6946eec9"
     },
     {
       "id": 5237359077,

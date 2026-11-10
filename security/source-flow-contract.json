@@ -371,7 +371,7 @@
     },
     {
       "path": "apps/portal/src/ProtectedReports.tsx",
-      "blobSha": "6530f164fc338b3ffea34ef90e14b0318b87d7a9",
+      "blobSha": "78d60f339ca1b7b207544f11992c64c7d104d462",
       "componentId": "protected"
     },
     {
@@ -401,17 +401,17 @@
     },
     {
       "path": "apps/portal/src/main.tsx",
-      "blobSha": "303349eaa11e0f1258b51b0689124302360ac61a",
+      "blobSha": "d6d0f7ba26799ff9d7d440da4adb844373ab98c2",
       "componentId": "identity"
     },
     {
       "path": "apps/portal/src/protected-client.mjs",
-      "blobSha": "75e788de1bbeaa3f8949dcbc621be63e3f73a9e5",
+      "blobSha": "5e612f5574af7c4dd649bf21818bec7535d60315",
       "componentId": "protected"
     },
     {
       "path": "apps/portal/src/protected-local.mjs",
-      "blobSha": "3a06b77bac79dfb7071555dfe2550bb07f07796b",
+      "blobSha": "9006a3ad9e8ed456d0ae896019761257833be005",
       "componentId": "protected"
     },
     {
