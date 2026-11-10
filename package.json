@@ -38,9 +38,11 @@
     "test:coordination-browser": "node tests/browser/coordination.mjs",
     "test:editor-browser": "node tests/browser/campaign-editor.mjs",
     "test:campaign-public-browser": "node tests/browser/campaign-public.mjs",
-    "perf:budget": "node scripts/performance-budget.mjs"
+    "perf:budget": "node scripts/performance-budget.mjs",
+    "postinstall": "node scripts/prepare-mls.mjs"
   },
   "dependencies": {
+    "@noble/hashes": "2.4.0",
     "@simplewebauthn/browser": "14.0.0",
     "@simplewebauthn/server": "14.0.3",
     "astro": "7.3.8",
@@ -50,7 +52,8 @@
     "pg": "8.16.3",
     "react": "19.3.0",
     "react-dom": "19.3.0",
-    "svix": "2.8.0"
+    "svix": "2.8.0",
+    "ts-mls": "1.6.4"
   },
   "devDependencies": {
     "@types/node": "22.18.6",
