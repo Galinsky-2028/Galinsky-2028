@@ -9,10 +9,10 @@
     ".exechub/approved-pr-mapping.json",
     "docs/PR_REGISTER.json"
   ],
-  "progressEvidenceNote": "Source-reviewed software implementation: 67/72; distinct fully scoped, release-evidenced accepted packages: 13/72. Every verified merged PR is accepted; hosted activation and package-scope release evidence remain separate. Protected protocol implementation and tests are in docs/security/PROTECTED_PROFILE.md; current external gates remain enforced.",
+  "progressEvidenceNote": "Source-reviewed software implementation: 67/72; distinct fully scoped, release-evidenced accepted packages: 13/72. Every verified merged PR is accepted; hosted activation and package-scope release evidence remain separate. Protected protocol implementation and tests are in docs/security/PROTECTED_PROFILE.md; current external gates remain enforced. GitHub observation 2026-11-10T04:05:41.133Z: 140 merged/accepted PRs; PR 154 implementation is under CI review.",
   "schemaVersion": 1,
   "roadmapVersion": 7,
-  "observedAt": "2026-11-10T02:08:20.633Z",
+  "observedAt": "2026-11-10T04:05:41.133Z",
   "units": [
     {
       "id": "G28-001",
@@ -207,7 +207,8 @@
       ],
       "contributingPrs": [
         16,
-        66
+        66,
+        154
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -772,7 +773,8 @@
         69,
         128,
         134,
-        135
+        135,
+        154
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -835,7 +837,9 @@
       "title": "Implement approved recipient keys and device enrollment",
       "origin": "original",
       "prs": [],
-      "contributingPrs": [],
+      "contributingPrs": [
+        154
+      ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
@@ -897,7 +901,9 @@
       "title": "Implement protected volunteer records and submissions",
       "origin": "original",
       "prs": [],
-      "contributingPrs": [],
+      "contributingPrs": [
+        154
+      ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
@@ -960,7 +966,8 @@
       "origin": "original",
       "prs": [],
       "contributingPrs": [
-        41
+        41,
+        154
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -1408,7 +1415,8 @@
         119,
         120,
         121,
-        122
+        122,
+        154
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -1615,7 +1623,8 @@
       "contributingPrs": [
         69,
         95,
-        131
+        131,
+        154
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -2010,7 +2019,8 @@
         41,
         95,
         110,
-        122
+        122,
+        154
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -2212,7 +2222,8 @@
         134,
         135,
         142,
-        144
+        144,
+        154
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -2246,7 +2257,8 @@
       "contributingPrs": [
         17,
         61,
-        128
+        128,
+        154
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -2354,7 +2366,8 @@
       "contributingPrs": [
         19,
         40,
-        43
+        43,
+        154
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -2904,6 +2917,36 @@
   ],
   "pullRequests": [
     {
+      "id": 5235611443,
+      "number": 154,
+      "title": "Complete protected volunteer reporting, recipient trust and recovery",
+      "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/154",
+      "state": "open",
+      "draft": false,
+      "createdAt": "2026-11-10T04:05:27Z",
+      "updatedAt": "2026-11-10T04:05:27Z",
+      "closedAt": null,
+      "mergedAt": null,
+      "headSha": "0b147bd48a8790c5e44c9e68602a4f42c77d2743",
+      "baseRef": "main",
+      "mergeCommitSha": "d3b5a5d9744f0ae6c3eba20bae880d9c64744f81"
+    },
+    {
+      "id": 5234544796,
+      "number": 153,
+      "title": "Record verified connected-account deployment and volunteer release",
+      "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/153",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-11-10T02:08:37Z",
+      "updatedAt": "2026-11-10T02:20:23Z",
+      "closedAt": "2026-11-10T02:20:23Z",
+      "mergedAt": "2026-11-10T02:20:23Z",
+      "headSha": "72a6a0c1704034eb09995a951cc255e9d38aac95",
+      "baseRef": "main",
+      "mergeCommitSha": "f3515ca8352165f650f6db63999d2130a38a28e3"
+    },
+    {
       "id": 5234250557,
       "number": 152,
       "title": "Release reviewed volunteer materials and temporary issue videos",
@@ -2911,7 +2954,7 @@
       "state": "closed",
       "draft": false,
       "createdAt": "2026-11-10T01:41:36Z",
-      "updatedAt": "2026-11-10T01:54:37Z",
+      "updatedAt": "2026-11-10T02:13:32Z",
       "closedAt": "2026-11-10T01:54:37Z",
       "mergedAt": "2026-11-10T01:54:37Z",
       "headSha": "29611b82752f1ca813bfc317289ba26dbcd83601",

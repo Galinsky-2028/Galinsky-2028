@@ -251,7 +251,8 @@
       "implementation_note": "Finish the complete component/profile coverage review, including protected-flow obligations; preliminary inventory is not full coverage.",
       "contributing_prs": [
         16,
-        66
+        66,
+        154
       ],
       "acceptance_review": {
         "status": "completed",
@@ -981,7 +982,8 @@
         69,
         128,
         134,
-        135
+        135,
+        154
       ],
       "implementation_note": "Protected workflow software implemented; configure real staff and recipient authority for hosted activation.",
       "acceptance_review": {
@@ -1055,7 +1057,9 @@
       "acceptance": "Tampered or substituted recipient keys are detected according to the selected profile. A new/reset account does not inherit old verified keys. Private recipient keys are not stored in server environment variables. Unavailable or unsupported protection blocks protected submissions, not a silent plaintext fallback.",
       "evidence": "Interoperability/test vectors, key-substitution tests, enrollment evidence and profile-conformance mapping.",
       "external_inputs": "A suitable reviewed implementation/profile is a dependency; writing a novel cryptographic scheme is not an acceptable shortcut.",
-      "contributing_prs": [],
+      "contributing_prs": [
+        154
+      ],
       "implementation_note": "Protected workflow software implemented; configure real staff and recipient authority for hosted activation.",
       "acceptance_review": {
         "status": "implemented",
@@ -1128,7 +1132,9 @@
       "acceptance": "Database, logs, job payloads, support tools and object storage inspections show no protected plaintext. Unauthorized recipients cannot decrypt. Updates cannot swap envelopes between records, replay stale versions or expand recipients without authorization. Loss of network/key access gives an explicit recoverable error.",
       "evidence": "Plaintext-canary tests, recipient/record-binding tests, egress traces and storage/log inspection evidence.",
       "external_inputs": "None beyond the listed dependencies.",
-      "contributing_prs": [],
+      "contributing_prs": [
+        154
+      ],
       "implementation_note": "Protected workflow software implemented; configure real staff and recipient authority for hosted activation.",
       "acceptance_review": {
         "status": "implemented",
@@ -1201,7 +1207,8 @@
       "evidence": "Lost-device and account-takeover simulations, export negative tests, backup/restore key tests and readable user guidance.",
       "external_inputs": "None beyond the listed dependencies.",
       "contributing_prs": [
-        41
+        41,
+        154
       ],
       "implementation_note": "Protected workflow software implemented; configure real staff and recipient authority for hosted activation.",
       "acceptance_review": {
@@ -1771,7 +1778,8 @@
         119,
         120,
         121,
-        122
+        122,
+        154
       ],
       "implementation_note": "Protected workflow software implemented; configure real staff and recipient authority for hosted activation.",
       "acceptance_review": {
@@ -2024,7 +2032,8 @@
       "contributing_prs": [
         69,
         95,
-        131
+        131,
+        154
       ],
       "implementation_note": "Protected workflow software implemented; configure real staff and recipient authority for hosted activation.",
       "acceptance_review": {
@@ -2548,7 +2557,8 @@
         41,
         95,
         110,
-        122
+        122,
+        154
       ],
       "acceptance_review": {
         "status": "implemented",
@@ -2823,7 +2833,8 @@
         66,
         108,
         134,
-        135
+        135,
+        154
       ],
       "acceptance_review": {
         "status": "implemented",
@@ -2870,7 +2881,8 @@
       "contributing_prs": [
         17,
         61,
-        128
+        128,
+        154
       ],
       "acceptance_review": {
         "status": "implemented",
@@ -3018,7 +3030,8 @@
       "contributing_prs": [
         19,
         40,
-        43
+        43,
+        154
       ],
       "implementation_note": "Working source implementation reviewed individually. Run the whole configured staging release rehearsal; do not count an unperformed observation as unwritten code.",
       "acceptance_review": {
@@ -3671,8 +3684,8 @@
       }
     }
   ],
-  "progress_evidence_note": "Source-reviewed software implementation: 67/72; distinct fully scoped, release-evidenced accepted packages: 13/72. Every verified merged PR is accepted; hosted activation and package-scope release evidence remain separate. Protected protocol implementation and tests are in docs/security/PROTECTED_PROFILE.md; current external gates remain enforced.",
-  "accepted_pull_requests": 139,
-  "accepted_prs_observed_at": "2026-11-10T02:08:20.633Z",
+  "progress_evidence_note": "Source-reviewed software implementation: 67/72; distinct fully scoped, release-evidenced accepted packages: 13/72. Every verified merged PR is accepted; hosted activation and package-scope release evidence remain separate. Protected protocol implementation and tests are in docs/security/PROTECTED_PROFILE.md; current external gates remain enforced. GitHub observation 2026-11-10T04:05:41.133Z: 140 merged/accepted PRs; PR 154 implementation is under CI review.",
+  "accepted_pull_requests": 140,
+  "accepted_prs_observed_at": "2026-11-10T04:05:41.133Z",
   "pull_request_acceptance_rule": "Every real GitHub PR with a verified merged_at is accepted; no further package review is required to accept that PR. Fully complete planned work packages are counted separately."
 }
