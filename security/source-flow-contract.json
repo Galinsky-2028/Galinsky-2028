@@ -30,7 +30,7 @@
     {
       "id": "protected",
       "mode": "protected-blocked",
-      "rationale": "Static OpenPGP prototype is not an eligible ratcheted network-messaging profile in the pinned standard. Runtime unconditionally rejects protected activation pending registered ratcheted adapter and verified client state lifecycle; owner AI-review authorization does not waive protocol controls.",
+      "rationale": "Ratcheted MLS, root/device lifecycle and client vault source/tests are installed. Runtime still rejects activation pending the pinned executable web-release/update, independently witnessed transparency and transport controls. Owner AI review does not waive endpoint/protocol controls.",
       "profilePin": null,
       "requiredEvidence": [
         "exact applicable protocol/profile and upstream remediation pins",
@@ -171,7 +171,7 @@
     },
     {
       "path": "apps/api/src/app.mjs",
-      "blobSha": "0572a6b211d44bb021abeecbc23a42c5c39ce551",
+      "blobSha": "221aea482f0713e238db057aa0a395f2a6b357cf",
       "componentId": "identity"
     },
     {
@@ -190,8 +190,18 @@
       "componentId": "editorial"
     },
     {
+      "path": "apps/api/src/card-contribution-routes.mjs",
+      "blobSha": "f41ad4fce7b513f3def88d4f3d36fc0bf3e1749e",
+      "componentId": "finance"
+    },
+    {
+      "path": "apps/api/src/card-contribution-store.mjs",
+      "blobSha": "0b816366be8d2062b6f9f2c73cf6754d0c4ce9d9",
+      "componentId": "finance"
+    },
+    {
       "path": "apps/api/src/config.mjs",
-      "blobSha": "41d1240aa73df93b3503189d43716b5e537b5b06",
+      "blobSha": "ae5d0c77bf94444788551d5b81c36275a295eaa5",
       "componentId": "identity"
     },
     {
@@ -306,7 +316,7 @@
     },
     {
       "path": "apps/api/src/treasury-workflow-store.mjs",
-      "blobSha": "58f145a058c3d3618c452ead54fd52b9709f700d",
+      "blobSha": "b7a643e80a8415e37bb2e4008f9be5a6b583f05b",
       "componentId": "finance"
     },
     {
@@ -435,6 +445,11 @@
       "componentId": "editorial"
     },
     {
+      "path": "apps/web/card-signed-webhook.mjs",
+      "blobSha": "4ed3d9f2703daa85334633e5d20ccc0d33319ca9",
+      "componentId": "finance"
+    },
+    {
       "path": "apps/web/donation-rotation-store.mjs",
       "blobSha": "597baac08e0d6b4b94d23b14900991d95e9e1075",
       "componentId": "finance"
@@ -511,7 +526,7 @@
     },
     {
       "path": "apps/web/stripe-campaign-store.mjs",
-      "blobSha": "d8596c78d8007ddecf5a0dc6b832104c1fe9c4e2",
+      "blobSha": "6c172c655671aabffc1a6e165a094250bccf003b",
       "componentId": "finance"
     },
     {
@@ -660,6 +675,11 @@
       "componentId": "schema"
     },
     {
+      "path": "db/migrations/025_card_mandates.sql",
+      "blobSha": "2638a59867a9d0bd2a7f597626b14283f96c2653",
+      "componentId": "finance"
+    },
+    {
       "path": "db/migrations/20261016_campaign_public_views.sql",
       "blobSha": "a3df233362d0d131f09d0d0fdb19666916aae352",
       "componentId": "schema"
@@ -738,6 +758,16 @@
       "path": "packages/core/campaign-template.mjs",
       "blobSha": "1e821723c5394b8851b10cc78314a4380a565b76",
       "componentId": "editorial"
+    },
+    {
+      "path": "packages/core/card-mandates.mjs",
+      "blobSha": "7296b50c02a85e5ab9fe20f9c2d5f79c4a1180f2",
+      "componentId": "finance"
+    },
+    {
+      "path": "packages/core/card-webhook-facts.mjs",
+      "blobSha": "27a708554c8380d8fdfd2144a30520b081cab8f4",
+      "componentId": "finance"
     },
     {
       "path": "packages/core/content.mjs",
@@ -931,12 +961,27 @@
     },
     {
       "path": "packages/core/stripe-campaign.mjs",
-      "blobSha": "3d7cebec8fadae3b38475354ee534bac1ee91209",
+      "blobSha": "efd2e7f006ab5172648ee4d9a4c5e9f38888d9da",
+      "componentId": "finance"
+    },
+    {
+      "path": "packages/core/stripe-card-setup.mjs",
+      "blobSha": "84461b293579f1785982444982cf608e1a6b0d63",
       "componentId": "finance"
     },
     {
       "path": "packages/core/stripe-donor-service.mjs",
       "blobSha": "9bd4decc275d77af7b19c3fb11be4295c881cd9a",
+      "componentId": "finance"
+    },
+    {
+      "path": "packages/core/stripe-manual-capture.mjs",
+      "blobSha": "5e24fa6edab1ecc131d13c003cfc8bc0adcbd269",
+      "componentId": "finance"
+    },
+    {
+      "path": "packages/core/stripe-response.mjs",
+      "blobSha": "a275a2fcf3c41d8b53c4b7f1edb014ca0e1abb62",
       "componentId": "finance"
     },
     {
@@ -946,7 +991,7 @@
     },
     {
       "path": "packages/core/stripe-web-checkout.mjs",
-      "blobSha": "bd0bfbbbf2a20e5ead4f3f5f767d0646e1dcf694",
+      "blobSha": "f8843366e23df976111e33cfc258e9470e513f5b",
       "componentId": "finance"
     },
     {
@@ -2786,6 +2831,174 @@
       "authority": "Argon2id local unlock plus opaque active master; Web Locks and atomic IndexedDB generation CAS. No browser-storage plaintext private keys or passphrases.",
       "retention": "Device-local authorized history until explicit browser/account storage deletion; no recovery backup in candidate client. Pending epoch state retired on ACK or operating-client expiry.",
       "disposal": "Account-scoped deletion and cross-tab lock; browser erase best effort, no remote recall or forensic guarantee"
+    },
+    {
+      "id": "g28.card_commands",
+      "columns": [
+        "action",
+        "created_at",
+        "created_by",
+        "id",
+        "period_id",
+        "provider_reference",
+        "request_document",
+        "request_sha256",
+        "result_document",
+        "status",
+        "updated_at"
+      ],
+      "paths": [
+        "db/migrations/025_card_mandates.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "financial",
+      "authority": "Current verified owner/treasurer session with fresh passkey; raw-body signed callbacks bound to an already prepared immutable TEST-only attempt. No volunteer access or live execution.",
+      "retention": "Financial source, consent and immutable approval/audit history are separate from volunteer closure; no inferred legal schedule.",
+      "disposal": "Private billing is sealed with the dedicated treasury key; no PAN/CVV/client secrets; uncertain commands retain reservations until exact provider reconciliation and signed journal posting."
+    },
+    {
+      "id": "g28.card_contribution_policies",
+      "columns": [
+        "created_at",
+        "created_by",
+        "document",
+        "id",
+        "version"
+      ],
+      "paths": [
+        "db/migrations/025_card_mandates.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "financial",
+      "authority": "Current verified owner/treasurer session with fresh passkey; raw-body signed callbacks bound to an already prepared immutable TEST-only attempt. No volunteer access or live execution.",
+      "retention": "Financial source, consent and immutable approval/audit history are separate from volunteer closure; no inferred legal schedule.",
+      "disposal": "Private billing is sealed with the dedicated treasury key; no PAN/CVV/client secrets; uncertain commands retain reservations until exact provider reconciliation and signed journal posting."
+    },
+    {
+      "id": "g28.card_enrollments",
+      "columns": [
+        "client_reference",
+        "created_at",
+        "customer_id",
+        "encrypted_details",
+        "environment",
+        "id",
+        "payment_method_id",
+        "request_document",
+        "request_sha256",
+        "setup_intent_id",
+        "setup_session_id",
+        "status",
+        "updated_at"
+      ],
+      "paths": [
+        "db/migrations/025_card_mandates.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "financial",
+      "authority": "Current verified owner/treasurer session with fresh passkey; raw-body signed callbacks bound to an already prepared immutable TEST-only attempt. No volunteer access or live execution.",
+      "retention": "Financial source, consent and immutable approval/audit history are separate from volunteer closure; no inferred legal schedule.",
+      "disposal": "Private billing is sealed with the dedicated treasury key; no PAN/CVV/client secrets; uncertain commands retain reservations until exact provider reconciliation and signed journal posting."
+    },
+    {
+      "id": "g28.card_mandate_revisions",
+      "columns": [
+        "created_at",
+        "created_by",
+        "document",
+        "mandate_id",
+        "version"
+      ],
+      "paths": [
+        "db/migrations/025_card_mandates.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "financial",
+      "authority": "Current verified owner/treasurer session with fresh passkey; raw-body signed callbacks bound to an already prepared immutable TEST-only attempt. No volunteer access or live execution.",
+      "retention": "Financial source, consent and immutable approval/audit history are separate from volunteer closure; no inferred legal schedule.",
+      "disposal": "Private billing is sealed with the dedicated treasury key; no PAN/CVV/client secrets; uncertain commands retain reservations until exact provider reconciliation and signed journal posting."
+    },
+    {
+      "id": "g28.card_mandates",
+      "columns": [
+        "approved_by",
+        "created_at",
+        "document",
+        "donor_id",
+        "donor_version",
+        "enrollment_id",
+        "environment",
+        "id",
+        "status",
+        "updated_at",
+        "version"
+      ],
+      "paths": [
+        "db/migrations/025_card_mandates.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "financial",
+      "authority": "Current verified owner/treasurer session with fresh passkey; raw-body signed callbacks bound to an already prepared immutable TEST-only attempt. No volunteer access or live execution.",
+      "retention": "Financial source, consent and immutable approval/audit history are separate from volunteer closure; no inferred legal schedule.",
+      "disposal": "Private billing is sealed with the dedicated treasury key; no PAN/CVV/client secrets; uncertain commands retain reservations until exact provider reconciliation and signed journal posting."
+    },
+    {
+      "id": "g28.card_periods",
+      "columns": [
+        "amount_cents",
+        "capture_event_id",
+        "created_at",
+        "document",
+        "donor_id",
+        "donor_version",
+        "election",
+        "environment",
+        "expires_at",
+        "gift_id",
+        "id",
+        "installment",
+        "mandate_id",
+        "mandate_version",
+        "provider_payment_id",
+        "reservation_active",
+        "status",
+        "updated_at",
+        "version"
+      ],
+      "paths": [
+        "db/migrations/025_card_mandates.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "financial",
+      "authority": "Current verified owner/treasurer session with fresh passkey; raw-body signed callbacks bound to an already prepared immutable TEST-only attempt. No volunteer access or live execution.",
+      "retention": "Financial source, consent and immutable approval/audit history are separate from volunteer closure; no inferred legal schedule.",
+      "disposal": "Private billing is sealed with the dedicated treasury key; no PAN/CVV/client secrets; uncertain commands retain reservations until exact provider reconciliation and signed journal posting."
+    },
+    {
+      "id": "g28.card_workflow_audit",
+      "columns": [
+        "action",
+        "actor_id",
+        "created_at",
+        "digest",
+        "id",
+        "object_id"
+      ],
+      "paths": [
+        "db/migrations/025_card_mandates.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "financial",
+      "authority": "Current verified owner/treasurer session with fresh passkey; raw-body signed callbacks bound to an already prepared immutable TEST-only attempt. No volunteer access or live execution.",
+      "retention": "Financial source, consent and immutable approval/audit history are separate from volunteer closure; no inferred legal schedule.",
+      "disposal": "Private billing is sealed with the dedicated treasury key; no PAN/CVV/client secrets; uncertain commands retain reservations until exact provider reconciliation and signed journal posting."
     }
   ],
   "flows": [
@@ -3306,7 +3519,7 @@
       "egress": [
         "same-origin ciphertext API only; encrypted recovery/downloads explicitly requested on device"
       ],
-      "authorization": "Unavailable in runtime configuration: static OpenPGP prototype lacks registered forward-secret ratcheted messaging. Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
+      "authorization": "Unavailable in runtime configuration: ratcheted protocol and device lifecycle are source-tested; executable web-release/update, independently witnessed transparency and transport activation obligations remain. Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
       "retention": "90-day encrypted records; legal holds override purge; account closure deletes unheld authored records, revokes devices; recipient downloads are outside recall. Full DB backup includes ciphertext and exact public-key generations; recipient recovery key stays separate.",
       "evidence": [
         "packages/core/protected-crypto.mjs",
@@ -3341,7 +3554,7 @@
       "egress": [
         "same-origin ciphertext API only; encrypted recovery/downloads explicitly requested on device"
       ],
-      "authorization": "Unavailable in runtime configuration: static OpenPGP prototype lacks registered forward-secret ratcheted messaging. Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
+      "authorization": "Unavailable in runtime configuration: ratcheted protocol and device lifecycle are source-tested; executable web-release/update, independently witnessed transparency and transport activation obligations remain. Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
       "retention": "90-day encrypted records; legal holds override purge; account closure deletes unheld authored records, revokes devices; recipient downloads are outside recall. Full DB backup includes ciphertext and exact public-key generations; recipient recovery key stays separate.",
       "evidence": [
         "packages/core/protected-crypto.mjs",
@@ -3375,7 +3588,7 @@
       "egress": [
         "same-origin ciphertext API only; encrypted recovery/downloads explicitly requested on device"
       ],
-      "authorization": "Unavailable in runtime configuration: static OpenPGP prototype lacks registered forward-secret ratcheted messaging. Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
+      "authorization": "Unavailable in runtime configuration: ratcheted protocol and device lifecycle are source-tested; executable web-release/update, independently witnessed transparency and transport activation obligations remain. Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
       "retention": "90-day encrypted records; legal holds override purge; account closure deletes unheld authored records, revokes devices; recipient downloads are outside recall. Full DB backup includes ciphertext and exact public-key generations; recipient recovery key stays separate.",
       "evidence": [
         "packages/core/protected-crypto.mjs",
@@ -3409,7 +3622,7 @@
       "egress": [
         "same-origin ciphertext API only; encrypted recovery/downloads explicitly requested on device"
       ],
-      "authorization": "Unavailable in runtime configuration: static OpenPGP prototype lacks registered forward-secret ratcheted messaging. Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
+      "authorization": "Unavailable in runtime configuration: ratcheted protocol and device lifecycle are source-tested; executable web-release/update, independently witnessed transparency and transport activation obligations remain. Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
       "retention": "90-day encrypted records; legal holds override purge; account closure deletes unheld authored records, revokes devices; recipient downloads are outside recall. Full DB backup includes ciphertext and exact public-key generations; recipient recovery key stays separate.",
       "evidence": [
         "packages/core/protected-crypto.mjs",
@@ -3443,7 +3656,7 @@
       "egress": [
         "same-origin ciphertext API only; encrypted recovery/downloads explicitly requested on device"
       ],
-      "authorization": "Unavailable in runtime configuration: static OpenPGP prototype lacks registered forward-secret ratcheted messaging. Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
+      "authorization": "Unavailable in runtime configuration: ratcheted protocol and device lifecycle are source-tested; executable web-release/update, independently witnessed transparency and transport activation obligations remain. Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
       "retention": "90-day encrypted records; legal holds override purge; account closure deletes unheld authored records, revokes devices; recipient downloads are outside recall. Full DB backup includes ciphertext and exact public-key generations; recipient recovery key stays separate.",
       "evidence": [
         "packages/core/protected-crypto.mjs",
@@ -3662,6 +3875,56 @@
       ],
       "profileDecision": "protected",
       "blocked": true,
+      "plaintextFallback": false
+    },
+    {
+      "id": "prospective-card-manual-capture",
+      "componentId": "finance",
+      "classification": "financial",
+      "fields": [
+        "exact prospective consent and cutoff",
+        "documented contributor revision",
+        "encrypted billing identity from actual hosted card setup",
+        "all-channel totals and active reservations",
+        "durable one-shot provider commands",
+        "minimized signed provider outcomes"
+      ],
+      "from": "donor browser / signed processor event / fresh-MFA authorized finance staff",
+      "recipients": [
+        "actual verified treasury staff",
+        "approved Stripe TEST API"
+      ],
+      "storage": [
+        "g28.card_commands",
+        "g28.card_contribution_policies",
+        "g28.card_enrollments",
+        "g28.card_mandate_revisions",
+        "g28.card_mandates",
+        "g28.card_periods",
+        "g28.card_workflow_audit",
+        "g28.treasury_gifts",
+        "g28.treasury_donor_revisions",
+        "g28.financial_provider_events",
+        "g28.stripe_webhook_receipts"
+      ],
+      "egress": [
+        "explicit TEST setup/card authorization/capture/cancel/GET APIs",
+        "signature-verified callback"
+      ],
+      "authorization": "Backend TEST controls only. No public recurring enrollment/donor cancellation UI or scheduler installed by this change; live automatic Checkout is unconditionally refused. Current staff role/session/fresh-MFA and global finance lock are rechecked through bounded processor I/O; posted plus all active held reservations constrain each authorization/capture. A durable dispatch claim is never a retry lease. Hosted setup is not a contribution; real signed callback plus fresh private SDK and explicit documentary contributor review precede approval. Captured funds keep their reservation until the exact signed source is journaled.",
+      "retention": "Financial/legal lifecycle remains independent from volunteer closure; never purge unknown money state by timeout.",
+      "evidence": [
+        "apps/api/src/card-contribution-store.mjs",
+        "apps/api/src/card-contribution-routes.mjs",
+        "apps/web/card-signed-webhook.mjs",
+        "packages/core/card-mandates.mjs",
+        "packages/core/card-webhook-facts.mjs",
+        "packages/core/stripe-card-setup.mjs",
+        "packages/core/stripe-manual-capture.mjs",
+        "packages/core/stripe-response.mjs"
+      ],
+      "profileDecision": "server",
+      "blocked": false,
       "plaintextFallback": false
     }
   ]

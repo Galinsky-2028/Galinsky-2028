@@ -1,16 +1,16 @@
 {
-  "observedAt": "2026-11-10T09:46:50Z",
-  "commit": "ef307744670ef9c301c58678f10b48ce6946eec9",
-  "acceptedPr": 157,
+  "observedAt": "2026-11-10T11:40:31.719Z",
+  "commit": "eaf0c430c68195fea16f2aa4edec64ac8d598408",
+  "acceptedPr": 158,
   "headCi": {
-    "runId": 42791381206,
-    "headSha": "029bca1bd922244b9e18552c1f6c04639ef4750b",
+    "runId": 42797090386,
+    "headSha": "53d582fe84ee292523628dfea8bb6bccc0f389a8",
     "conclusion": "success"
   },
   "workspace": "tea-dbl0kcbm8hqs738ptf3g",
   "website": {
     "service": "srv-dbp6n18m7kps73a0kpsg",
-    "deploy": "dep-dbpedt6gekts739nrtog",
+    "deploy": "dep-dbpf8lajnfac7399664g",
     "status": "live",
     "url": "https://galinsky2028-website.onrender.com",
     "runtimeReadOnlyChecks": 69,
@@ -18,7 +18,7 @@
   },
   "portal": {
     "service": "srv-dbp6n661egvs73b7pspg",
-    "deploy": "dep-dbpedu88v5cc73e1eet0",
+    "deploy": "dep-dbpf8n6c6qcc73aggtcg",
     "status": "live",
     "url": "https://galinsky2028-volunteers.onrender.com",
     "runtimeReadOnlyChecks": 23,
@@ -39,9 +39,8 @@
   },
   "scope": "Private free-plan release. Startup checks are actual installed HTTP/config/readiness/asset observations; not an independent hosted browser or staff/financial transaction rehearsal.",
   "remainingSoftware": [
-    "Full root-authorized lifecycle/export UI (follow-up source/browser tests pass; not yet merged or deployed)",
-    "Pinned web-client executable release, independently witnessed code-transparency and TLS-only activation obligations",
-    "Proven future-charge limit and expiry enforcement for new recurring commitments"
+    "Pinned executable web-client release/update, independently witnessed code-transparency and TLS-only activation obligations",
+    "Complete new recurring donor self-service, bank-confirmation and prospective setup UI, remedy integration and operational due-period processing on the source-tested manual-capture backend"
   ],
   "remainingActivationInputs": [
     "Actual staff mailbox and verified transactional sender",
@@ -53,9 +52,9 @@
   "protectedReportingEnabled": false,
   "fullPlatformComplete": false,
   "supersedes": {
-    "commit": "40399f3d2229031af20c22113dcb232d46abf22b",
-    "acceptedPr": 155,
-    "websiteDeploy": "dep-dbpbn1on74is73dgcl0g",
-    "portalDeploy": "dep-dbpbn2jbc2fs739onns0"
+    "commit": "ef307744670ef9c301c58678f10b48ce6946eec9",
+    "acceptedPr": 157,
+    "websiteDeploy": "dep-dbpedt6gekts739nrtog",
+    "portalDeploy": "dep-dbpedu88v5cc73e1eet0"
   }
 }

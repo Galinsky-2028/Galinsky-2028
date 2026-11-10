@@ -12,7 +12,7 @@
   "progressEvidenceNote": "Source-reviewed software implementation: 66/72; full-scope release-evidenced accepted packages: 13/72. Treasury/outreach additions are source-tested; protected ratcheted protocol and recurring enforcement remain real software gaps. Every verified merged PR is accepted separately from package scope and deployment.",
   "schemaVersion": 1,
   "roadmapVersion": 7,
-  "observedAt": "2026-11-10T09:46:52.383Z",
+  "observedAt": "2026-11-10T11:40:31.719Z",
   "units": [
     {
       "id": "G28-001",
@@ -1949,20 +1949,40 @@
       "externalDependencies": [],
       "externalPrerequisites": [],
       "status": "in_progress",
-      "acceptanceBlocker": "Independent original-browser receipt and Stripe-managed donor portal implemented and tested. New recurring commitments remain disabled pending proven future-charge limit/expiry enforcement; no invented recurring launch readiness.",
+      "acceptanceBlocker": "TEST manual-capture backend, all-channel reservations, one-shot dispatch/reconciliation, signed callbacks and exact journal release are source-tested. Complete the public prospective setup/bank-confirmation and donor-only recovery/cancellation/payment-method UI, controlled monthly PI remedy integration and operational due-period processing before new recurring commitments can open.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
         "implementation": "remaining_implementation",
-        "reviewedAt": "2026-10-19T01:13:13.691Z",
+        "reviewedAt": "2026-11-10T11:40:31.719Z",
         "sourceFiles": [
           {
-            "path": "packages/core/stripe-web-checkout.mjs",
-            "sha256": "e7cda76f88fe19bceef3e60eb6a6f88636112aa6dd33f18766958e80836c1381"
+            "path": "packages/core/card-mandates.mjs",
+            "sha256": "bfbf7d4be7e6ece9e9685c0ad321f7a6f2c64ce3f966a7ad29260f92ce76cd31"
+          },
+          {
+            "path": "packages/core/stripe-manual-capture.mjs",
+            "sha256": "019b416954ff113d9b421534c7f7053a1e3776b54574a71356b32b795bfdbcfa"
+          },
+          {
+            "path": "packages/core/stripe-card-setup.mjs",
+            "sha256": "dd54a593f79c57358ea098cb168a056ada35547558c77abed034d1b47c59fa0e"
+          },
+          {
+            "path": "apps/api/src/card-contribution-store.mjs",
+            "sha256": "3d8731c853465ed687cb00c392774597a6994cc6c453ae36c3b227a692168eb4"
+          },
+          {
+            "path": "apps/web/card-signed-webhook.mjs",
+            "sha256": "1d28e4286ddabfb307cb56e20e2b7c83f1a8c7adda82feece773114731b52842"
+          },
+          {
+            "path": "tests/integration/card-contributions.test.mjs",
+            "sha256": "ad4480ed86ebd796858b08660daa37b9b8bf0196129e7ac98a11fca5a760f47d"
           }
         ],
-        "softwareGap": "Independent original-browser receipt and Stripe-managed donor portal implemented and tested. New recurring commitments remain disabled pending proven future-charge limit/expiry enforcement; no invented recurring launch readiness.",
-        "activationRequirement": "Verify the tested revision in its intended release; no additional activation input identified.",
-        "verification": "Current branch source review; final hosted checks and accepted merge are recorded separately."
+        "softwareGap": "TEST manual-capture backend, all-channel reservations, one-shot dispatch/reconciliation, signed callbacks and exact journal release are source-tested. Complete the public prospective setup/bank-confirmation and donor-only recovery/cancellation/payment-method UI, controlled monthly PI remedy integration and operational due-period processing before new recurring commitments can open.",
+        "activationRequirement": "Actual staff mailbox and verified sender; source-verified current treasury/merchant release and credentials, separately from software completion. No real transaction is authorized.",
+        "verification": "AI source review, isolated PostgreSQL/HTTP and injected-provider negative tests. See docs/security/CARD_MANUAL_CAPTURE_REVIEW.md; exact-head CI and merged/deployed facts remain separate."
       }
     },
     {
@@ -3010,6 +3030,21 @@
     }
   ],
   "pullRequests": [
+    {
+      "id": 5239505073,
+      "number": 158,
+      "title": "Complete device lifecycle and preserve encrypted keys on logout",
+      "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/158",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-11-10T10:11:53Z",
+      "updatedAt": "2026-11-10T10:37:50Z",
+      "closedAt": "2026-11-10T10:37:49Z",
+      "mergedAt": "2026-11-10T10:37:49Z",
+      "headSha": "53d582fe84ee292523628dfea8bb6bccc0f389a8",
+      "baseRef": "main",
+      "mergeCommitSha": "eaf0c430c68195fea16f2aa4edec64ac8d598408"
+    },
     {
       "id": 5238840225,
       "number": 157,

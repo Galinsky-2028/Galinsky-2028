@@ -92,12 +92,13 @@ test('Postgres persistence, atomic verification, leasing and deletion',{skip:!ur
    await store.setMaterialAck(account.id,'test-guide',ack);
   });
   await t.test('financial provider events have safe fixed-key uniqueness and no donor card fields',async()=>{
-   await pool.query("INSERT INTO g28.financial_provider_events(provider,event_id,payment_id,event_digest,event_kind,amount_cents,occurred_at) VALUES($1,$2,$3,$4,$5,$6,now())",['synthetic','evt-a','pay-a','a'.repeat(64),'captured',2500]);
-   await assert.rejects(()=>pool.query("INSERT INTO g28.financial_provider_events(provider,event_id,payment_id,event_digest,event_kind,amount_cents,occurred_at) VALUES($1,$2,$3,$4,$5,$6,now())",['synthetic','evt-a','pay-a','a'.repeat(64),'captured',2500]));
+   const reference='synthetic-'+randomUUID();
+   await pool.query("INSERT INTO g28.financial_provider_events(provider,event_id,payment_id,event_digest,event_kind,amount_cents,occurred_at) VALUES($1,$2,$3,$4,$5,$6,now())",['synthetic',reference,'pay-a','a'.repeat(64),'captured',2500]);
+   await assert.rejects(()=>pool.query("INSERT INTO g28.financial_provider_events(provider,event_id,payment_id,event_digest,event_kind,amount_cents,occurred_at) VALUES($1,$2,$3,$4,$5,$6,now())",['synthetic',reference,'pay-a','a'.repeat(64),'captured',2500]));
    const cols=await pool.query("SELECT column_name FROM information_schema.columns WHERE table_schema='g28' AND table_name='financial_provider_events'");
    const names=cols.rows.map(r=>r.column_name);
    for(const prohibited of ['card_number','email','donor_name','billing_address','cvv'])assert(!names.includes(prohibited));
-   const result=await pool.query("SELECT amount_cents FROM g28.financial_provider_events WHERE provider='synthetic' AND event_id='evt-a'");
+   const result=await pool.query("SELECT amount_cents FROM g28.financial_provider_events WHERE provider='synthetic' AND event_id=$1",[reference]);
    assert.equal(Number(result.rows[0].amount_cents),2500);
   });
   await t.test('account activity snapshot excludes identity secrets and role preferences persist',async()=>{

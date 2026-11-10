@@ -1,5 +1,6 @@
 import {registerProtectedMls} from './protected-mls-routes.mjs';
 import {registerProtected} from './protected-routes.mjs';
+import {registerCardContributions} from './card-contribution-routes.mjs';
 import {registerTreasuryWorkflow} from './treasury-workflow-routes.mjs';
 import {registerTreasuryExports} from './treasury-export.mjs';
 import {registerOperations} from './operations-routes.mjs';
@@ -38,6 +39,7 @@ export function createApp({store,config,clock=()=>Date.now(),webauthn,financeTra
  if(config.legacyProtectedTests){if(config.production)throw Error('Legacy protected tests cannot run in production.');registerProtected(app,{store,config,account,writeSession,clock});}
  registerProtectedMls(app,{store,config,account,writeSession,clock});
  registerTreasuryWorkflow(app,{store,config,writeSession,clock,transport:financeTransport});
+ registerCardContributions(app,{store,config,writeSession,clock,transport:financeTransport});
  const cookieName=config.production?'__Host-g28':'g28-local';const bindingCookie=config.production?'__Host-g28-login':'g28-local-login';
  app.addHook('onRequest',async(req,reply)=>{
   reply.header('Cache-Control','no-store').header('X-Content-Type-Options','nosniff').header('Referrer-Policy','no-referrer').header('X-Frame-Options','DENY');

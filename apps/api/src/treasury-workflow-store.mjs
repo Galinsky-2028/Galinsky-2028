@@ -329,6 +329,16 @@ export const postgresTreasuryWorkflow = {
         'INSERT INTO g28.treasury_gifts(id,donor_id,source,environment,state) VALUES($1,$2,$3,$4,$5) ON CONFLICT(id) DO UPDATE SET donor_id=EXCLUDED.donor_id,state=EXCLUDED.state,updated_at=now()',
         [state.id, state.donorId, state.source, state.environment, state],
       );
+      // A captured manual-card period keeps its all-channel reservation until
+      // this exact signed source has been journaled under the same lock. Do
+      // not release merely because a provider HTTP response said succeeded.
+      if (event.channel === 'card' && event.kind === 'gift') {
+        const period = (await c.query('SELECT * FROM g28.card_periods WHERE provider_payment_id=$1', [event.providerPaymentId])).rows[0];
+        if (period) {
+          assert(period.donor_id === state.donorId && period.donor_version === state.donorVersion && period.environment === state.environment && Number(period.amount_cents) === event.amountCents && Number(state.allocations[period.election]) === event.amountCents && !period.gift_id, 'card_journal_binding', 'The signed capture must match the original contributor revision, exact amount and election reservation.', 409);
+          await c.query("UPDATE g28.card_periods SET status='posted',reservation_active=false,capture_event_id=$2,gift_id=$3,version=version+1,updated_at=now() WHERE id=$1", [period.id,event.externalReference,state.id]);
+        }
+      }
       const aggregates = (
         await c.query(
           "SELECT COALESCE(sum((state->'allocations'->>'primary')::bigint),0)::text AS primary,COALESCE(sum((state->'allocations'->>'general')::bigint),0)::text AS general FROM g28.treasury_gifts WHERE donor_id=$1 AND environment=$2",

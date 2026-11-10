@@ -8,7 +8,7 @@ The owner authorized using the connected Render/Neon accounts, a fresh database 
 - Website `srv-dbp6n18m7kps73a0kpsg`: https://galinsky2028-website.onrender.com.
 - Volunteer API/portal `srv-dbp6n661egvs73b7pspg`: https://galinsky2028-volunteers.onrender.com.
 - Both existing Node web services use the free plan in Ohio. Automatic deploy is off. A public static-site replacement would bypass private access and is not authorized.
-- Both are live on merged PR157, commit `ef307744670ef9c301c58678f10b48ce6946eec9`. Exact-head CI `42791381206` passed on `029bca1bd922244b9e18552c1f6c04639ef4750b`. Exact deployment IDs and observations are in `docs/evidence/CONNECTED_RELEASE_20261110.json`.
+- Both are live on merged PR158, commit `eaf0c430c68195fea16f2aa4edec64ac8d598408`. Exact-head CI `42797090386` passed on `53d582fe84ee292523628dfea8bb6bccc0f389a8`. Exact deployment IDs and observations are in `docs/evidence/CONNECTED_RELEASE_20261110.json`.
 - Startup probes verified installed HTTP/configuration/assets: 69 website checks and 23 portal checks. External unauthenticated health requests returned401. These observations are not an independent authenticated hosted-browser or staff/financial transaction rehearsal.
 - Neon project `calm-moon-73214448`, database `galinsky2028`, primary branch `br-damp-heart-bexv8utq`; migration validation branch `br-odd-river-bedrj1su`.
 - Migration024 passed on validation and primary, bringing recorded migrations to30. Protected identity count was0 at verification. Migration SQL SHA256 is recorded in the release evidence.
