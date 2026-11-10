@@ -234,7 +234,7 @@
   "accepted_prs_observed_at": "2026-11-10T01:41:32.903Z",
   "acceptance_model": "A verified merge accepts the PR. Full work-package scope completion and production deployment are separately tracked and cannot revoke acceptance of already merged PRs.",
   "implemented_software_packages": 59,
-  "progress_evidence_note": "Source-reviewed software implementation: 59/72; distinct fully scoped, release-evidenced accepted packages: 13/72. PR acceptance uses mergedAt for all 137 merged PRs. Yellow depicts accepted contributions to packages without full-scope acceptance, not unwritten software. Open production and protected-data gates remain separate. See docs/evidence/ROADMAP_RECONCILIATION_20261101.md.",
+  "progress_evidence_note": "Source-reviewed software implementation: 59/72; distinct fully scoped, release-evidenced accepted packages: 13/72. PR acceptance uses mergedAt for all 138 merged PRs. Yellow depicts accepted contributions to packages without full-scope acceptance, not unwritten software. Open production and protected-data gates remain separate. See docs/evidence/ROADMAP_RECONCILIATION_20261101.md.",
   "connected_account_deployment": {
     "observed_at": "2026-11-10T01:03:00Z",
     "workspace_id": "tea-dbl0kcbm8hqs738ptf3g",
@@ -254,6 +254,9 @@
     "final_link_update_pr": 151,
     "handoff": "docs/operations/CONNECTED_WORKSPACE_20261109.md",
     "old_render_services_deleted": true,
-    "retirement_run_id": 42735201769
+    "retirement_run_id": 42735201769,
+    "materials_release_pr": 152,
+    "temporary_youtube_id": "dpQulJS-R50",
+    "material_validation_branch_count": 19
   }
 }
