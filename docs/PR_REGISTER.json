@@ -1058,7 +1058,8 @@
       "evidence": "Interoperability/test vectors, key-substitution tests, enrollment evidence and profile-conformance mapping.",
       "external_inputs": "A suitable reviewed implementation/profile is a dependency; writing a novel cryptographic scheme is not an acceptable shortcut.",
       "contributing_prs": [
-        154
+        154,
+        155
       ],
       "implementation_note": "Protected workflow software implemented; configure real staff and recipient authority for hosted activation.",
       "acceptance_review": {
@@ -1133,7 +1134,8 @@
       "evidence": "Plaintext-canary tests, recipient/record-binding tests, egress traces and storage/log inspection evidence.",
       "external_inputs": "None beyond the listed dependencies.",
       "contributing_prs": [
-        154
+        154,
+        155
       ],
       "implementation_note": "Protected workflow software implemented; configure real staff and recipient authority for hosted activation.",
       "acceptance_review": {
@@ -1208,7 +1210,8 @@
       "external_inputs": "None beyond the listed dependencies.",
       "contributing_prs": [
         41,
-        154
+        154,
+        155
       ],
       "implementation_note": "Protected workflow software implemented; configure real staff and recipient authority for hosted activation.",
       "acceptance_review": {
@@ -1779,7 +1782,8 @@
         120,
         121,
         122,
-        154
+        154,
+        155
       ],
       "implementation_note": "Protected workflow software implemented; configure real staff and recipient authority for hosted activation.",
       "acceptance_review": {
@@ -1927,7 +1931,8 @@
       "evidence": "Connector contract tests, inactive-tool tests, opt-out failure scenario and role-to-tool readiness matrix.",
       "external_inputs": "An actual approved outreach provider/module is required only to activate those activities. The platform must work normally for other volunteer roles.",
       "contributing_prs": [
-        131
+        131,
+        155
       ],
       "implementation_note": "Approved link registry, version-bound opt-in/handoff and opt-out are implemented. Provider-specific API/suppression adapters require the actual approved provider contract; no fictional connector is enabled.",
       "acceptance_review": {
@@ -2025,7 +2030,8 @@
         69,
         95,
         131,
-        154
+        154,
+        155
       ],
       "implementation_note": "Protected workflow software implemented; configure real staff and recipient authority for hosted activation.",
       "acceptance_review": {
@@ -2276,7 +2282,8 @@
       "evidence": "Reconciliation fixtures, duplicate/partial refund cases, currency precision tests and treasurer comparison report.",
       "external_inputs": "None beyond the listed dependencies.",
       "contributing_prs": [
-        18
+        18,
+        155
       ],
       "implementation_note": "Complete treasury settlement/deposit and all-channel reconciliation beyond the implemented signed event ledger.",
       "acceptance_review": {
@@ -2319,7 +2326,9 @@
       "acceptance": "A donor can cancel through the documented working path without joining the volunteer system. Replayed clicks do not create new commitments. Recurring limits/expiry rules apply before future charges through a proven provider mechanism; unavailable enforcement is a launch gap, not hidden behavior.",
       "evidence": "Create/renew/cancel/retry sandbox scenarios, receipt accuracy and unauthorized donor-portal access tests.",
       "external_inputs": "None beyond the listed dependencies.",
-      "contributing_prs": [],
+      "contributing_prs": [
+        155
+      ],
       "implementation_note": "Implement independent donor receipt/recurring cancellation and processor-managed customer portal.",
       "acceptance_review": {
         "status": "not_started",
@@ -2358,7 +2367,8 @@
       "external_inputs": "None beyond the listed dependencies.",
       "contributing_prs": [
         55,
-        57
+        57,
+        155
       ],
       "implementation_note": "Implement treasurer-controlled exception casework and approved refund/dispute actions beyond ledger reconciliation.",
       "acceptance_review": {
@@ -2401,7 +2411,8 @@
       "evidence": "Export golden files, schema/total validation, injection tests and a treasurer import dry run.",
       "external_inputs": "The treasurer must identify the actual accounting/filing system and approve its mapping.",
       "contributing_prs": [
-        133
+        133,
+        155
       ],
       "implementation_note": "Finish donor/source and all-channel export adapters with the remaining ledger. Audited generic ledger CSV/JSON, source totals, explicit confirmation and formula-injection protection are implemented.",
       "acceptance_review": {
@@ -2546,7 +2557,8 @@
         95,
         110,
         122,
-        154
+        154,
+        155
       ],
       "acceptance_review": {
         "status": "implemented",
@@ -2822,7 +2834,8 @@
         108,
         134,
         135,
-        154
+        154,
+        155
       ],
       "acceptance_review": {
         "status": "implemented",
@@ -2870,7 +2883,8 @@
         17,
         61,
         128,
-        154
+        154,
+        155
       ],
       "acceptance_review": {
         "status": "implemented",
