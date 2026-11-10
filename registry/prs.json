@@ -9,10 +9,10 @@
     ".exechub/approved-pr-mapping.json",
     "docs/PR_REGISTER.json"
   ],
-  "progressEvidenceNote": "Source-reviewed software implementation: 59/72; distinct fully scoped, release-evidenced accepted packages: 13/72. PR acceptance uses mergedAt for all 138 merged PRs. Yellow depicts accepted contributions to packages without full-scope acceptance, not unwritten software. Open production and protected-data gates remain separate. See docs/evidence/ROADMAP_RECONCILIATION_20261101.md.",
+  "progressEvidenceNote": "Source-reviewed software implementation: 59/72; distinct fully scoped, release-evidenced accepted packages: 13/72. PR acceptance uses mergedAt for all 139 merged PRs. Yellow depicts accepted contributions to packages without full-scope acceptance, not unwritten software. Open production and protected-data gates remain separate. See docs/evidence/ROADMAP_RECONCILIATION_20261101.md.",
   "schemaVersion": 1,
   "roadmapVersion": 7,
-  "observedAt": "2026-11-10T01:41:32.903Z",
+  "observedAt": "2026-11-10T02:08:20.633Z",
   "units": [
     {
       "id": "G28-001",
@@ -2212,7 +2212,8 @@
         44,
         63,
         136,
-        140
+        140,
+        153
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -2655,6 +2656,21 @@
   ],
   "pullRequests": [
     {
+      "id": 5234250557,
+      "number": 152,
+      "title": "Release reviewed volunteer materials and temporary issue videos",
+      "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/152",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-11-10T01:41:36Z",
+      "updatedAt": "2026-11-10T01:54:37Z",
+      "closedAt": "2026-11-10T01:54:37Z",
+      "mergedAt": "2026-11-10T01:54:37Z",
+      "headSha": "29611b82752f1ca813bfc317289ba26dbcd83601",
+      "baseRef": "main",
+      "mergeCommitSha": "4599245d56a43c64653d229ee1e61dcb84bc3a8f"
+    },
+    {
       "id": 5233868834,
       "number": 151,
       "title": "Restore campaign deployment in connected Render and Neon accounts",
@@ -2662,7 +2678,7 @@
       "state": "closed",
       "draft": false,
       "createdAt": "2026-11-10T01:03:13Z",
-      "updatedAt": "2026-11-10T01:19:20Z",
+      "updatedAt": "2026-11-10T01:45:31Z",
       "closedAt": "2026-11-10T01:19:20Z",
       "mergedAt": "2026-11-10T01:19:20Z",
       "headSha": "abe6bdca2b2d445a0642ae00af258c4e5dd8bf49",

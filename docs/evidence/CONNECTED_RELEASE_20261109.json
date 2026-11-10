@@ -1,0 +1,113 @@
+{
+  "schema_version": 1,
+  "observed_at": "2026-11-10T02:08:20.671Z",
+  "runtime_commit": "4599245d56a43c64653d229ee1e61dcb84bc3a8f",
+  "application_prs": [
+    151,
+    152
+  ],
+  "ci": {
+    "run_id": 42738625356,
+    "conclusion": "success",
+    "tested_pr_head": "29611b82752f1ca813bfc317289ba26dbcd83601",
+    "merge_tree_identical": true
+  },
+  "render": {
+    "workspace_id": "tea-dbl0kcbm8hqs738ptf3g",
+    "website": {
+      "service_id": "srv-dbp6n18m7kps73a0kpsg",
+      "url": "https://galinsky2028-website.onrender.com",
+      "deploy_id": "dep-dbp7lijrjlhs73f3o2p0",
+      "status": "live"
+    },
+    "portal": {
+      "service_id": "srv-dbp6n661egvs73b7pspg",
+      "url": "https://galinsky2028-volunteers.onrender.com",
+      "deploy_id": "dep-dbp7ljom7kps73a3d1v0",
+      "status": "live"
+    },
+    "private_basic_gate": true,
+    "anonymous_and_wrong_password_rejected": true,
+    "auto_deploy": false
+  },
+  "database": {
+    "project_id": "calm-moon-73214448",
+    "branch_id": "br-damp-heart-bexv8utq",
+    "database": "galinsky2028",
+    "fresh_database": true,
+    "old_data_migrated": false,
+    "migration_count": 27,
+    "published_guides": 19,
+    "role_playbooks": 12,
+    "current_policy_guides": 3,
+    "publication_audit_events": 19,
+    "source_body_sha256_matches": 19,
+    "synthetic_accounts_remaining": 0,
+    "activity_modules": 0
+  },
+  "hosted_browser": {
+    "real_passkey_registration_and_sign_in": true,
+    "backup_passkey": true,
+    "role_preferences_persisted": true,
+    "account_export_and_closure": true,
+    "library_search_and_category_filter": true,
+    "empty_search_message": true,
+    "markdown_download": true,
+    "bookmark_survives_sign_in": true,
+    "reading_acknowledgment_survives_sign_in": true,
+    "orientation_completed_without_activity_authorization": true,
+    "mobile_reader": true,
+    "desktop_and_mobile_public_pages": true,
+    "twelve_role_pages": true,
+    "no_client_exceptions": true
+  },
+  "temporary_video": {
+    "youtube_id": "dpQulJS-R50",
+    "issues": [
+      "kirk-evers",
+      "garden",
+      "cornerstone"
+    ],
+    "explicit_temporary_label": true,
+    "no_iframe_before_play": true,
+    "disconnect_removes_iframe": true,
+    "watch_on_youtube_fallback": true,
+    "provider_playback_certified": false,
+    "final_issue_videos": false
+  },
+  "retirement": {
+    "old_render_service_ids": [
+      "srv-db5teuajnfac73bm8pug",
+      "srv-db5v0lfavr4c73a62870"
+    ],
+    "deleted": true,
+    "audit_run_id": 42735012873,
+    "delete_run_id": 42735201769,
+    "old_neon_project": "soft-bread-25523698",
+    "old_neon_deleted": false,
+    "old_neon_result": "404 through connected account; deletion not confirmed"
+  },
+  "approval": {
+    "mode": "owner-authorized-ai-reviewed",
+    "independent_human_review": false,
+    "certification_claim": false,
+    "manifest": "content/materials/owner-release.json",
+    "review": "docs/evidence/VOLUNTEER_MATERIAL_REVIEW_20261109.md"
+  },
+  "activation": {
+    "passkey_accounts": true,
+    "email_signup": false,
+    "staff": false,
+    "protected_submissions": false,
+    "payments": false,
+    "regulated_activity": false
+  },
+  "remaining": [
+    "Protected recipient/device enrollment, encrypted narratives and attachments, recovery and lifecycle require a supported reviewed browser implementation; the upstream Suite remains pre-alpha.",
+    "Verified sender/mail worker and owner/staff email configuration are not activated.",
+    "Remaining treasury settlement, exception/remedy and recurring-donor software plus actual merchant/treasurer release are incomplete; no live transactions authorized.",
+    "Final issue-specific videos and canonical destinations remain future content; the owner authorized the temporary video.",
+    "GitHub credentials cannot update Actions secrets (HTTP 403); an authorized owner must privately synchronize the preview password before relying on authenticated GitHub live-acceptance workflows.",
+    "The old Neon account is inaccessible through the connected integration."
+  ]
+}
