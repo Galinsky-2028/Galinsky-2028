@@ -217,7 +217,7 @@
     "completed": 13,
     "in_progress": 10,
     "not_started": 3,
-    "observed_merged_prs": 137,
+    "observed_merged_prs": 138,
     "observed_closed_unmerged_prs": 8,
     "ci_run_id": 41359919156,
     "ci_conclusion": "success",
@@ -225,16 +225,16 @@
     "private_preview_sha": "6d6c7aab464f89bc716e7a18cdd2227771285c59",
     "portal_preview_sha": "6d6c7aab464f89bc716e7a18cdd2227771285c59",
     "warning": "Private previews verified; live public signup, payment, recipient encryption and final external launch approvals remain separate.",
-    "observed_open_prs": 1,
-    "pr_observation_at": "2026-11-10T01:03:52.946Z",
+    "observed_open_prs": 0,
+    "pr_observation_at": "2026-11-10T01:41:32.903Z",
     "implemented": 46,
     "software_review_report": "docs/evidence/CURRENT_IMPLEMENTATION_REVIEW.md"
   },
-  "accepted_merged_prs": 137,
-  "accepted_prs_observed_at": "2026-11-10T01:03:52.946Z",
+  "accepted_merged_prs": 138,
+  "accepted_prs_observed_at": "2026-11-10T01:41:32.903Z",
   "acceptance_model": "A verified merge accepts the PR. Full work-package scope completion and production deployment are separately tracked and cannot revoke acceptance of already merged PRs.",
   "implemented_software_packages": 59,
-  "progress_evidence_note": "Source-reviewed software implementation: 59/72; distinct fully scoped, release-evidenced accepted packages: 13/72. PR acceptance uses mergedAt for all 137 merged PRs. Yellow depicts accepted contributions to packages without full-scope acceptance, not unwritten software. Open production and protected-data gates remain separate. See docs/evidence/ROADMAP_RECONCILIATION_20261101.md.",
+  "progress_evidence_note": "Source-reviewed software implementation: 59/72; distinct fully scoped, release-evidenced accepted packages: 13/72. PR acceptance uses mergedAt for all 138 merged PRs. Yellow depicts accepted contributions to packages without full-scope acceptance, not unwritten software. Open production and protected-data gates remain separate. See docs/evidence/ROADMAP_RECONCILIATION_20261101.md.",
   "connected_account_deployment": {
     "observed_at": "2026-11-10T01:03:00Z",
     "workspace_id": "tea-dbl0kcbm8hqs738ptf3g",
@@ -252,6 +252,11 @@
     "account_export_and_closure_verified": true,
     "verified_runtime_commit": "96de2bdc315057896ed8d4247b0647c597bafafd",
     "final_link_update_pr": 151,
-    "handoff": "docs/operations/CONNECTED_WORKSPACE_20261109.md"
+    "handoff": "docs/operations/CONNECTED_WORKSPACE_20261109.md",
+    "old_render_services_deleted": true,
+    "retirement_run_id": 42735201769,
+    "materials_release_pr": 152,
+    "temporary_youtube_id": "dpQulJS-R50",
+    "material_validation_branch_count": 19
   }
 }

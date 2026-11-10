@@ -11,34 +11,31 @@
   },
   "issues": {
     "kirk-evers": {
-      "title": "Kirk–Evers",
-      "youtubeId": null,
+      "title": "Kirk\u2013Evers",
+      "youtubeId": "dpQulJS-R50",
       "poster": "/assets/kirk-evers.svg",
       "transcript": null,
       "websiteUrl": null,
       "documents": [],
-      "temporaryLocalVideo": "/assets/issue-video-placeholder.mp4",
-      "temporaryLabel": "Temporary placeholder supplied by the campaign; replace with a final issue-specific video and captions."
+      "temporaryLabel": "Temporary video selected by the campaign owner. This is not the final issue-specific presentation."
     },
     "garden": {
       "title": "The Garden",
-      "youtubeId": null,
+      "youtubeId": "dpQulJS-R50",
       "poster": "/assets/garden.svg",
       "transcript": null,
       "websiteUrl": null,
       "documents": [],
-      "temporaryLocalVideo": "/assets/issue-video-placeholder.mp4",
-      "temporaryLabel": "Temporary placeholder supplied by the campaign; replace with a final issue-specific video and captions."
+      "temporaryLabel": "Temporary video selected by the campaign owner. This is not the final issue-specific presentation."
     },
     "cornerstone": {
       "title": "The Cornerstone",
-      "youtubeId": null,
+      "youtubeId": "dpQulJS-R50",
       "poster": "/assets/cornerstone.svg",
       "transcript": null,
       "websiteUrl": null,
       "documents": [],
-      "temporaryLocalVideo": "/assets/issue-video-placeholder.mp4",
-      "temporaryLabel": "Temporary placeholder supplied by the campaign; replace with a final issue-specific video and captions."
+      "temporaryLabel": "Temporary video selected by the campaign owner. This is not the final issue-specific presentation."
     }
   }
 }

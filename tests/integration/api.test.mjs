@@ -284,3 +284,17 @@ test('bookmarks are account-scoped, authorized, persistent and not accessible an
  assert.deepEqual((await app.inject({url:'/api/account/bookmarks',headers:{cookie}})).json(),{materialIds:[]});
  await app.close();
 });
+
+
+test('a filtered library reports no matches without claiming reviewed guides are unavailable',async()=>{
+ const{app,store}=await setup();
+ try{
+  const{cookie}=await login(app,store);
+  let response=await app.inject({url:'/api/materials?q=nonexistent-guide-phrase',headers:{cookie}});
+  assert.equal(response.statusCode,200);assert.deepEqual(response.json().materials,[]);
+  assert.match(response.json().notice,/No guides match/);
+  store.materials=store.materials.filter(m=>m.status==='unreviewed');
+  response=await app.inject({url:'/api/materials',headers:{cookie}});
+  assert.deepEqual(response.json().materials,[]);assert.match(response.json().notice,/being prepared/);
+ }finally{await app.close();}
+});

@@ -1,5 +1,7 @@
 # Two-person staff publication — signed offline operator workflow
 
+**Owner-directed exception, 9 November 2026:** the campaign owner expressly selected an owner-authorized, AI-reviewed reading release from the supplied normalized source edition. That specific workflow uses `content/materials/owner-release.json` and exact complete-record digests through `validateConfiguredMaterialRelease`, with no human-signature claim. See `docs/evidence/VOLUNTEER_MATERIAL_REVIEW_20261109.md`. The process below remains the default for independently signed staff releases and still applies to actual field-activity authorization; do not invent keys or signatures to apply it to the owner exception.
+
 This operational feature **does not enable web-based staff login**, and does not claim to authenticate reviewers automatically. It supplies a concrete, tamper-detecting publication and role-approval boundary until a separately reviewed multi-factor staff identity UI exists. The HTTP `/api/admin/*` endpoint remains unavailable.
 
 ## Key provisioning (human-operated)

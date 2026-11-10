@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "releaseId": "owner-20261110-volunteer-reading",
+  "mode": "owner-authorized-ai-reviewed",
+  "authorizedBy": "campaign-owner",
+  "authorizedAt": "2026-11-10T01:32:55.601Z",
+  "instruction": "Use an owner-authorized, AI-reviewed release",
+  "scope": "volunteer-reading-only",
+  "fieldActivitiesAuthorized": false,
+  "independentHumanReview": false,
+  "certificationClaim": false,
+  "sourceCommit": "a5eb39ed41750e245a07046be67089e2139d1496",
+  "sourceDirectory": "content/materials/source-edition-1",
+  "reviewReport": "docs/evidence/VOLUNTEER_MATERIAL_REVIEW_20261109.md",
+  "materials": [
+    {
+      "id": "universal-core",
+      "revision": 1,
+      "sha256": "3ef845603905020e5502b1ee3d5e3c5b0b00f9984a77c066e8be1c0fab66ad86"
+    },
+    {
+      "id": "role-network",
+      "revision": 1,
+      "sha256": "cd0c57ccd9c327a54cbf9ef2892c7953f4eec00875b7f524c56cb72f41abee34"
+    },
+    {
+      "id": "role-digital",
+      "revision": 1,
+      "sha256": "ad4519ccb2e42b8ffd6922c60233f4d4254a9948b3694591f990689fd5290708"
+    },
+    {
+      "id": "role-issue",
+      "revision": 1,
+      "sha256": "90623add71d110e069458c1361cdc24eb1cb17d6c0bd598e155e1333a7d4581d"
+    },
+    {
+      "id": "role-canvass",
+      "revision": 1,
+      "sha256": "c47d2b670021ee035041601d1ad4938ab187c3c4c7d877f8d74515d43d7103e4"
+    },
+    {
+      "id": "role-phone",
+      "revision": 1,
+      "sha256": "9bc1b76d93751afa6e6c0e546e4bf0727fb155b5c6321df353c57a4fe4c793c3"
+    },
+    {
+      "id": "role-host",
+      "revision": 1,
+      "sha256": "f43f69a7ae0116730fff7383c2aa2df1a9032f7a48dac239f0c0877335b26c67"
+    },
+    {
+      "id": "role-recruit",
+      "revision": 1,
+      "sha256": "13438fb1784680e354acf5eb93a681bbd94dfe48cc8d6c570ff3a47cad11561e"
+    },
+    {
+      "id": "role-captain",
+      "revision": 1,
+      "sha256": "04a82c907a692cc29474490d5eba6edecdf957327a83eb90a2cfef199813c338"
+    },
+    {
+      "id": "role-ballot",
+      "revision": 1,
+      "sha256": "65cc24a1ba12f63f51847062b624fcd19c47187aef9960c62a4d2840e916933f"
+    },
+    {
+      "id": "role-voter",
+      "revision": 1,
+      "sha256": "b8c9cb54f69e17f88cdbec4cd00ff0f72e8f4a8e03039acf1cb72cb3a6b56218"
+    },
+    {
+      "id": "role-fundraising",
+      "revision": 1,
+      "sha256": "4c05219252ab01d0e60247f1b1a4d6b95a09a8b328db477d487d30f95de5aa87"
+    },
+    {
+      "id": "role-skills",
+      "revision": 1,
+      "sha256": "4d040c259680efc3a622981bdc0b630d5fafe78fce60008dede33f80c670a0f3"
+    },
+    {
+      "id": "policy-kirk-evers",
+      "revision": 1,
+      "sha256": "1791f3000ea021f7de9b8640d07e65334a63519a81fc51ffc8a0c0ab464a7cf6"
+    },
+    {
+      "id": "policy-garden",
+      "revision": 1,
+      "sha256": "951b6edd057f77364ba175cdb7243ae9045dfcf607ff0ed62b392b0f5694ffe1"
+    },
+    {
+      "id": "policy-cornerstone",
+      "revision": 1,
+      "sha256": "4046827942660706e9154693ae607a8296fc109c27d3f965ebbed63a0bf76f7a"
+    },
+    {
+      "id": "first-hour-orientation",
+      "revision": 1,
+      "sha256": "176e6e77f9722487dad37652aad7ad88ed339c309aa378e9de930163a76e1465"
+    },
+    {
+      "id": "forms-and-practice",
+      "revision": 1,
+      "sha256": "eb1a5cedb80bdb7e35bd7fd8f692b81219a38bccecd2895fdbb5c6b127d572ac"
+    },
+    {
+      "id": "campaign-messaging",
+      "revision": 1,
+      "sha256": "fd37747f5ce506dab9b6e6e96a75aacfe071ac37e482a39553f13231e7c81ec7"
+    }
+  ]
+}

@@ -212,7 +212,14 @@ export function createApp({store,config,clock=()=>Date.now(),webauthn}){
   await store.setBookmark(s.account.id,materialId,b.saved);
   return {materialId,saved:b.saved,storedInAccount:true};
  });
- app.get('/api/materials',async req=>{const s=await account(req);const list=materialSearch(await store.listMaterials(),String(req.query.q||''),String(req.query.category||'all'),s.account);return {materials:list.map(m=>{const x=publicMaterial(m);delete x.body;return x;}),notice:list.length?null:'Current materials are being prepared and reviewed. Unreviewed historical files are not published as current guidance.'};});
+ app.get('/api/materials',async req=>{
+  const s=await account(req),available=await store.listMaterials();
+  const list=materialSearch(available,String(req.query.q||''),String(req.query.category||'all'),s.account);
+  const notice=list.length?null:available.some(m=>canReadMaterial(m,s.account))?
+   'No guides match your search or selected category. Try a different phrase or choose All materials.':
+   'Current materials are being prepared and reviewed. Unreviewed historical files are not published as current guidance.';
+  return {materials:list.map(m=>{const x=publicMaterial(m);delete x.body;return x;}),notice};
+ });
  app.get('/api/materials/:id',async req=>{
   const session=await account(req);
   const key=id(req.params.id);

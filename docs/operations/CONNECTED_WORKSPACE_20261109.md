@@ -12,6 +12,8 @@ Owner instruction, 9 November 2026 (America/New_York): use the connected Render 
 - Migration-validation branch: `br-odd-river-bedrj1su`. All 27 checked-in migrations passed there before application to the primary branch.
 - Portal SQL login: `g28_portal_runtime_volunteer`, without inherited roles, DDL, role creation, staff grants, editorial or treasury access. The `volunteer` profile in `scripts/runtime-role-permissions.mjs` is the reproducible grant definition. Materials/modules are read-only; passkey accounts, preferences, task progress, bookmarks and acknowledgments have the scoped DML needed by the application. Account closure/export retain their existing cleanup/read permissions.
 
+The nineteen-guide reading release and temporary YouTube configuration are described in `docs/evidence/VOLUNTEER_MATERIAL_REVIEW_20261109.md`; the owner explicitly approved AI editorial review. The previously reported missing materials were present in the repository and were initially overlooked.
+
 The original broad portal role was rejected by automatic approval review. It was not installed. A narrower volunteer-only profile was installed and its denied staff/treasury/editorial privileges were verified through PostgreSQL permission checks.
 
 ## Access and activation
@@ -24,7 +26,7 @@ The GitHub deployment workflows previously used secrets from the old account. Up
 
 ## Retirement
 
-The connected Render account returns 404 for both old services; the connected Neon account returns 404 for `soft-bread-25523698`. Absence through these credentials does not prove deletion. A manually dispatched `retire-old-render.yml` can audit then delete only the two exact old campaign services using the existing GitHub-held old Render credential if it still works. It verifies both identities/placements before deletion and cannot select databases, projects or new services. Never use the older portfolio-wide cleanup workflow for this request.
+The old Render services were successfully deleted using the GitHub-held credential after the replacement release passed live verification (Actions run `42735201769`). The connected Render account originally returned 404 for both old services; the connected Neon account returns 404 for `soft-bread-25523698`. Absence through these credentials does not prove deletion. A manually dispatched `retire-old-render.yml` can audit then delete only the two exact old campaign services using the existing GitHub-held old Render credential if it still works. It verifies both identities/placements before deletion and cannot select databases, projects or new services. Never use the older portfolio-wide cleanup workflow for this request.
 
 ## Verification and remaining work
 

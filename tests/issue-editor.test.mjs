@@ -20,7 +20,8 @@ test('config preparation writes only selected issue fields',()=>{
  assert.deepEqual(config.issues['kirk-evers'],original.issues['kirk-evers']);
  assert.equal(config.mode,original.mode);
  assert.equal(config.donations.enabled,false);
- assert.equal(original.issues.garden.youtubeId,null);
+ assert.equal(original.issues.garden.youtubeId,'dpQulJS-R50');
+ assert.equal(config.issues.garden.temporaryLabel,null,'A final issue-specific video clears its temporary label.');
  assert.match(videoPanel('garden',config.issues.garden),/data-video="AbcdefG123_"/);
 });
 for(const url of ['http://example.org','https://localhost/','https://user@example.org','https://example.org:444/','javascript:alert(1)','https://127.0.0.1/'])test('invalid outbound issue URL '+url,()=>assert.throws(()=>validatedWebsite(url)));
@@ -36,7 +37,7 @@ test('CLI dry run has no file mutation; --write updates only copied config',()=>
   const configPath=join(temp,'site.json');writeFileSync(configPath,JSON.stringify(original));
   const cli=join(root,'scripts/prepare-issue-video.mjs');
   let p=spawnSync(process.execPath,[cli,'--issue','garden','--youtube',video,'--config',configPath],{encoding:'utf8'});
-  assert.equal(p.status,0,p.stderr);assert.equal(JSON.parse(readFileSync(configPath,'utf8')).issues.garden.youtubeId,null);
+  assert.equal(p.status,0,p.stderr);assert.deepEqual(JSON.parse(readFileSync(configPath,'utf8')),original);
   p=spawnSync(process.execPath,[cli,'--issue','garden','--youtube',video,'--config',configPath,'--write'],{encoding:'utf8'});
   assert.equal(p.status,0,p.stderr);assert.equal(JSON.parse(readFileSync(configPath,'utf8')).issues.garden.youtubeId,'AbcdefG123_');
  }finally{rmSync(temp,{force:true,recursive:true});}

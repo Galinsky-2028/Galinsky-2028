@@ -1,5 +1,7 @@
 ## Connected-account migration — 9 November 2026
 
+The owner subsequently supplied temporary YouTube video `dpQulJS-R50` for all three issue pages and the normalized volunteer source directory, and explicitly selected **“Use an owner-authorized, AI-reviewed release.”** This supersedes the two-human-signature requirement for the nineteen-record volunteer reading release described in `docs/evidence/VOLUNTEER_MATERIAL_REVIEW_20261109.md`. Attribute AI review honestly, bind exact records to `owner-release.json`, preserve the normal staff-signature path and retain all separate regulated-activity, protected-content and payment gates. Never synthesize human signers.
+
 The owner explicitly directs using connected Render workspace `tea-dbl0kcbm8hqs738ptf3g` and the connected Neon account, creating a fresh campaign database and deleting the old deployments/database if accessible. This supersedes the older existing-service-only placement restriction for this migration. Current resources and access limits are in `docs/operations/CONNECTED_WORKSPACE_20261109.md`. Keep private access, transaction controls and no-paid-plan limits; never claim the fresh database migrated inaccessible old records.
 
 ## Owner acceptance and completion directive — 18 October 2026

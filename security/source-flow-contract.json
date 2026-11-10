@@ -158,7 +158,7 @@
     },
     {
       "path": "apps/api/src/app.mjs",
-      "blobSha": "ffa27d863c5c66faeced2787ffeb19ff006b0229",
+      "blobSha": "d1e95edf20795a9e1c9398af8f02a9f4c9713a25",
       "componentId": "identity"
     },
     {
@@ -742,6 +742,11 @@
       "componentId": "coordination"
     },
     {
+      "path": "packages/core/owner-material-release.mjs",
+      "blobSha": "b13a95e855089a0046e923057f821dee5bf9173a",
+      "componentId": "materials"
+    },
+    {
       "path": "packages/core/policy-documents.mjs",
       "blobSha": "309fe2756873ddacb6895c5ecf83bbd47780b435",
       "componentId": "public"
@@ -813,7 +818,7 @@
     },
     {
       "path": "packages/core/video.mjs",
-      "blobSha": "3a7361b8eab86eece9ca0831f9c09ed544d775ff",
+      "blobSha": "a1bcea0408a13dfab697a2234c8686d56386c7c7",
       "componentId": "public"
     },
     {
@@ -878,7 +883,7 @@
     },
     {
       "path": "scripts/prepare-issue-video.mjs",
-      "blobSha": "bf521d529e75a151291d58491bed41b111228de0",
+      "blobSha": "6c79d7a0f1d0d5c60e3d641137984cda7eafd80a",
       "componentId": "operator"
     },
     {
@@ -893,12 +898,12 @@
     },
     {
       "path": "scripts/public-renderer.mjs",
-      "blobSha": "ab04a6459d2a1487ccfc0209074f9a6e42d4e98a",
+      "blobSha": "8ee94c1f719b2f600cd1ec2cf250c5849483657c",
       "componentId": "public"
     },
     {
       "path": "scripts/publish-materials.mjs",
-      "blobSha": "f2028dd238b4e55ad844a5f8a1b24142b951cb66",
+      "blobSha": "aa4d6ba49328ed31a26d6a2d46d4960a3a30581c",
       "componentId": "operator"
     },
     {
@@ -988,7 +993,7 @@
     },
     {
       "path": "scripts/verify-material-release.mjs",
-      "blobSha": "9ab8a14973a7afef4e0b535a4db7bfa4f5426fb0",
+      "blobSha": "ee361b38fc35c2aac43244c0ab65b0d938bd1e22",
       "componentId": "operator"
     },
     {

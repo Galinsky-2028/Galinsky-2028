@@ -9,7 +9,7 @@
   "implemented_packages": 59,
   "merged_packages": 13,
   "deployed_packages": 12,
-  "note": "59 of 72 reviewed source software packages implemented; 13 of 72 separately have full-scope acceptance. The currently protected previews are live on 6d6c7aab464f89bc716e7a18cdd2227771285c59; public launch remains gated.",
+  "note": "59 of 72 reviewed software packages implemented; 13 separately have full-scope acceptance. Current connected-account deployment and reading-release evidence are in docs/operations/CONNECTED_WORKSPACE_20261109.md and docs/evidence/VOLUNTEER_MATERIAL_REVIEW_20261109.md. Public launch remains gated.",
   "packages": [
     {
       "id": "G28-01",
@@ -596,7 +596,8 @@
       "contributing_prs": [
         45,
         65,
-        96
+        96,
+        152
       ],
       "acceptance_review": {
         "status": "implemented",
@@ -1210,7 +1211,8 @@
       "external_inputs": "Current policy sources/reviewer approval are needed for publication; ingesting an archive is not that approval.",
       "implementation_note": "Working source implementation reviewed individually. Review and publish the actual current volunteer source edition; no invented source or approval.",
       "contributing_prs": [
-        46
+        46,
+        152
       ],
       "acceptance_review": {
         "status": "implemented",
@@ -1256,7 +1258,8 @@
         11,
         49,
         62,
-        68
+        68,
+        152
       ],
       "acceptance_review": {
         "status": "implemented",
@@ -1344,7 +1347,8 @@
       "external_inputs": "None beyond the listed dependencies.",
       "contributing_prs": [
         14,
-        113
+        113,
+        152
       ],
       "implementation_note": "Working source implementation reviewed individually. Publish the approved current orientation/training content and exercise hosted re-acknowledgment.",
       "acceptance_review": {
@@ -1503,7 +1507,8 @@
       "implementation_note": "Working source implementation reviewed individually. Verify the tested revision in its intended release; no additional activation input identified.",
       "contributing_prs": [
         1,
-        35
+        35,
+        152
       ],
       "acceptance_review": {
         "status": "implemented",
@@ -3418,7 +3423,7 @@
     }
   ],
   "progress_evidence_note": "Source-reviewed software implementation: 59/72; distinct fully scoped, release-evidenced accepted packages: 13/72. PR acceptance uses mergedAt for all 134 merged PRs. Yellow depicts accepted contributions to packages without full-scope acceptance, not unwritten software. Open production and protected-data gates remain separate. See docs/evidence/ROADMAP_RECONCILIATION_20261101.md.",
-  "accepted_pull_requests": 137,
-  "accepted_prs_observed_at": "2026-11-10T01:03:52.946Z",
+  "accepted_pull_requests": 138,
+  "accepted_prs_observed_at": "2026-11-10T01:41:32.903Z",
   "pull_request_acceptance_rule": "Every real GitHub PR with a verified merged_at is accepted; no further package review is required to accept that PR. Fully complete planned work packages are counted separately."
 }
