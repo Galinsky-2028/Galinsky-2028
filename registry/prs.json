@@ -12,7 +12,7 @@
   "progressEvidenceNote": "Source-reviewed software implementation: 66/72; full-scope release-evidenced accepted packages: 13/72. Treasury/outreach additions are source-tested; protected ratcheted protocol and recurring enforcement remain real software gaps. Every verified merged PR is accepted separately from package scope and deployment.",
   "schemaVersion": 1,
   "roadmapVersion": 7,
-  "observedAt": "2026-11-10T09:13:36.720Z",
+  "observedAt": "2026-11-10T09:22:19.096Z",
   "units": [
     {
       "id": "G28-001",
@@ -841,7 +841,8 @@
       "contributingPrs": [
         154,
         155,
-        156
+        156,
+        157
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -919,7 +920,8 @@
       "contributingPrs": [
         154,
         155,
-        156
+        156,
+        157
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -998,7 +1000,8 @@
         41,
         154,
         155,
-        156
+        156,
+        157
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -1461,7 +1464,8 @@
         122,
         154,
         155,
-        156
+        156,
+        157
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -1676,7 +1680,8 @@
         131,
         154,
         155,
-        156
+        156,
+        157
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -2985,6 +2990,21 @@
     }
   ],
   "pullRequests": [
+    {
+      "id": 5238840225,
+      "number": 157,
+      "title": "Integrate ratcheted reporting with signed devices and encrypted browser state",
+      "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/157",
+      "state": "open",
+      "draft": false,
+      "createdAt": "2026-11-10T09:19:41Z",
+      "updatedAt": "2026-11-10T09:19:41Z",
+      "closedAt": null,
+      "mergedAt": null,
+      "headSha": "d0b6091e3f413bc572f777e1fb68607b181aa31a",
+      "baseRef": "main",
+      "mergeCommitSha": "c5fdeab395648bbc7896d1a74bde1c0e04a38fca"
+    },
     {
       "id": 5237359077,
       "number": 156,
