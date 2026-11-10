@@ -1,0 +1,17 @@
+{
+  "observedAt": "2026-11-10T06:38:00Z",
+  "commit": "40399f3d2229031af20c22113dcb232d46abf22b",
+  "acceptedPr": 155,
+  "headCi": {"runId": 42768989766, "headSha": "631984e3131a7fed656b263eaf0858a7c1015ddf", "conclusion": "success"},
+  "workspace": "tea-dbl0kcbm8hqs738ptf3g",
+  "website": {"service": "srv-dbp6n18m7kps73a0kpsg", "deploy": "dep-dbpbn1on74is73dgcl0g", "status": "live", "url": "https://galinsky2028-website.onrender.com", "runtimeReadOnlyChecks": 69, "unauthenticatedExternalHealthStatus": 401},
+  "portal": {"service": "srv-dbp6n661egvs73b7pspg", "deploy": "dep-dbpbn2jbc2fs739onns0", "status": "live", "url": "https://galinsky2028-volunteers.onrender.com", "runtimeReadOnlyChecks": 23, "unauthenticatedExternalHealthStatus": 401},
+  "database": {"project": "calm-moon-73214448", "branch": "br-damp-heart-bexv8utq", "validationBranch": "br-odd-river-bedrj1su", "migrationCount": 29, "publishedGuides": 19, "volunteerCanReadTreasuryDonors": false, "volunteerCanReadProtectedRecords": false},
+  "scope": "Private free-plan release. Startup checks are actual installed HTTP/config/readiness/asset observations; not an independent hosted browser or staff/financial transaction rehearsal.",
+  "remainingSoftware": ["Registered ratcheted protected messaging, authenticated device-state and client state lifecycle", "Proven future-charge limit and expiry enforcement for new recurring commitments"],
+  "remainingActivationInputs": ["Actual staff mailbox and verified transactional sender", "Actual approved outreach tool review/provider", "Treasurer and campaign-specific merchant release; no live processing authorized"],
+  "credentialsRotated": false,
+  "publicFundraisingEnabled": false,
+  "protectedReportingEnabled": false,
+  "fullPlatformComplete": false
+}

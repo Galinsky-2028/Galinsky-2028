@@ -1,0 +1,20 @@
+{
+  "schema_version": "0.1",
+  "format_version": "attachment-v1",
+  "profile_ref": "attachment-chunked-aead@0.1.0",
+  "attachment_id": "attachment-alpha",
+  "parent_message_id": "message-alpha",
+  "attachment_key_id": "attachment-key-alpha",
+  "attachment_master_key_hex": "1111111111111111111111111111111111111111111111111111111111111111",
+  "content_aead_algorithm_id": "ALG-AES-256-GCM",
+  "hash_algorithm_id": "ALG-SHA256",
+  "nonce_prefix_hex": "a1b2c3d4",
+  "chunk_size_bytes": 1048576,
+  "chunk_count": 3,
+  "plaintext_size_bytes": 2500000,
+  "filename": "report.pdf",
+  "media_type": "application/pdf",
+  "whole_plaintext_hash_hex": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+  "storage_object_id": "object-alpha",
+  "manifest_context_digest_hex": "92e0a5b2fdc2a88d41c1e533577e4fd77a0c3bc442f5db1ad6e708d844654e9e"
+}

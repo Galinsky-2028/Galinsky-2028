@@ -12,7 +12,7 @@
   "progressEvidenceNote": "Source-reviewed software implementation: 66/72; full-scope release-evidenced accepted packages: 13/72. Treasury/outreach additions are source-tested; protected ratcheted protocol and recurring enforcement remain real software gaps. Every verified merged PR is accepted separately from package scope and deployment.",
   "schemaVersion": 1,
   "roadmapVersion": 7,
-  "observedAt": "2026-11-10T06:07:16.656Z",
+  "observedAt": "2026-11-10T07:15:42.259Z",
   "units": [
     {
       "id": "G28-001",
@@ -208,7 +208,8 @@
       "contributingPrs": [
         16,
         66,
-        154
+        154,
+        156
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -839,62 +840,31 @@
       "prs": [],
       "contributingPrs": [
         154,
-        155
+        155,
+        156
       ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
       "status": "in_progress",
-      "acceptanceBlocker": "Static OpenPGP prototype does not implement a registered forward-secret ratcheted messaging profile required by pinned E2EESA ADRs 0005/0006. Runtime unconditionally blocks protected intake until replacement adapter and client-state lifecycle are verified.",
+      "acceptanceBlocker": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
         "implementation": "remaining_implementation",
-        "reviewedAt": "2026-11-10T04:02:08.568340Z",
+        "reviewedAt": "2026-11-10T07:15:40.639Z",
         "sourceFiles": [
           {
-            "path": "packages/core/protected-crypto.mjs",
-            "sha256": "ad7ff63ef96a57dd60956cfb25fab2dd680c390474dde573987abad0cf021243"
+            "path": "packages/core/protected-identity.mjs",
+            "sha256": "e9a1ac8967ece25b5c4ddc37ccd66020c7f45b99a5af0f91351296e20a557e41"
           },
           {
-            "path": "packages/core/protected-records.mjs",
-            "sha256": "c1d767a36b64bc0ccf951c9ac925993bb2b419ab1e1920d9487320be1949cf72"
-          },
-          {
-            "path": "apps/api/src/protected-routes.mjs",
-            "sha256": "b481f9d12b4bd77a6466c7cc513419c63fe04d3d0984f0e55f1749045b788f91"
-          },
-          {
-            "path": "apps/api/src/protected-store.mjs",
-            "sha256": "4ab76c4fc4f07fa216cac24e75ea099c9b80b69202d0d6929688ef3bf7b70d9a"
-          },
-          {
-            "path": "apps/portal/src/ProtectedReports.tsx",
-            "sha256": "1935f2a297ba978d59ea6283385931481966545be5293027c32f0405a553dddb"
-          },
-          {
-            "path": "db/migrations/022_protected_records.sql",
-            "sha256": "0ee704e1c7f0aa405124910341dedf374d477e23e352f47e60eb5bb2266b524a"
-          },
-          {
-            "path": "tests/protected-crypto.test.mjs",
-            "sha256": "09a9f9d249eed241d744c6bbdfacd619aee48424a5be2af27b1ba2e13ba94b3d"
-          },
-          {
-            "path": "tests/integration/protected-records.test.mjs",
-            "sha256": "2fdef9b36652e5ac4a4f2d131dde5be8495cade544debfc1365674865ba04588"
-          },
-          {
-            "path": "tests/browser/protected-records.mjs",
-            "sha256": "5b1ef5c254435344e9b7864d3d5a90ab5bd448963708533fbadcee74a2e78d6e"
-          },
-          {
-            "path": "tests/integration/database-recovery.test.mjs",
-            "sha256": "b06a06653fd551a0053cac984a655c67c560a064ae92a1c1b362423e1728e44f"
+            "path": "packages/core/protected-verification.mjs",
+            "sha256": "a7e722c5738de93786e77f244d7c4c66f8122d9702a62b7ef6d2c7219f080f42"
           }
         ],
-        "softwareGap": "Static OpenPGP prototype does not implement a registered forward-secret ratcheted messaging profile required by pinned E2EESA ADRs 0005/0006. Runtime unconditionally blocks protected intake until replacement adapter and client-state lifecycle are verified.",
+        "softwareGap": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled.",
         "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
-        "verification": "Corrected review in docs/evidence/TREASURY_COMPLETION_20261110.md; merged PR154 remains accepted, without claiming complete protocol scope."
+        "verification": "Component evidence in docs/security/RATCHETED_PROTECTED_FOUNDATION.md; runtime remains blocked and this is not full package acceptance."
       }
     },
     {
@@ -904,62 +874,31 @@
       "prs": [],
       "contributingPrs": [
         154,
-        155
+        155,
+        156
       ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
       "status": "in_progress",
-      "acceptanceBlocker": "Static OpenPGP prototype does not implement a registered forward-secret ratcheted messaging profile required by pinned E2EESA ADRs 0005/0006. Runtime unconditionally blocks protected intake until replacement adapter and client-state lifecycle are verified.",
+      "acceptanceBlocker": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
         "implementation": "remaining_implementation",
-        "reviewedAt": "2026-11-10T04:02:08.568340Z",
+        "reviewedAt": "2026-11-10T07:15:40.639Z",
         "sourceFiles": [
           {
-            "path": "packages/core/protected-crypto.mjs",
-            "sha256": "ad7ff63ef96a57dd60956cfb25fab2dd680c390474dde573987abad0cf021243"
+            "path": "packages/core/protected-mls.mjs",
+            "sha256": "9d2ff7793b56e4a92b06821c52f95131c6899fac367236d3a8525651bbbde530"
           },
           {
-            "path": "packages/core/protected-records.mjs",
-            "sha256": "c1d767a36b64bc0ccf951c9ac925993bb2b419ab1e1920d9487320be1949cf72"
-          },
-          {
-            "path": "apps/api/src/protected-routes.mjs",
-            "sha256": "b481f9d12b4bd77a6466c7cc513419c63fe04d3d0984f0e55f1749045b788f91"
-          },
-          {
-            "path": "apps/api/src/protected-store.mjs",
-            "sha256": "4ab76c4fc4f07fa216cac24e75ea099c9b80b69202d0d6929688ef3bf7b70d9a"
-          },
-          {
-            "path": "apps/portal/src/ProtectedReports.tsx",
-            "sha256": "1935f2a297ba978d59ea6283385931481966545be5293027c32f0405a553dddb"
-          },
-          {
-            "path": "db/migrations/022_protected_records.sql",
-            "sha256": "0ee704e1c7f0aa405124910341dedf374d477e23e352f47e60eb5bb2266b524a"
-          },
-          {
-            "path": "tests/protected-crypto.test.mjs",
-            "sha256": "09a9f9d249eed241d744c6bbdfacd619aee48424a5be2af27b1ba2e13ba94b3d"
-          },
-          {
-            "path": "tests/integration/protected-records.test.mjs",
-            "sha256": "2fdef9b36652e5ac4a4f2d131dde5be8495cade544debfc1365674865ba04588"
-          },
-          {
-            "path": "tests/browser/protected-records.mjs",
-            "sha256": "5b1ef5c254435344e9b7864d3d5a90ab5bd448963708533fbadcee74a2e78d6e"
-          },
-          {
-            "path": "tests/integration/database-recovery.test.mjs",
-            "sha256": "b06a06653fd551a0053cac984a655c67c560a064ae92a1c1b362423e1728e44f"
+            "path": "packages/core/protected-attachment.mjs",
+            "sha256": "738594e8a0c45da4f7b60a6c8705206421df2478235eeace9629115b2b1bd41d"
           }
         ],
-        "softwareGap": "Static OpenPGP prototype does not implement a registered forward-secret ratcheted messaging profile required by pinned E2EESA ADRs 0005/0006. Runtime unconditionally blocks protected intake until replacement adapter and client-state lifecycle are verified.",
+        "softwareGap": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled.",
         "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
-        "verification": "Corrected review in docs/evidence/TREASURY_COMPLETION_20261110.md; merged PR154 remains accepted, without claiming complete protocol scope."
+        "verification": "Component evidence in docs/security/RATCHETED_PROTECTED_FOUNDATION.md; runtime remains blocked and this is not full package acceptance."
       }
     },
     {
@@ -970,62 +909,31 @@
       "contributingPrs": [
         41,
         154,
-        155
+        155,
+        156
       ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
       "status": "in_progress",
-      "acceptanceBlocker": "Static OpenPGP prototype does not implement a registered forward-secret ratcheted messaging profile required by pinned E2EESA ADRs 0005/0006. Runtime unconditionally blocks protected intake until replacement adapter and client-state lifecycle are verified.",
+      "acceptanceBlocker": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
         "implementation": "remaining_implementation",
-        "reviewedAt": "2026-11-10T04:02:08.568340Z",
+        "reviewedAt": "2026-11-10T07:15:40.639Z",
         "sourceFiles": [
           {
-            "path": "packages/core/protected-crypto.mjs",
-            "sha256": "ad7ff63ef96a57dd60956cfb25fab2dd680c390474dde573987abad0cf021243"
+            "path": "packages/core/protected-vault.mjs",
+            "sha256": "13b5c180e292b116012bb832dd07f3fd3215396f759c7b8a7ed52f03ad4b17ab"
           },
           {
-            "path": "packages/core/protected-records.mjs",
-            "sha256": "c1d767a36b64bc0ccf951c9ac925993bb2b419ab1e1920d9487320be1949cf72"
-          },
-          {
-            "path": "apps/api/src/protected-routes.mjs",
-            "sha256": "b481f9d12b4bd77a6466c7cc513419c63fe04d3d0984f0e55f1749045b788f91"
-          },
-          {
-            "path": "apps/api/src/protected-store.mjs",
-            "sha256": "4ab76c4fc4f07fa216cac24e75ea099c9b80b69202d0d6929688ef3bf7b70d9a"
-          },
-          {
-            "path": "apps/portal/src/ProtectedReports.tsx",
-            "sha256": "1935f2a297ba978d59ea6283385931481966545be5293027c32f0405a553dddb"
-          },
-          {
-            "path": "db/migrations/022_protected_records.sql",
-            "sha256": "0ee704e1c7f0aa405124910341dedf374d477e23e352f47e60eb5bb2266b524a"
-          },
-          {
-            "path": "tests/protected-crypto.test.mjs",
-            "sha256": "09a9f9d249eed241d744c6bbdfacd619aee48424a5be2af27b1ba2e13ba94b3d"
-          },
-          {
-            "path": "tests/integration/protected-records.test.mjs",
-            "sha256": "2fdef9b36652e5ac4a4f2d131dde5be8495cade544debfc1365674865ba04588"
-          },
-          {
-            "path": "tests/browser/protected-records.mjs",
-            "sha256": "5b1ef5c254435344e9b7864d3d5a90ab5bd448963708533fbadcee74a2e78d6e"
-          },
-          {
-            "path": "tests/integration/database-recovery.test.mjs",
-            "sha256": "b06a06653fd551a0053cac984a655c67c560a064ae92a1c1b362423e1728e44f"
+            "path": "packages/core/protected-identity.mjs",
+            "sha256": "e9a1ac8967ece25b5c4ddc37ccd66020c7f45b99a5af0f91351296e20a557e41"
           }
         ],
-        "softwareGap": "Static OpenPGP prototype does not implement a registered forward-secret ratcheted messaging profile required by pinned E2EESA ADRs 0005/0006. Runtime unconditionally blocks protected intake until replacement adapter and client-state lifecycle are verified.",
+        "softwareGap": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled.",
         "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
-        "verification": "Corrected review in docs/evidence/TREASURY_COMPLETION_20261110.md; merged PR154 remains accepted, without claiming complete protocol scope."
+        "verification": "Component evidence in docs/security/RATCHETED_PROTECTED_FOUNDATION.md; runtime remains blocked and this is not full package acceptance."
       }
     },
     {
@@ -1420,62 +1328,31 @@
         121,
         122,
         154,
-        155
+        155,
+        156
       ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
       "status": "in_progress",
-      "acceptanceBlocker": "Static OpenPGP prototype does not implement a registered forward-secret ratcheted messaging profile required by pinned E2EESA ADRs 0005/0006. Runtime unconditionally blocks protected intake until replacement adapter and client-state lifecycle are verified.",
+      "acceptanceBlocker": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
         "implementation": "remaining_implementation",
-        "reviewedAt": "2026-11-10T04:02:08.568340Z",
+        "reviewedAt": "2026-11-10T07:15:40.640Z",
         "sourceFiles": [
           {
-            "path": "packages/core/protected-crypto.mjs",
-            "sha256": "ad7ff63ef96a57dd60956cfb25fab2dd680c390474dde573987abad0cf021243"
-          },
-          {
-            "path": "packages/core/protected-records.mjs",
-            "sha256": "c1d767a36b64bc0ccf951c9ac925993bb2b419ab1e1920d9487320be1949cf72"
+            "path": "packages/core/protected-mls.mjs",
+            "sha256": "9d2ff7793b56e4a92b06821c52f95131c6899fac367236d3a8525651bbbde530"
           },
           {
             "path": "apps/api/src/protected-routes.mjs",
-            "sha256": "b481f9d12b4bd77a6466c7cc513419c63fe04d3d0984f0e55f1749045b788f91"
-          },
-          {
-            "path": "apps/api/src/protected-store.mjs",
-            "sha256": "4ab76c4fc4f07fa216cac24e75ea099c9b80b69202d0d6929688ef3bf7b70d9a"
-          },
-          {
-            "path": "apps/portal/src/ProtectedReports.tsx",
-            "sha256": "1935f2a297ba978d59ea6283385931481966545be5293027c32f0405a553dddb"
-          },
-          {
-            "path": "db/migrations/022_protected_records.sql",
-            "sha256": "0ee704e1c7f0aa405124910341dedf374d477e23e352f47e60eb5bb2266b524a"
-          },
-          {
-            "path": "tests/protected-crypto.test.mjs",
-            "sha256": "09a9f9d249eed241d744c6bbdfacd619aee48424a5be2af27b1ba2e13ba94b3d"
-          },
-          {
-            "path": "tests/integration/protected-records.test.mjs",
-            "sha256": "2fdef9b36652e5ac4a4f2d131dde5be8495cade544debfc1365674865ba04588"
-          },
-          {
-            "path": "tests/browser/protected-records.mjs",
-            "sha256": "5b1ef5c254435344e9b7864d3d5a90ab5bd448963708533fbadcee74a2e78d6e"
-          },
-          {
-            "path": "tests/integration/database-recovery.test.mjs",
-            "sha256": "b06a06653fd551a0053cac984a655c67c560a064ae92a1c1b362423e1728e44f"
+            "sha256": "9452d35e8ea2be6d1342cfbcf57e389d51acca1a0a3cd3262d851ffe759e2876"
           }
         ],
-        "softwareGap": "Static OpenPGP prototype does not implement a registered forward-secret ratcheted messaging profile required by pinned E2EESA ADRs 0005/0006. Runtime unconditionally blocks protected intake until replacement adapter and client-state lifecycle are verified.",
+        "softwareGap": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled.",
         "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
-        "verification": "Corrected review in docs/evidence/TREASURY_COMPLETION_20261110.md; merged PR154 remains accepted, without claiming complete protocol scope."
+        "verification": "Component evidence in docs/security/RATCHETED_PROTECTED_FOUNDATION.md; runtime remains blocked and this is not full package acceptance."
       }
     },
     {
@@ -1622,62 +1499,31 @@
         95,
         131,
         154,
-        155
+        155,
+        156
       ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
       "status": "in_progress",
-      "acceptanceBlocker": "Static OpenPGP prototype does not implement a registered forward-secret ratcheted messaging profile required by pinned E2EESA ADRs 0005/0006. Runtime unconditionally blocks protected intake until replacement adapter and client-state lifecycle are verified.",
+      "acceptanceBlocker": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
         "implementation": "remaining_implementation",
-        "reviewedAt": "2026-11-10T04:02:08.568340Z",
+        "reviewedAt": "2026-11-10T07:15:40.640Z",
         "sourceFiles": [
           {
-            "path": "packages/core/protected-crypto.mjs",
-            "sha256": "ad7ff63ef96a57dd60956cfb25fab2dd680c390474dde573987abad0cf021243"
-          },
-          {
-            "path": "packages/core/protected-records.mjs",
-            "sha256": "c1d767a36b64bc0ccf951c9ac925993bb2b419ab1e1920d9487320be1949cf72"
-          },
-          {
-            "path": "apps/api/src/protected-routes.mjs",
-            "sha256": "b481f9d12b4bd77a6466c7cc513419c63fe04d3d0984f0e55f1749045b788f91"
-          },
-          {
-            "path": "apps/api/src/protected-store.mjs",
-            "sha256": "4ab76c4fc4f07fa216cac24e75ea099c9b80b69202d0d6929688ef3bf7b70d9a"
-          },
-          {
             "path": "apps/portal/src/ProtectedReports.tsx",
-            "sha256": "1935f2a297ba978d59ea6283385931481966545be5293027c32f0405a553dddb"
+            "sha256": "aa5510bb5064100cb3ca5e27e715b31fdfc7a122f2dbe9cf051569d520d7a7a7"
           },
           {
-            "path": "db/migrations/022_protected_records.sql",
-            "sha256": "0ee704e1c7f0aa405124910341dedf374d477e23e352f47e60eb5bb2266b524a"
-          },
-          {
-            "path": "tests/protected-crypto.test.mjs",
-            "sha256": "09a9f9d249eed241d744c6bbdfacd619aee48424a5be2af27b1ba2e13ba94b3d"
-          },
-          {
-            "path": "tests/integration/protected-records.test.mjs",
-            "sha256": "2fdef9b36652e5ac4a4f2d131dde5be8495cade544debfc1365674865ba04588"
-          },
-          {
-            "path": "tests/browser/protected-records.mjs",
-            "sha256": "5b1ef5c254435344e9b7864d3d5a90ab5bd448963708533fbadcee74a2e78d6e"
-          },
-          {
-            "path": "tests/integration/database-recovery.test.mjs",
-            "sha256": "b06a06653fd551a0053cac984a655c67c560a064ae92a1c1b362423e1728e44f"
+            "path": "packages/core/protected-identity.mjs",
+            "sha256": "e9a1ac8967ece25b5c4ddc37ccd66020c7f45b99a5af0f91351296e20a557e41"
           }
         ],
-        "softwareGap": "Static OpenPGP prototype does not implement a registered forward-secret ratcheted messaging profile required by pinned E2EESA ADRs 0005/0006. Runtime unconditionally blocks protected intake until replacement adapter and client-state lifecycle are verified.",
+        "softwareGap": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled.",
         "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
-        "verification": "Corrected review in docs/evidence/TREASURY_COMPLETION_20261110.md; merged PR154 remains accepted, without claiming complete protocol scope."
+        "verification": "Component evidence in docs/security/RATCHETED_PROTECTED_FOUNDATION.md; runtime remains blocked and this is not full package acceptance."
       }
     },
     {
@@ -2224,7 +2070,8 @@
         142,
         144,
         154,
-        155
+        155,
+        156
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -2919,19 +2766,34 @@
   ],
   "pullRequests": [
     {
+      "id": 5237359077,
+      "number": 156,
+      "title": "Implement ratcheted protected-content components and device authority",
+      "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/156",
+      "state": "open",
+      "draft": false,
+      "createdAt": "2026-11-10T07:14:05Z",
+      "updatedAt": "2026-11-10T07:14:05Z",
+      "closedAt": null,
+      "mergedAt": null,
+      "headSha": "3dbef73f60275c3418148971a2a995e733b50eef",
+      "baseRef": "main",
+      "mergeCommitSha": "040969a57fc1b0aaeafa1ee40457754b2ba0f028"
+    },
+    {
       "id": 5236697016,
       "number": 155,
       "title": "Complete treasury workflows, donor management and outreach gates",
       "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/155",
-      "state": "open",
+      "state": "closed",
       "draft": false,
       "createdAt": "2026-11-10T06:06:51Z",
-      "updatedAt": "2026-11-10T06:06:51Z",
-      "closedAt": null,
-      "mergedAt": null,
-      "headSha": "49bd6167786d8ffce376309648761fee7238c3ae",
+      "updatedAt": "2026-11-10T06:36:26Z",
+      "closedAt": "2026-11-10T06:36:26Z",
+      "mergedAt": "2026-11-10T06:36:26Z",
+      "headSha": "631984e3131a7fed656b263eaf0858a7c1015ddf",
       "baseRef": "main",
-      "mergeCommitSha": "8d720e2b1f7124338b2f86ba9825f81683cae619"
+      "mergeCommitSha": "40399f3d2229031af20c22113dcb232d46abf22b"
     },
     {
       "id": 5235611443,

@@ -43,7 +43,15 @@
       "dependencyIntegrity": "sha512-wcZTzHz41LV8Y48zH/JlD1JT8YdNmpWOuMAjQ/podvvCwsjBEU37K3znJh4UQcj3hksE5z9TzvhbUbwzsGvlLQ==",
       "review": "docs/security/PROTECTED_PROFILE.md",
       "enabled": false,
-      "prototypeProfilePin": "G28-PGP-1/openpgp-6.3.2"
+      "prototypeProfilePin": "G28-PGP-1/openpgp-6.3.2",
+      "candidateProfiles": [
+        "identity-account-root@0.1.0",
+        "verify-account-root@0.1.0",
+        "group-mls-rfc9420@0.1.0",
+        "attachment-chunked-aead@0.1.0",
+        "secret-software-vault@0.1.0",
+        "backup-none@0.1.0"
+      ]
     }
   ],
   "components": [
@@ -122,7 +130,7 @@
     {
       "id": "protected",
       "purpose": "Recipient enrollment, protected reports, attachments, recovery and exports",
-      "trustBoundary": "Browser-owned OpenPGP recipient keys; trusted browser/code publisher, independently checked fingerprints; hosting receives ciphertext and minimal metadata only",
+      "trustBoundary": "Unexposed RFC9420 ratcheted candidate and disabled static OpenPGP prototype. Client-held keys and exact identity authority; browser/code publisher trusted. No current network adapter or production conformance claim.",
       "blocked": true
     },
     {
@@ -332,29 +340,14 @@
       "componentId": "analytics"
     },
     {
-      "path": "apps/portal/src/api.ts",
-      "blobSha": "887930ea7253972788f68cef9d89998d5512d5c1",
-      "componentId": "identity"
-    },
-    {
       "path": "apps/portal/src/Coordination.tsx",
       "blobSha": "3c7308fcb01f4e9a58f3e9208dd2aca2d08de666",
       "componentId": "coordination"
     },
     {
-      "path": "apps/portal/src/env.d.ts",
-      "blobSha": "11f02fe2a0061d6e6e1f271b21da95423b448b32",
-      "componentId": "shared"
-    },
-    {
       "path": "apps/portal/src/HelpCenter.tsx",
       "blobSha": "0e912240df12e5df73a3ea0aef7fe43d15b1fc56",
       "componentId": "help"
-    },
-    {
-      "path": "apps/portal/src/main.tsx",
-      "blobSha": "26d24c125fb3481b7645a57194a99d0740002ee6",
-      "componentId": "identity"
     },
     {
       "path": "apps/portal/src/Operations.tsx",
@@ -385,6 +378,21 @@
       "path": "apps/portal/src/TreasuryWorkflow.tsx",
       "blobSha": "e4eabb13a13ff055bf21751d5a283d451c5ca34a",
       "componentId": "finance"
+    },
+    {
+      "path": "apps/portal/src/api.ts",
+      "blobSha": "887930ea7253972788f68cef9d89998d5512d5c1",
+      "componentId": "identity"
+    },
+    {
+      "path": "apps/portal/src/env.d.ts",
+      "blobSha": "11f02fe2a0061d6e6e1f271b21da95423b448b32",
+      "componentId": "shared"
+    },
+    {
+      "path": "apps/portal/src/main.tsx",
+      "blobSha": "26d24c125fb3481b7645a57194a99d0740002ee6",
+      "componentId": "identity"
     },
     {
       "path": "apps/portal/vite.config.ts",
@@ -467,13 +475,13 @@
       "componentId": "preview"
     },
     {
-      "path": "apps/web/src/pages/[...route].astro",
-      "blobSha": "b1eaf087982431060ae7b3893f49e77ef5013605",
+      "path": "apps/web/src/pages/404.astro",
+      "blobSha": "958888f8a371f971a1a2e311ca22169fc7de2f04",
       "componentId": "public"
     },
     {
-      "path": "apps/web/src/pages/404.astro",
-      "blobSha": "958888f8a371f971a1a2e311ca22169fc7de2f04",
+      "path": "apps/web/src/pages/[...route].astro",
+      "blobSha": "b1eaf087982431060ae7b3893f49e77ef5013605",
       "componentId": "public"
     },
     {
@@ -812,8 +820,23 @@
       "componentId": "public"
     },
     {
+      "path": "packages/core/protected-attachment.mjs",
+      "blobSha": "2418b9f6fceb3e33d310879182256b9f1949a77d",
+      "componentId": "protected"
+    },
+    {
       "path": "packages/core/protected-crypto.mjs",
       "blobSha": "c27aafda224c5738143155cff534338914497b69",
+      "componentId": "protected"
+    },
+    {
+      "path": "packages/core/protected-identity.mjs",
+      "blobSha": "bbadbf1614fbccfbecb2ff589835cb9cb32dd5f1",
+      "componentId": "protected"
+    },
+    {
+      "path": "packages/core/protected-mls.mjs",
+      "blobSha": "2b5cab4cadb1a07328fe0e17461adcea75b8bbc9",
       "componentId": "protected"
     },
     {
@@ -824,6 +847,16 @@
     {
       "path": "packages/core/protected-records.mjs",
       "blobSha": "94a6135a355ded567b90fedf39e5f9be98cc0838",
+      "componentId": "protected"
+    },
+    {
+      "path": "packages/core/protected-vault.mjs",
+      "blobSha": "cbf20b698695fbaff0048f4b59c321d16bdcbbdb",
+      "componentId": "protected"
+    },
+    {
+      "path": "packages/core/protected-verification.mjs",
+      "blobSha": "7b12dd705660036d71d8348837e75d9d3b0c285e",
       "componentId": "protected"
     },
     {
@@ -838,8 +871,8 @@
     },
     {
       "path": "packages/core/runtime-probe.mjs",
-      "componentId": "operator",
-      "blobSha": "f172126b2f20c9dc04e5534b54cdbaf49fd9a131"
+      "blobSha": "f172126b2f20c9dc04e5534b54cdbaf49fd9a131",
+      "componentId": "operator"
     },
     {
       "path": "packages/core/safe-policy-document.mjs",
@@ -982,6 +1015,11 @@
       "componentId": "operator"
     },
     {
+      "path": "scripts/prepare-mls.mjs",
+      "blobSha": "97f8c569b5d545894fb00aa37acd4d9b73bed3d7",
+      "componentId": "operator"
+    },
+    {
       "path": "scripts/prepare-public-document.mjs",
       "blobSha": "25f79d899c09ba479b57a7faed2c06c3bc5da2a3",
       "componentId": "operator"
@@ -1067,11 +1105,6 @@
       "componentId": "operator"
     },
     {
-      "path": "scripts/validate_e2eesa_status.py",
-      "blobSha": "42057c0eaa93ca40f945aa46f7c7c0bf85932ca9",
-      "componentId": "operator"
-    },
-    {
       "path": "scripts/validate-pr-registry.mjs",
       "blobSha": "2d7d068e7d6abda9ffcea499f1618937df6a6c3b",
       "componentId": "operator"
@@ -1079,6 +1112,11 @@
     {
       "path": "scripts/validate.mjs",
       "blobSha": "426017bef9c0981be2cb98b348090c15fa1dd55c",
+      "componentId": "operator"
+    },
+    {
+      "path": "scripts/validate_e2eesa_status.py",
+      "blobSha": "42057c0eaa93ca40f945aa46f7c7c0bf85932ca9",
       "componentId": "operator"
     },
     {
@@ -2543,6 +2581,36 @@
       "authority": "Original checkout browser only, HttpOnly Secure SameSite cookie; HMAC, exact ledger/provider identity/mode/amount binding and separate short-lived POST CSRF; Stripe email login remains processor-owned",
       "retention": "30 days; only latest checkout capability in browser; explicit forget action expires cookie",
       "disposal": "Expire browser cookie; no volunteer identity or card storage, no restoration by guessed checkout URL"
+    },
+    {
+      "id": "protected-candidate-volatile-state",
+      "kind": "client-memory",
+      "componentId": "protected",
+      "classification": "Sensitive private identity/MLS state, transient plaintext and locally encrypted vault envelopes; no hosted access",
+      "columns": [
+        "accountRootPrivateKey",
+        "devicePrivateKeys",
+        "privateKeyPackages",
+        "groupEpochSecrets",
+        "verifiedPeerSubjects",
+        "attachmentMasterKey",
+        "privateManifest",
+        "plaintext",
+        "vaultMaster",
+        "argon2idInput",
+        "wrappedGenerationKey",
+        "authenticatedCiphertext"
+      ],
+      "paths": [
+        "packages/core/protected-mls.mjs",
+        "packages/core/protected-attachment.mjs",
+        "packages/core/protected-identity.mjs",
+        "packages/core/protected-vault.mjs",
+        "packages/core/protected-verification.mjs"
+      ],
+      "authority": "Unexposed component caller; intended authorized recipient endpoint only after signed device state and independent root verification. No directory/identity login grants decryption.",
+      "retention": "Component objects only; no persistent browser/network adapter is installed. Lock helpers erase mutable master/epoch buffers where practical; caller lifetime and remaining JavaScript copies are outside a perfect erasure claim.",
+      "disposal": "Retire old epoch keys and drop historical receiver state. Selected backup-none policy prohibits private-key/history recovery exports; browser persistence, atomic locking/invalidation and no-recovery acknowledgement still require integration before activation."
     }
   ],
   "flows": [
@@ -3299,7 +3367,8 @@
         "scripts/inspect-release.mjs",
         "apps/api/src/server.mjs",
         "apps/api/src/worker.mjs",
-        "packages/core/runtime-probe.mjs"
+        "packages/core/runtime-probe.mjs",
+        "scripts/prepare-mls.mjs"
       ],
       "profileDecision": "server",
       "blocked": false,
@@ -3367,6 +3436,40 @@
       ],
       "profileDecision": "server",
       "blocked": false,
+      "plaintextFallback": false
+    },
+    {
+      "id": "ratcheted-protected-candidate",
+      "componentId": "protected",
+      "classification": "protected",
+      "fields": [
+        "Root/device signed predecessor-bound identity events and retired public keys",
+        "Exact MLS suite, one-time package cryptographic material and current epoch state",
+        "Independent numeric/QR root comparison and irreversible trust invalidation semantics",
+        "Private attachment manifest/key and authenticated encrypted chunks",
+        "Argon2id/HKDF-protected local vault generation"
+      ],
+      "from": "Unexposed client cryptographic component caller",
+      "recipients": [
+        "Exact authenticated and independently verified recipient devices; integration remains blocked"
+      ],
+      "storage": [
+        "protected-candidate-volatile-state"
+      ],
+      "egress": [
+        "None: component tests only; no network or persistent-browser adapter is installed"
+      ],
+      "authorization": "Registered candidate profile components and reviewed immutable library pins; exact roster/epoch/sender/AAD checks; root+device proofs; no account/server-only key authority. Runtime remains blocked pending complete directory, client lifecycle and endpoint obligations.",
+      "retention": "Candidate memory lifetime and selected no-backup policy; no software claim of current protected intake or complete recovery/browser integration.",
+      "evidence": [
+        "packages/core/protected-mls.mjs",
+        "packages/core/protected-attachment.mjs",
+        "packages/core/protected-identity.mjs",
+        "packages/core/protected-vault.mjs",
+        "packages/core/protected-verification.mjs"
+      ],
+      "profileDecision": "protected",
+      "blocked": true,
       "plaintextFallback": false
     }
   ]

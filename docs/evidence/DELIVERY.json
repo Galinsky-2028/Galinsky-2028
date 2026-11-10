@@ -217,7 +217,7 @@
     "completed": 13,
     "in_progress": 6,
     "not_started": 0,
-    "observed_merged_prs": 141,
+    "observed_merged_prs": 142,
     "observed_closed_unmerged_prs": 8,
     "ci_run_id": 41359919156,
     "ci_conclusion": "success",
@@ -226,17 +226,17 @@
     "portal_preview_sha": "6d6c7aab464f89bc716e7a18cdd2227771285c59",
     "warning": "Private previews verified; live public signup, payment, recipient encryption and final external launch approvals remain separate.",
     "observed_open_prs": 1,
-    "pr_observation_at": "2026-11-10T06:07:16.656Z",
+    "pr_observation_at": "2026-11-10T07:15:42.259Z",
     "implemented": 53,
     "software_review_report": "docs/evidence/CURRENT_IMPLEMENTATION_REVIEW.md"
   },
-  "accepted_merged_prs": 141,
-  "accepted_prs_observed_at": "2026-11-10T06:07:16.656Z",
+  "accepted_merged_prs": 142,
+  "accepted_prs_observed_at": "2026-11-10T07:15:42.259Z",
   "acceptance_model": "A verified merge accepts the PR. Full work-package scope completion and production deployment are separately tracked and cannot revoke acceptance of already merged PRs.",
   "implemented_software_packages": 66,
   "progress_evidence_note": "Source-reviewed software implementation: 66/72; full-scope release-evidenced accepted packages: 13/72. Treasury/outreach additions are source-tested; protected ratcheted protocol and recurring enforcement remain real software gaps. Every verified merged PR is accepted separately from package scope and deployment.",
   "connected_account_deployment": {
-    "observed_at": "2026-11-10T02:08:20.671Z",
+    "observed_at": "2026-11-10T06:38:00Z",
     "workspace_id": "tea-dbl0kcbm8hqs738ptf3g",
     "website_service_id": "srv-dbp6n18m7kps73a0kpsg",
     "website_url": "https://galinsky2028-website.onrender.com",
@@ -248,9 +248,9 @@
     "fresh_database": true,
     "old_data_migrated": false,
     "private_access_verified": true,
-    "hosted_passkey_roundtrip_verified": true,
-    "account_export_and_closure_verified": true,
-    "verified_runtime_commit": "4599245d56a43c64653d229ee1e61dcb84bc3a8f",
+    "hosted_passkey_roundtrip_verified": false,
+    "account_export_and_closure_verified": false,
+    "verified_runtime_commit": "40399f3d2229031af20c22113dcb232d46abf22b",
     "final_link_update_pr": 151,
     "handoff": "docs/operations/CONNECTED_WORKSPACE_20261109.md",
     "old_render_services_deleted": true,
@@ -258,11 +258,20 @@
     "materials_release_pr": 152,
     "temporary_youtube_id": "dpQulJS-R50",
     "material_validation_branch_count": 19,
-    "website_deploy_id": "dep-dbp7lijrjlhs73f3o2p0",
-    "portal_deploy_id": "dep-dbp7ljom7kps73a3d1v0",
+    "website_deploy_id": "dep-dbpbn1on74is73dgcl0g",
+    "portal_deploy_id": "dep-dbpbn2jbc2fs739onns0",
     "published_materials": 19,
     "material_body_sha256_matches": 19,
-    "hosted_material_workflows_verified": true,
-    "final_evidence": "docs/evidence/CONNECTED_RELEASE_20261109.json"
+    "hosted_material_workflows_verified": false,
+    "final_evidence": "docs/evidence/CONNECTED_RELEASE_20261110.json",
+    "prior_authenticated_workflow_evidence": {
+      "commit": "4599245d56a43c64653d229ee1e61dcb84bc3a8f",
+      "evidence": "docs/evidence/CONNECTED_RELEASE_20261109.json"
+    },
+    "runtime_read_only_checks": {
+      "website": 69,
+      "portal": 23
+    },
+    "current_authenticated_browser_rehearsal": "Not repeated on this release; prior authenticated hosted workflow evidence is retained separately. Actual current loopback HTTP/config/readiness/assets and external unauthenticated private-gate checks passed."
   }
 }
