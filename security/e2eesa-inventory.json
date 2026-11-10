@@ -62,7 +62,10 @@
       "id": "volunteer-email",
       "kind": "provider-delivery",
       "status": "adapter-implemented-live-unverified",
-      "sourcePaths": ["apps/api/src/worker.mjs", "packages/core/auth.mjs"],
+      "sourcePaths": [
+        "apps/api/src/worker.mjs",
+        "packages/core/auth.mjs"
+      ],
       "scope": "Server-decryptable provider delivery envelopes and consent; provider processes destination",
       "e2ee": "not-claimed-server-readable"
     },
@@ -82,7 +85,10 @@
       "id": "local-worksheets",
       "kind": "local-user-controlled",
       "status": "implemented-preview-code",
-      "sourcePaths": ["packages/core/forms.mjs", "apps/portal/src/main.tsx"],
+      "sourcePaths": [
+        "packages/core/forms.mjs",
+        "apps/portal/src/main.tsx"
+      ],
       "scope": "Local on-device planning and explicit downloads; no report submission",
       "e2ee": "not-applicable-local"
     },
@@ -136,30 +142,37 @@
     {
       "id": "protected-recipient-directory",
       "kind": "protected-content-cryptography",
-      "status": "not-implemented",
+      "status": "implemented-activation-gated",
       "sourcePaths": [
-        "docs/security/RELEASE_GATES.md",
-        "security/e2eesa-status.json"
+        "packages/core/protected-crypto.mjs",
+        "apps/api/src/protected-routes.mjs",
+        "apps/api/src/protected-store.mjs",
+        "apps/portal/src/ProtectedReports.tsx"
       ],
       "scope": "Recipient/device enrollment, key authority and authenticated directory for protected submissions",
-      "e2ee": "required-before-protected-release"
+      "e2ee": "client-encrypted-specific-recipient-records"
     },
     {
       "id": "protected-incidents",
       "kind": "protected-content-cryptography",
-      "status": "not-implemented",
+      "status": "implemented-activation-gated",
       "sourcePaths": [
-        "docs/security/RELEASE_GATES.md",
-        "docs/DEVELOPMENT_PLAN.md"
+        "packages/core/protected-crypto.mjs",
+        "apps/api/src/protected-routes.mjs",
+        "apps/api/src/protected-store.mjs",
+        "apps/portal/src/ProtectedReports.tsx"
       ],
       "scope": "Confidential incident/help reports, attachments, replies and authorized recipients",
-      "e2ee": "required-before-protected-release"
+      "e2ee": "client-encrypted-specific-recipient-records"
     },
     {
       "id": "service-health",
       "kind": "operations-metadata",
       "status": "implemented-preview",
-      "sourcePaths": ["packages/core/ops-health.mjs", "apps/api/src/app.mjs"],
+      "sourcePaths": [
+        "packages/core/ops-health.mjs",
+        "apps/api/src/app.mjs"
+      ],
       "scope": "Health, deployment, error handling; no raw personal records in diagnostics",
       "e2ee": "not-claimed-business-metadata"
     },
@@ -408,8 +421,8 @@
       "dataClass": "protected",
       "from": "intended staff recipient device",
       "to": "authenticated trusted key directory",
-      "authority": "reviewed profile pending",
-      "status": "blocked-not-implemented",
+      "authority": "G28-PGP-1/openpgp-6.3.2; independently verified recipient fingerprints; current scoped grants; browser-owned private keys",
+      "status": "implemented-activation-gated",
       "claim": "no-production-e2ee-certification"
     },
     {
@@ -419,8 +432,8 @@
       "dataClass": "protected",
       "from": "volunteer with confidential incident",
       "to": "specific named safety recipients",
-      "authority": "reviewed device-based E2EE pending",
-      "status": "blocked-not-implemented",
+      "authority": "G28-PGP-1/openpgp-6.3.2; independently verified recipient fingerprints; current scoped grants; browser-owned private keys",
+      "status": "implemented-activation-gated",
       "claim": "no-production-e2ee-certification"
     },
     {
@@ -430,8 +443,8 @@
       "dataClass": "protected",
       "from": "confidential incident attachment",
       "to": "named authorized recipient device",
-      "authority": "reviewed encrypted attachment profile pending",
-      "status": "blocked-not-implemented",
+      "authority": "G28-PGP-1/openpgp-6.3.2; independently verified recipient fingerprints; current scoped grants; browser-owned private keys",
+      "status": "implemented-activation-gated",
       "claim": "no-production-e2ee-certification"
     },
     {
@@ -522,13 +535,18 @@
     "Preliminary source path inventory, not a complete source/build/runtime enumeration or upstream schema 0.2 conformance artifact.",
     "All component and flow statuses require environment-specific audit and real source/build/artifact digest binding. Coverage is explicitly incomplete.",
     "Public disclosures, account provider delivery, approved staff processing, and payment-provider card handling intentionally do not claim private E2EE.",
-    "Recipient/device key enrollment, protected incidents, encrypted attachments and replies remain blocked until the selected protocol/profile is implemented and substantively AI-reviewed with interoperability/adversarial verification; outside human review is deferred.",
-    "Absence of a source-bound E2EE conformance artifact must never downgrade a protected-content release gate or be presented as E2EESA implementation complete."
+    "Absence of a source-bound E2EE conformance artifact must never downgrade a protected-content release gate or be presented as E2EESA implementation complete.",
+    "Protected recipient protocol code is implemented and source-reviewed; hosted intake requires operational staff identity, named approved devices and independent fingerprint distribution. See PROTECTED_PROFILE.md for browser trust and static-key limitations."
   ],
   "sourceContract": {
     "path": "security/source-flow-contract.json",
     "scope": "Checked-in executable source and migration field coverage with explicit flow/recipient/retention decisions; not runtime coverage or upstream schema 0.2 conformance",
     "validation": "tests/security-contract.test.mjs",
     "productionE2eeClaim": false
+  },
+  "sourceCoverage": {
+    "reviewed": true,
+    "scope": "All checked-in executable files and migration fields enumerated in security/source-flow-contract.json; runtime, dependencies and upstream full conformance remain separate",
+    "profileReview": "docs/security/PROTECTED_PROFILE.md"
   }
 }

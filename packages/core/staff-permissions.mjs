@@ -10,7 +10,7 @@ const scopes={
  'module-approver':['activity:publish'],
  'safety-reviewer':['safety:review'],
  treasurer:['finance:read','finance:manage'],
- 'security-administrator':['security:read','operations:read'],
+ 'security-administrator':['security:read','security:manage','operations:read'],
  auditor:['operations:read','finance:metadata']
 };
 export function staffScopes(role){return role==='owner'?['*']:scopes[role]?[...scopes[role]]:[];}

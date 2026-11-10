@@ -31,8 +31,8 @@ test('intentionally server-readable data cannot masquerade as E2EE',()=>{
  }
  for(const id of ['protected-recipient-directory','protected-incidents']){
   const c=inventory.components.find(c=>c.id===id);
-  assert.equal(c?.status,'not-implemented');
-  assert.equal(c?.e2ee,'required-before-protected-release');
+  assert.equal(c?.status,'implemented-activation-gated');
+  assert.equal(c?.e2ee,'client-encrypted-specific-recipient-records');
  }
  assert.equal(status.implementation.complete,false);
  assert.equal(status.testing.complete,false);

@@ -6,6 +6,7 @@ import {tmpdir} from 'node:os';
 import {join} from 'node:path';
 import pg from 'pg';
 import {backupDatabase,restoreDatabase} from '../../scripts/database-recovery.mjs';
+import {newProtectedKey,unlockProtectedKey,encryptProtected,decryptProtected,publicProtectedKey,PROTECTED_PROFILE} from '../../packages/core/protected-crypto.mjs';
 const base=process.env.TEST_DATABASE_URL;
 test('complete encrypted PostgreSQL recovery is authenticated, isolated, atomic and preserves durable application records',{skip:!base},async()=>{
  assert(['localhost','127.0.0.1'].includes(new URL(base).hostname),'Synthetic drill uses local Postgres only.');
@@ -21,6 +22,11 @@ test('complete encrypted PostgreSQL recovery is authenticated, isolated, atomic 
   await source.query("INSERT INTO g28.content_revisions(id,content_key,revision,state,record,author_subject) VALUES($2,'synthetic.recovery',1,'draft',$1,'synthetic-operator')",[{fixture:'synthetic-recovery-only'},randomUUID()]);
   const jobId=randomUUID();await source.query("INSERT INTO g28.outbox(id,kind,subject_key,payload_envelope,status,lease_until,lease_token,attempts) VALUES($1,'account_login','synthetic','synthetic-envelope','leased',now()-interval '1 minute',$2,1)",[jobId,randomUUID()]);
   const before=await source.query('SELECT version FROM g28.schema_migrations ORDER BY version');
+  const recipient=randomUUID(),device=randomUUID(),protectedId=randomUUID(),pair=await newProtectedKey(recipient,'synthetic separate recovery passphrase'),privateKey=await unlockProtectedKey(pair.privateKey,'synthetic separate recovery passphrase'),info=await publicProtectedKey(pair.publicKey);
+  await source.query("INSERT INTO g28.accounts(id,email_key,delivery_envelope,verified_at,terms_version) VALUES($1,$2,'synthetic',now(),'synthetic')",[recipient,'f'.repeat(64)]);
+  await source.query("INSERT INTO g28.protected_devices(id,account_id,fingerprint,public_key,label,state,generation) VALUES($1,$2,$3,$4,'Synthetic recovery device','enrolled',1)",[device,recipient,info.fingerprint,pair.publicKey]);
+  const protectedMessage=await encryptProtected({profile:PROTECTED_PROFILE,recordId:protectedId,sequence:1,kind:'incident',sender:device,recipients:[device],generation:1},{text:'PROTECTED_RECOVERY_CANARY'},[pair],privateKey);
+  await source.query("INSERT INTO g28.protected_records(id,author_id,participants,document,version,retain_until,legal_hold) VALUES($1,$2,$3,$4,1,now()+interval '90 days',true)",[protectedId,recipient,[recipient],{messages:[protectedMessage]}]);
   const result=await backupDatabase({url:sourceURL.href,key,file});assert(result.bytes>1000);assert(result.durationMs>=0);
   assert.equal((await stat(file)).mode&0o777,0o600);
   const bytes=await readFile(file);assert(!bytes.includes('synthetic-recovery-only'));assert(!bytes.includes(sourceName));assert(!bytes.includes(Buffer.from(key)));
@@ -35,6 +41,10 @@ test('complete encrypted PostgreSQL recovery is authenticated, isolated, atomic 
   assert(restored.durationMs>=0);assert.equal(restored.productionRecoveryProven,false);
   assert.deepEqual((await target.query('SELECT version FROM g28.schema_migrations ORDER BY version')).rows,before.rows);
   assert.equal((await target.query("SELECT record FROM g28.content_revisions WHERE content_key='synthetic.recovery'")).rows[0].record.fixture,'synthetic-recovery-only');
+  const recoveredProtected=(await target.query('SELECT document,legal_hold FROM g28.protected_records WHERE id=$1',[protectedId])).rows[0];
+  assert(recoveredProtected.legal_hold);assert(!JSON.stringify(recoveredProtected).includes('PROTECTED_RECOVERY_CANARY'));
+  assert.equal((await decryptProtected(recoveredProtected.document.messages[0],privateKey,pair)).text,'PROTECTED_RECOVERY_CANARY');
+  assert.equal((await target.query('SELECT generation,fingerprint FROM g28.protected_devices WHERE id=$1',[device])).rows[0].fingerprint,info.fingerprint);
   for(const name of ['accounts','outbox','activity_modules','financial_provider_events','staff_security','encrypted_records']){
    assert((await target.query('SELECT to_regclass($1) AS found',['g28.'+name])).rows[0].found,name+' survives complete restore');
   }

@@ -9,10 +9,10 @@
     ".exechub/approved-pr-mapping.json",
     "docs/PR_REGISTER.json"
   ],
-  "progressEvidenceNote": "Source-reviewed software implementation: 59/72; distinct fully scoped, release-evidenced accepted packages: 13/72. PR acceptance uses mergedAt for all 139 merged PRs. Yellow depicts accepted contributions to packages without full-scope acceptance, not unwritten software. Open production and protected-data gates remain separate. See docs/evidence/ROADMAP_RECONCILIATION_20261101.md.",
+  "progressEvidenceNote": "Source-reviewed software implementation: 67/72; distinct fully scoped, release-evidenced accepted packages: 13/72. Every verified merged PR is accepted; hosted activation and package-scope release evidence remain separate. Protected protocol implementation and tests are in docs/security/PROTECTED_PROFILE.md; current external gates remain enforced. GitHub observation 2026-11-10T04:05:41.133Z: 140 merged/accepted PRs; PR 154 implementation is under CI review.",
   "schemaVersion": 1,
   "roadmapVersion": 7,
-  "observedAt": "2026-11-10T02:08:20.633Z",
+  "observedAt": "2026-11-10T04:05:41.133Z",
   "units": [
     {
       "id": "G28-001",
@@ -207,7 +207,8 @@
       ],
       "contributingPrs": [
         16,
-        66
+        66,
+        154
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -772,42 +773,63 @@
         69,
         128,
         134,
-        135
+        135,
+        154
       ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "in_progress",
-      "acceptanceBlocker": "Finish protected safety scope integration; staff passkeys, bounded roles, current task/editor/finance actions and SQL-created restricted runtime identities are implemented.",
+      "status": "implemented",
+      "acceptanceBlocker": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
-        "implementation": "remaining_implementation",
-        "reviewedAt": "2026-10-19T01:13:13.691Z",
+        "implementation": "implemented",
+        "reviewedAt": "2026-11-10T04:02:08.568340Z",
         "sourceFiles": [
           {
-            "path": "apps/api/src/staff-security.mjs",
-            "sha256": "86874bb6c273b47c513d86cb1fc210cad679e9199465b00a16698d412de5ef2d"
+            "path": "packages/core/protected-crypto.mjs",
+            "sha256": "ad7ff63ef96a57dd60956cfb25fab2dd680c390474dde573987abad0cf021243"
           },
           {
-            "path": "packages/core/staff-permissions.mjs",
-            "sha256": "7184f3bbad87fb61d91ea656ca55ac92c3cd17cdce62a309cc438e5d350b403a"
+            "path": "packages/core/protected-records.mjs",
+            "sha256": "c1d767a36b64bc0ccf951c9ac925993bb2b419ab1e1920d9487320be1949cf72"
           },
           {
-            "path": "tests/staff-security.test.mjs",
-            "sha256": "a6ad65d666efb2f907e8a00e2d1d0c7057e0fa8c74cce74ea83bcfb10c018ba1"
+            "path": "apps/api/src/protected-routes.mjs",
+            "sha256": "b481f9d12b4bd77a6466c7cc513419c63fe04d3d0984f0e55f1749045b788f91"
           },
           {
-            "path": "scripts/runtime-role-permissions.mjs",
-            "sha256": "13a96be1cd27444174c11d1e3cd12fe22860074f2e3fdb2e617e3d670f1277ab"
+            "path": "apps/api/src/protected-store.mjs",
+            "sha256": "4ab76c4fc4f07fa216cac24e75ea099c9b80b69202d0d6929688ef3bf7b70d9a"
           },
           {
-            "path": "tests/integration/runtime-role-permissions.test.mjs",
-            "sha256": "13e12b2d762e092886cf7ff20a005fa1a4d7b9bd44954ec8e1d21b1dea8bc5cf"
+            "path": "apps/portal/src/ProtectedReports.tsx",
+            "sha256": "1935f2a297ba978d59ea6283385931481966545be5293027c32f0405a553dddb"
+          },
+          {
+            "path": "db/migrations/022_protected_records.sql",
+            "sha256": "0ee704e1c7f0aa405124910341dedf374d477e23e352f47e60eb5bb2266b524a"
+          },
+          {
+            "path": "tests/protected-crypto.test.mjs",
+            "sha256": "09a9f9d249eed241d744c6bbdfacd619aee48424a5be2af27b1ba2e13ba94b3d"
+          },
+          {
+            "path": "tests/integration/protected-records.test.mjs",
+            "sha256": "2fdef9b36652e5ac4a4f2d131dde5be8495cade544debfc1365674865ba04588"
+          },
+          {
+            "path": "tests/browser/protected-records.mjs",
+            "sha256": "5b1ef5c254435344e9b7864d3d5a90ab5bd448963708533fbadcee74a2e78d6e"
+          },
+          {
+            "path": "tests/integration/database-recovery.test.mjs",
+            "sha256": "b06a06653fd551a0053cac984a655c67c560a064ae92a1c1b362423e1728e44f"
           }
         ],
-        "softwareGap": "Finish protected safety scope integration; staff passkeys, bounded roles, current task/editor/finance actions and SQL-created restricted runtime identities are implemented.",
-        "activationRequirement": "Verify the tested revision in its intended release; no additional activation input identified.",
-        "verification": "Current branch source review; final hosted checks and accepted merge are recorded separately."
+        "softwareGap": null,
+        "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
+        "verification": "Real RFC9580 crypto tests, PostgreSQL HTTP adversarial/lifecycle tests, Chromium key recovery/encrypted attachment/export/mobile/egress journey and full encrypted DB restore with separately held recipient decryption key. See docs/security/PROTECTED_PROFILE.md; CI/merge/deploy observed separately."
       }
     },
     {
@@ -815,25 +837,63 @@
       "title": "Implement approved recipient keys and device enrollment",
       "origin": "original",
       "prs": [],
-      "contributingPrs": [],
+      "contributingPrs": [
+        154
+      ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "not_started",
-      "acceptanceBlocker": "Implement approved recipient directory, device trust verification and substitution resistance.",
+      "status": "implemented",
+      "acceptanceBlocker": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
-        "implementation": "remaining_implementation",
-        "reviewedAt": "2026-10-19T01:13:13.691Z",
+        "implementation": "implemented",
+        "reviewedAt": "2026-11-10T04:02:08.568340Z",
         "sourceFiles": [
           {
-            "path": "docs/security/BOUNDARIES.md",
-            "sha256": "5ab57eebf2e67e3afe07d56c1f5975f4fb1ee9c603151c8563c50cad2e27fd14"
+            "path": "packages/core/protected-crypto.mjs",
+            "sha256": "ad7ff63ef96a57dd60956cfb25fab2dd680c390474dde573987abad0cf021243"
+          },
+          {
+            "path": "packages/core/protected-records.mjs",
+            "sha256": "c1d767a36b64bc0ccf951c9ac925993bb2b419ab1e1920d9487320be1949cf72"
+          },
+          {
+            "path": "apps/api/src/protected-routes.mjs",
+            "sha256": "b481f9d12b4bd77a6466c7cc513419c63fe04d3d0984f0e55f1749045b788f91"
+          },
+          {
+            "path": "apps/api/src/protected-store.mjs",
+            "sha256": "4ab76c4fc4f07fa216cac24e75ea099c9b80b69202d0d6929688ef3bf7b70d9a"
+          },
+          {
+            "path": "apps/portal/src/ProtectedReports.tsx",
+            "sha256": "1935f2a297ba978d59ea6283385931481966545be5293027c32f0405a553dddb"
+          },
+          {
+            "path": "db/migrations/022_protected_records.sql",
+            "sha256": "0ee704e1c7f0aa405124910341dedf374d477e23e352f47e60eb5bb2266b524a"
+          },
+          {
+            "path": "tests/protected-crypto.test.mjs",
+            "sha256": "09a9f9d249eed241d744c6bbdfacd619aee48424a5be2af27b1ba2e13ba94b3d"
+          },
+          {
+            "path": "tests/integration/protected-records.test.mjs",
+            "sha256": "2fdef9b36652e5ac4a4f2d131dde5be8495cade544debfc1365674865ba04588"
+          },
+          {
+            "path": "tests/browser/protected-records.mjs",
+            "sha256": "5b1ef5c254435344e9b7864d3d5a90ab5bd448963708533fbadcee74a2e78d6e"
+          },
+          {
+            "path": "tests/integration/database-recovery.test.mjs",
+            "sha256": "b06a06653fd551a0053cac984a655c67c560a064ae92a1c1b362423e1728e44f"
           }
         ],
-        "softwareGap": "Implement approved recipient directory, device trust verification and substitution resistance.",
-        "activationRequirement": "Verify the tested revision in its intended release; no additional activation input identified.",
-        "verification": "Current branch source review; final hosted checks and accepted merge are recorded separately."
+        "softwareGap": null,
+        "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
+        "verification": "Real RFC9580 crypto tests, PostgreSQL HTTP adversarial/lifecycle tests, Chromium key recovery/encrypted attachment/export/mobile/egress journey and full encrypted DB restore with separately held recipient decryption key. See docs/security/PROTECTED_PROFILE.md; CI/merge/deploy observed separately."
       }
     },
     {
@@ -841,25 +901,63 @@
       "title": "Implement protected volunteer records and submissions",
       "origin": "original",
       "prs": [],
-      "contributingPrs": [],
+      "contributingPrs": [
+        154
+      ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "not_started",
-      "acceptanceBlocker": "Implement actual client-encrypted protected submission, authorized recipients and private attachment custody.",
+      "status": "implemented",
+      "acceptanceBlocker": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
-        "implementation": "remaining_implementation",
-        "reviewedAt": "2026-10-19T01:13:13.691Z",
+        "implementation": "implemented",
+        "reviewedAt": "2026-11-10T04:02:08.568340Z",
         "sourceFiles": [
           {
-            "path": "docs/security/BOUNDARIES.md",
-            "sha256": "5ab57eebf2e67e3afe07d56c1f5975f4fb1ee9c603151c8563c50cad2e27fd14"
+            "path": "packages/core/protected-crypto.mjs",
+            "sha256": "ad7ff63ef96a57dd60956cfb25fab2dd680c390474dde573987abad0cf021243"
+          },
+          {
+            "path": "packages/core/protected-records.mjs",
+            "sha256": "c1d767a36b64bc0ccf951c9ac925993bb2b419ab1e1920d9487320be1949cf72"
+          },
+          {
+            "path": "apps/api/src/protected-routes.mjs",
+            "sha256": "b481f9d12b4bd77a6466c7cc513419c63fe04d3d0984f0e55f1749045b788f91"
+          },
+          {
+            "path": "apps/api/src/protected-store.mjs",
+            "sha256": "4ab76c4fc4f07fa216cac24e75ea099c9b80b69202d0d6929688ef3bf7b70d9a"
+          },
+          {
+            "path": "apps/portal/src/ProtectedReports.tsx",
+            "sha256": "1935f2a297ba978d59ea6283385931481966545be5293027c32f0405a553dddb"
+          },
+          {
+            "path": "db/migrations/022_protected_records.sql",
+            "sha256": "0ee704e1c7f0aa405124910341dedf374d477e23e352f47e60eb5bb2266b524a"
+          },
+          {
+            "path": "tests/protected-crypto.test.mjs",
+            "sha256": "09a9f9d249eed241d744c6bbdfacd619aee48424a5be2af27b1ba2e13ba94b3d"
+          },
+          {
+            "path": "tests/integration/protected-records.test.mjs",
+            "sha256": "2fdef9b36652e5ac4a4f2d131dde5be8495cade544debfc1365674865ba04588"
+          },
+          {
+            "path": "tests/browser/protected-records.mjs",
+            "sha256": "5b1ef5c254435344e9b7864d3d5a90ab5bd448963708533fbadcee74a2e78d6e"
+          },
+          {
+            "path": "tests/integration/database-recovery.test.mjs",
+            "sha256": "b06a06653fd551a0053cac984a655c67c560a064ae92a1c1b362423e1728e44f"
           }
         ],
-        "softwareGap": "Implement actual client-encrypted protected submission, authorized recipients and private attachment custody.",
-        "activationRequirement": "Verify the tested revision in its intended release; no additional activation input identified.",
-        "verification": "Current branch source review; final hosted checks and accepted merge are recorded separately."
+        "softwareGap": null,
+        "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
+        "verification": "Real RFC9580 crypto tests, PostgreSQL HTTP adversarial/lifecycle tests, Chromium key recovery/encrypted attachment/export/mobile/egress journey and full encrypted DB restore with separately held recipient decryption key. See docs/security/PROTECTED_PROFILE.md; CI/merge/deploy observed separately."
       }
     },
     {
@@ -868,26 +966,63 @@
       "origin": "original",
       "prs": [],
       "contributingPrs": [
-        41
+        41,
+        154
       ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "in_progress",
-      "acceptanceBlocker": "Implement protected recipient-device recovery and trust restoration; ordinary session revocation/export already work.",
+      "status": "implemented",
+      "acceptanceBlocker": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
-        "implementation": "remaining_implementation",
-        "reviewedAt": "2026-10-19T01:13:13.691Z",
+        "implementation": "implemented",
+        "reviewedAt": "2026-11-10T04:02:08.568340Z",
         "sourceFiles": [
           {
-            "path": "apps/api/src/app.mjs",
-            "sha256": "5d46ed0923d63086091c82a00db31e19eec551e023acb971355672ef6769fef6"
+            "path": "packages/core/protected-crypto.mjs",
+            "sha256": "ad7ff63ef96a57dd60956cfb25fab2dd680c390474dde573987abad0cf021243"
+          },
+          {
+            "path": "packages/core/protected-records.mjs",
+            "sha256": "c1d767a36b64bc0ccf951c9ac925993bb2b419ab1e1920d9487320be1949cf72"
+          },
+          {
+            "path": "apps/api/src/protected-routes.mjs",
+            "sha256": "b481f9d12b4bd77a6466c7cc513419c63fe04d3d0984f0e55f1749045b788f91"
+          },
+          {
+            "path": "apps/api/src/protected-store.mjs",
+            "sha256": "4ab76c4fc4f07fa216cac24e75ea099c9b80b69202d0d6929688ef3bf7b70d9a"
+          },
+          {
+            "path": "apps/portal/src/ProtectedReports.tsx",
+            "sha256": "1935f2a297ba978d59ea6283385931481966545be5293027c32f0405a553dddb"
+          },
+          {
+            "path": "db/migrations/022_protected_records.sql",
+            "sha256": "0ee704e1c7f0aa405124910341dedf374d477e23e352f47e60eb5bb2266b524a"
+          },
+          {
+            "path": "tests/protected-crypto.test.mjs",
+            "sha256": "09a9f9d249eed241d744c6bbdfacd619aee48424a5be2af27b1ba2e13ba94b3d"
+          },
+          {
+            "path": "tests/integration/protected-records.test.mjs",
+            "sha256": "2fdef9b36652e5ac4a4f2d131dde5be8495cade544debfc1365674865ba04588"
+          },
+          {
+            "path": "tests/browser/protected-records.mjs",
+            "sha256": "5b1ef5c254435344e9b7864d3d5a90ab5bd448963708533fbadcee74a2e78d6e"
+          },
+          {
+            "path": "tests/integration/database-recovery.test.mjs",
+            "sha256": "b06a06653fd551a0053cac984a655c67c560a064ae92a1c1b362423e1728e44f"
           }
         ],
-        "softwareGap": "Implement protected recipient-device recovery and trust restoration; ordinary session revocation/export already work.",
-        "activationRequirement": "Verify the tested revision in its intended release; no additional activation input identified.",
-        "verification": "Current branch source review; final hosted checks and accepted merge are recorded separately."
+        "softwareGap": null,
+        "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
+        "verification": "Real RFC9580 crypto tests, PostgreSQL HTTP adversarial/lifecycle tests, Chromium key recovery/encrypted attachment/export/mobile/egress journey and full encrypted DB restore with separately held recipient decryption key. See docs/security/PROTECTED_PROFILE.md; CI/merge/deploy observed separately."
       }
     },
     {
@@ -1280,26 +1415,63 @@
         119,
         120,
         121,
-        122
+        122,
+        154
       ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "in_progress",
-      "acceptanceBlocker": "Connect protected incident narratives, encrypted attachments and scoped staff replies; structured category-only help already works.",
+      "status": "implemented",
+      "acceptanceBlocker": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
-        "implementation": "remaining_implementation",
-        "reviewedAt": "2026-10-19T01:13:13.691Z",
+        "implementation": "implemented",
+        "reviewedAt": "2026-11-10T04:02:08.568340Z",
         "sourceFiles": [
           {
-            "path": "apps/api/src/help-routes.mjs",
-            "sha256": "a6ff314aeca7df597a039601cb2fa9d48bb625ead15a792a63e63898a583fc03"
+            "path": "packages/core/protected-crypto.mjs",
+            "sha256": "ad7ff63ef96a57dd60956cfb25fab2dd680c390474dde573987abad0cf021243"
+          },
+          {
+            "path": "packages/core/protected-records.mjs",
+            "sha256": "c1d767a36b64bc0ccf951c9ac925993bb2b419ab1e1920d9487320be1949cf72"
+          },
+          {
+            "path": "apps/api/src/protected-routes.mjs",
+            "sha256": "b481f9d12b4bd77a6466c7cc513419c63fe04d3d0984f0e55f1749045b788f91"
+          },
+          {
+            "path": "apps/api/src/protected-store.mjs",
+            "sha256": "4ab76c4fc4f07fa216cac24e75ea099c9b80b69202d0d6929688ef3bf7b70d9a"
+          },
+          {
+            "path": "apps/portal/src/ProtectedReports.tsx",
+            "sha256": "1935f2a297ba978d59ea6283385931481966545be5293027c32f0405a553dddb"
+          },
+          {
+            "path": "db/migrations/022_protected_records.sql",
+            "sha256": "0ee704e1c7f0aa405124910341dedf374d477e23e352f47e60eb5bb2266b524a"
+          },
+          {
+            "path": "tests/protected-crypto.test.mjs",
+            "sha256": "09a9f9d249eed241d744c6bbdfacd619aee48424a5be2af27b1ba2e13ba94b3d"
+          },
+          {
+            "path": "tests/integration/protected-records.test.mjs",
+            "sha256": "2fdef9b36652e5ac4a4f2d131dde5be8495cade544debfc1365674865ba04588"
+          },
+          {
+            "path": "tests/browser/protected-records.mjs",
+            "sha256": "5b1ef5c254435344e9b7864d3d5a90ab5bd448963708533fbadcee74a2e78d6e"
+          },
+          {
+            "path": "tests/integration/database-recovery.test.mjs",
+            "sha256": "b06a06653fd551a0053cac984a655c67c560a064ae92a1c1b362423e1728e44f"
           }
         ],
-        "softwareGap": "Connect protected incident narratives, encrypted attachments and scoped staff replies; structured category-only help already works.",
-        "activationRequirement": "Verify the tested revision in its intended release; no additional activation input identified.",
-        "verification": "Current branch source review; final hosted checks and accepted merge are recorded separately."
+        "softwareGap": null,
+        "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
+        "verification": "Real RFC9580 crypto tests, PostgreSQL HTTP adversarial/lifecycle tests, Chromium key recovery/encrypted attachment/export/mobile/egress journey and full encrypted DB restore with separately held recipient decryption key. See docs/security/PROTECTED_PROFILE.md; CI/merge/deploy observed separately."
       }
     },
     {
@@ -1451,38 +1623,63 @@
       "contributingPrs": [
         69,
         95,
-        131
+        131,
+        154
       ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "in_progress",
-      "acceptanceBlocker": "Complete protected safety/support administration with the recipient flow; task/training/module management, report review, coordination controls and emergency activity pause are implemented.",
+      "status": "implemented",
+      "acceptanceBlocker": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
-        "implementation": "remaining_implementation",
-        "reviewedAt": "2026-10-19T01:13:13.691Z",
+        "implementation": "implemented",
+        "reviewedAt": "2026-11-10T04:02:08.568340Z",
         "sourceFiles": [
           {
-            "path": "apps/portal/src/AdminOperations.tsx",
-            "sha256": "27848731ebaa9f20a85c8e10790bb25cad9168be2ec3ae2740adf83ca465b4d3"
+            "path": "packages/core/protected-crypto.mjs",
+            "sha256": "ad7ff63ef96a57dd60956cfb25fab2dd680c390474dde573987abad0cf021243"
           },
           {
-            "path": "apps/portal/src/Operations.tsx",
-            "sha256": "4ff68193510e45067ccf04c67a1b208a4daafae6753647b2622eca24d3b66d99"
+            "path": "packages/core/protected-records.mjs",
+            "sha256": "c1d767a36b64bc0ccf951c9ac925993bb2b419ab1e1920d9487320be1949cf72"
           },
           {
-            "path": "apps/portal/src/ActivityReview.tsx",
-            "sha256": "4c20e80ebe9c2bdd137e42352be12e03fe3732625066fd7a053f688f1a4eedaf"
+            "path": "apps/api/src/protected-routes.mjs",
+            "sha256": "b481f9d12b4bd77a6466c7cc513419c63fe04d3d0984f0e55f1749045b788f91"
           },
           {
-            "path": "apps/portal/src/HelpCenter.tsx",
-            "sha256": "eda27f9040a855e5c0c7991215bc71582205dab52f23e224055ebfb0fb45d31f"
+            "path": "apps/api/src/protected-store.mjs",
+            "sha256": "4ab76c4fc4f07fa216cac24e75ea099c9b80b69202d0d6929688ef3bf7b70d9a"
+          },
+          {
+            "path": "apps/portal/src/ProtectedReports.tsx",
+            "sha256": "1935f2a297ba978d59ea6283385931481966545be5293027c32f0405a553dddb"
+          },
+          {
+            "path": "db/migrations/022_protected_records.sql",
+            "sha256": "0ee704e1c7f0aa405124910341dedf374d477e23e352f47e60eb5bb2266b524a"
+          },
+          {
+            "path": "tests/protected-crypto.test.mjs",
+            "sha256": "09a9f9d249eed241d744c6bbdfacd619aee48424a5be2af27b1ba2e13ba94b3d"
+          },
+          {
+            "path": "tests/integration/protected-records.test.mjs",
+            "sha256": "2fdef9b36652e5ac4a4f2d131dde5be8495cade544debfc1365674865ba04588"
+          },
+          {
+            "path": "tests/browser/protected-records.mjs",
+            "sha256": "5b1ef5c254435344e9b7864d3d5a90ab5bd448963708533fbadcee74a2e78d6e"
+          },
+          {
+            "path": "tests/integration/database-recovery.test.mjs",
+            "sha256": "b06a06653fd551a0053cac984a655c67c560a064ae92a1c1b362423e1728e44f"
           }
         ],
-        "softwareGap": "Complete protected safety/support administration with the recipient flow; task/training/module management, report review, coordination controls and emergency activity pause are implemented.",
-        "activationRequirement": "Verify the tested revision in its intended release; no additional activation input identified.",
-        "verification": "Current branch source review; final hosted checks and accepted merge are recorded separately."
+        "softwareGap": null,
+        "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
+        "verification": "Real RFC9580 crypto tests, PostgreSQL HTTP adversarial/lifecycle tests, Chromium key recovery/encrypted attachment/export/mobile/egress journey and full encrypted DB restore with separately held recipient decryption key. See docs/security/PROTECTED_PROFILE.md; CI/merge/deploy observed separately."
       }
     },
     {
@@ -1822,26 +2019,63 @@
         41,
         95,
         110,
-        122
+        122,
+        154
       ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "in_progress",
-      "acceptanceBlocker": "Implement protected-object lifecycle, legal holds and per-class deletion/backup handling; account closure and outbox cleanup already work.",
+      "status": "implemented",
+      "acceptanceBlocker": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
-        "implementation": "remaining_implementation",
-        "reviewedAt": "2026-10-19T01:13:13.691Z",
+        "implementation": "implemented",
+        "reviewedAt": "2026-11-10T04:02:08.568340Z",
         "sourceFiles": [
           {
-            "path": "apps/api/src/postgres-store.mjs",
-            "sha256": "c724ae9df1410c61bd0060608a5f780fe9a96123f9b4289104f02f793129f20a"
+            "path": "packages/core/protected-crypto.mjs",
+            "sha256": "ad7ff63ef96a57dd60956cfb25fab2dd680c390474dde573987abad0cf021243"
+          },
+          {
+            "path": "packages/core/protected-records.mjs",
+            "sha256": "c1d767a36b64bc0ccf951c9ac925993bb2b419ab1e1920d9487320be1949cf72"
+          },
+          {
+            "path": "apps/api/src/protected-routes.mjs",
+            "sha256": "b481f9d12b4bd77a6466c7cc513419c63fe04d3d0984f0e55f1749045b788f91"
+          },
+          {
+            "path": "apps/api/src/protected-store.mjs",
+            "sha256": "4ab76c4fc4f07fa216cac24e75ea099c9b80b69202d0d6929688ef3bf7b70d9a"
+          },
+          {
+            "path": "apps/portal/src/ProtectedReports.tsx",
+            "sha256": "1935f2a297ba978d59ea6283385931481966545be5293027c32f0405a553dddb"
+          },
+          {
+            "path": "db/migrations/022_protected_records.sql",
+            "sha256": "0ee704e1c7f0aa405124910341dedf374d477e23e352f47e60eb5bb2266b524a"
+          },
+          {
+            "path": "tests/protected-crypto.test.mjs",
+            "sha256": "09a9f9d249eed241d744c6bbdfacd619aee48424a5be2af27b1ba2e13ba94b3d"
+          },
+          {
+            "path": "tests/integration/protected-records.test.mjs",
+            "sha256": "2fdef9b36652e5ac4a4f2d131dde5be8495cade544debfc1365674865ba04588"
+          },
+          {
+            "path": "tests/browser/protected-records.mjs",
+            "sha256": "5b1ef5c254435344e9b7864d3d5a90ab5bd448963708533fbadcee74a2e78d6e"
+          },
+          {
+            "path": "tests/integration/database-recovery.test.mjs",
+            "sha256": "b06a06653fd551a0053cac984a655c67c560a064ae92a1c1b362423e1728e44f"
           }
         ],
-        "softwareGap": "Implement protected-object lifecycle, legal holds and per-class deletion/backup handling; account closure and outbox cleanup already work.",
-        "activationRequirement": "Verify the tested revision in its intended release; no additional activation input identified.",
-        "verification": "Current branch source review; final hosted checks and accepted merge are recorded separately."
+        "softwareGap": null,
+        "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
+        "verification": "Real RFC9580 crypto tests, PostgreSQL HTTP adversarial/lifecycle tests, Chromium key recovery/encrypted attachment/export/mobile/egress journey and full encrypted DB restore with separately held recipient decryption key. See docs/security/PROTECTED_PROFILE.md; CI/merge/deploy observed separately."
       }
     },
     {
@@ -1988,7 +2222,8 @@
         134,
         135,
         142,
-        144
+        144,
+        154
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -2022,38 +2257,63 @@
       "contributingPrs": [
         17,
         61,
-        128
+        128,
+        154
       ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "in_progress",
-      "acceptanceBlocker": "Finish matching protected-object/key recovery generations when that storage flow lands; encrypted full-database backup/isolated restore and durable job recovery are implemented and exercised in CI.",
+      "status": "implemented",
+      "acceptanceBlocker": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
-        "implementation": "remaining_implementation",
-        "reviewedAt": "2026-10-19T01:13:13.691Z",
+        "implementation": "implemented",
+        "reviewedAt": "2026-11-10T04:02:08.568340Z",
         "sourceFiles": [
           {
-            "path": "apps/api/src/worker.mjs",
-            "sha256": "65861ffab82af77eddd23f75ec52d7d7ab6c83acc2a7028362312ba8d9b8e8d5"
+            "path": "packages/core/protected-crypto.mjs",
+            "sha256": "ad7ff63ef96a57dd60956cfb25fab2dd680c390474dde573987abad0cf021243"
           },
           {
-            "path": "scripts/database-recovery.mjs",
-            "sha256": "ab1aa84d44c2265d6018966540143eda3fe2930a09a3c671ba24880ed4993f56"
+            "path": "packages/core/protected-records.mjs",
+            "sha256": "c1d767a36b64bc0ccf951c9ac925993bb2b419ab1e1920d9487320be1949cf72"
+          },
+          {
+            "path": "apps/api/src/protected-routes.mjs",
+            "sha256": "b481f9d12b4bd77a6466c7cc513419c63fe04d3d0984f0e55f1749045b788f91"
+          },
+          {
+            "path": "apps/api/src/protected-store.mjs",
+            "sha256": "4ab76c4fc4f07fa216cac24e75ea099c9b80b69202d0d6929688ef3bf7b70d9a"
+          },
+          {
+            "path": "apps/portal/src/ProtectedReports.tsx",
+            "sha256": "1935f2a297ba978d59ea6283385931481966545be5293027c32f0405a553dddb"
+          },
+          {
+            "path": "db/migrations/022_protected_records.sql",
+            "sha256": "0ee704e1c7f0aa405124910341dedf374d477e23e352f47e60eb5bb2266b524a"
+          },
+          {
+            "path": "tests/protected-crypto.test.mjs",
+            "sha256": "09a9f9d249eed241d744c6bbdfacd619aee48424a5be2af27b1ba2e13ba94b3d"
+          },
+          {
+            "path": "tests/integration/protected-records.test.mjs",
+            "sha256": "2fdef9b36652e5ac4a4f2d131dde5be8495cade544debfc1365674865ba04588"
+          },
+          {
+            "path": "tests/browser/protected-records.mjs",
+            "sha256": "5b1ef5c254435344e9b7864d3d5a90ab5bd448963708533fbadcee74a2e78d6e"
           },
           {
             "path": "tests/integration/database-recovery.test.mjs",
-            "sha256": "70f2ec740f6296dd0cb72e4efb1b4ad263401dd7efc4a5531d5d4f97b0dee954"
-          },
-          {
-            "path": "docs/operations/DATABASE_RECOVERY.md",
-            "sha256": "1067420bc6d4599c2e6afbbc4623f137729d681476bd923a59e9aa88714a37a4"
+            "sha256": "b06a06653fd551a0053cac984a655c67c560a064ae92a1c1b362423e1728e44f"
           }
         ],
-        "softwareGap": "Finish matching protected-object/key recovery generations when that storage flow lands; encrypted full-database backup/isolated restore and durable job recovery are implemented and exercised in CI.",
-        "activationRequirement": "Verify the tested revision in its intended release; no additional activation input identified.",
-        "verification": "Current branch source review; final hosted checks and accepted merge are recorded separately."
+        "softwareGap": null,
+        "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
+        "verification": "Real RFC9580 crypto tests, PostgreSQL HTTP adversarial/lifecycle tests, Chromium key recovery/encrypted attachment/export/mobile/egress journey and full encrypted DB restore with separately held recipient decryption key. See docs/security/PROTECTED_PROFILE.md; CI/merge/deploy observed separately."
       }
     },
     {
@@ -2106,7 +2366,8 @@
       "contributingPrs": [
         19,
         40,
-        43
+        43,
+        154
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -2656,6 +2917,36 @@
   ],
   "pullRequests": [
     {
+      "id": 5235611443,
+      "number": 154,
+      "title": "Complete protected volunteer reporting, recipient trust and recovery",
+      "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/154",
+      "state": "open",
+      "draft": false,
+      "createdAt": "2026-11-10T04:05:27Z",
+      "updatedAt": "2026-11-10T04:05:27Z",
+      "closedAt": null,
+      "mergedAt": null,
+      "headSha": "0b147bd48a8790c5e44c9e68602a4f42c77d2743",
+      "baseRef": "main",
+      "mergeCommitSha": "d3b5a5d9744f0ae6c3eba20bae880d9c64744f81"
+    },
+    {
+      "id": 5234544796,
+      "number": 153,
+      "title": "Record verified connected-account deployment and volunteer release",
+      "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/153",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-11-10T02:08:37Z",
+      "updatedAt": "2026-11-10T02:20:23Z",
+      "closedAt": "2026-11-10T02:20:23Z",
+      "mergedAt": "2026-11-10T02:20:23Z",
+      "headSha": "72a6a0c1704034eb09995a951cc255e9d38aac95",
+      "baseRef": "main",
+      "mergeCommitSha": "f3515ca8352165f650f6db63999d2130a38a28e3"
+    },
+    {
       "id": 5234250557,
       "number": 152,
       "title": "Release reviewed volunteer materials and temporary issue videos",
@@ -2663,7 +2954,7 @@
       "state": "closed",
       "draft": false,
       "createdAt": "2026-11-10T01:41:36Z",
-      "updatedAt": "2026-11-10T01:54:37Z",
+      "updatedAt": "2026-11-10T02:13:32Z",
       "closedAt": "2026-11-10T01:54:37Z",
       "mergedAt": "2026-11-10T01:54:37Z",
       "headSha": "29611b82752f1ca813bfc317289ba26dbcd83601",

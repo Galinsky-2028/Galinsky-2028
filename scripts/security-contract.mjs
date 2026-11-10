@@ -224,6 +224,7 @@ export function validateContract(contract, { paths, read }) {
       "server-readable",
       "local-only",
       "protected-blocked",
+      "protected-client-encrypted",
     ].includes(decision.mode) &&
       text(decision.rationale), "unknown or undocumented profile decision");
     if (decision.mode === "protected-blocked")
@@ -232,6 +233,16 @@ export function validateContract(contract, { paths, read }) {
         Array.isArray(decision.requiredEvidence) &&
         decision.requiredEvidence.length >=
           4, "protected profile must fail closed");
+    if (decision.mode === "protected-client-encrypted") {
+      const lock=JSON.parse(read("package-lock.json"));
+      require(decision.profilePin === "G28-PGP-1/openpgp-6.3.2" &&
+        decision.privateKeyCustody === "recipient-device-only" &&
+        decision.plaintextFallback === false &&
+        decision.dependencyIntegrity === lock.packages["node_modules/openpgp"]?.integrity &&
+        lock.packages[""].dependencies.openpgp === "6.3.2" &&
+        decision.review === "docs/security/PROTECTED_PROFILE.md",
+        "protected profile must fail closed on a changed protocol, dependency, custody or review");
+    }
   }
   for (const flow of flows.values()) {
     require(components.has(flow.componentId) &&
@@ -252,8 +263,8 @@ export function validateContract(contract, { paths, read }) {
       (path) => safePath(path) && listed.includes(path),
     ), "flow evidence must be source-bound");
     if (flow.classification === "protected")
-      require(flow.blocked === true &&
-        decisions.get(flow.profileDecision).mode === "protected-blocked" &&
+      require(((flow.blocked === true && decisions.get(flow.profileDecision).mode === "protected-blocked") ||
+        (flow.blocked === false && decisions.get(flow.profileDecision).mode === "protected-client-encrypted")) &&
         flow.plaintextFallback ===
           false, "protected flow cannot be downgraded to server processing");
     else
