@@ -12,7 +12,7 @@
   "progressEvidenceNote": "Source-reviewed software implementation: 59/72; distinct fully scoped, release-evidenced accepted packages: 13/72. PR acceptance uses mergedAt for all 137 merged PRs. Yellow depicts accepted contributions to packages without full-scope acceptance, not unwritten software. Open production and protected-data gates remain separate. See docs/evidence/ROADMAP_RECONCILIATION_20261101.md.",
   "schemaVersion": 1,
   "roadmapVersion": 7,
-  "observedAt": "2026-11-10T00:51:09.929Z",
+  "observedAt": "2026-11-10T01:03:52.946Z",
   "units": [
     {
       "id": "G28-001",
@@ -163,7 +163,8 @@
       ],
       "contributingPrs": [
         132,
-        135
+        135,
+        151
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -223,7 +224,7 @@
           }
         ],
         "softwareGap": null,
-        "activationRequirement": "Protected production profiles, recipient enrollment, independent certification, and runtime E2EESA approval remain separately blocked under G28-021\u2013023 and later protected-flow packages.",
+        "activationRequirement": "Protected production profiles, recipient enrollment, independent certification, and runtime E2EESA approval remain separately blocked under G28-021–023 and later protected-flow packages.",
         "verification": "Merged dedicated PR #144; combined CI 41359919156 success; both password-protected Render preview deployments are live on 6d6c7aab464f89bc716e7a18cdd2227771285c59. This is not a public production activation."
       },
       "acceptedAt": "2026-11-01T23:06:20.000Z",
@@ -2065,7 +2066,8 @@
         111,
         132,
         136,
-        141
+        141,
+        151
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -2647,6 +2649,21 @@
     }
   ],
   "pullRequests": [
+    {
+      "id": 5233868834,
+      "number": 151,
+      "title": "Restore campaign deployment in connected Render and Neon accounts",
+      "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/151",
+      "state": "open",
+      "draft": false,
+      "createdAt": "2026-11-10T01:03:13Z",
+      "updatedAt": "2026-11-10T01:03:13Z",
+      "closedAt": null,
+      "mergedAt": null,
+      "headSha": "124d9c2bc098eaf330d61abadc358dc13b219693",
+      "baseRef": "main",
+      "mergeCommitSha": "636abb21408e6c8750b8d1e9bc3a5f946390aa4d"
+    },
     {
       "id": 5139421455,
       "number": 150,
@@ -4045,7 +4062,7 @@
     {
       "id": 4829596446,
       "number": 54,
-      "title": "SUPERSEDED: four-processor handoff already updated in merged PRs #55\u201357",
+      "title": "SUPERSEDED: four-processor handoff already updated in merged PRs #55–57",
       "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/54",
       "state": "closed",
       "draft": false,
@@ -4075,7 +4092,7 @@
     {
       "id": 4829483935,
       "number": 52,
-      "title": "Recover September 2026 Kirk\u2013Evers legislation source for private editorial review",
+      "title": "Recover September 2026 Kirk–Evers legislation source for private editorial review",
       "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/52",
       "state": "closed",
       "draft": false,
@@ -4105,7 +4122,7 @@
     {
       "id": 4829439565,
       "number": 48,
-      "title": "SUPERSEDED / PROHIBITED \u2014 do not use Stripe for campaign payments",
+      "title": "SUPERSEDED / PROHIBITED — do not use Stripe for campaign payments",
       "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/48",
       "state": "closed",
       "draft": false,
@@ -4645,7 +4662,7 @@
     {
       "id": 4817446915,
       "number": 12,
-      "title": "Publish Kirk\u2013Evers documents only with independent review and verified asset hashes",
+      "title": "Publish Kirk–Evers documents only with independent review and verified asset hashes",
       "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/12",
       "state": "closed",
       "draft": false,

@@ -1,5 +1,5 @@
 {
-  "status": "two_private_services_live_production_release_blocked",
+  "status": "connected_private_services_live_full_platform_incomplete",
   "full_work_packages_accepted": 13,
   "deployment_verified": true,
   "repository": "Galinsky-2028/Galinsky-2028",
@@ -225,14 +225,33 @@
     "private_preview_sha": "6d6c7aab464f89bc716e7a18cdd2227771285c59",
     "portal_preview_sha": "6d6c7aab464f89bc716e7a18cdd2227771285c59",
     "warning": "Private previews verified; live public signup, payment, recipient encryption and final external launch approvals remain separate.",
-    "observed_open_prs": 0,
-    "pr_observation_at": "2026-11-01T23:31:02.606Z",
+    "observed_open_prs": 1,
+    "pr_observation_at": "2026-11-10T01:03:52.946Z",
     "implemented": 46,
     "software_review_report": "docs/evidence/CURRENT_IMPLEMENTATION_REVIEW.md"
   },
   "accepted_merged_prs": 137,
-  "accepted_prs_observed_at": "2026-11-10T00:51:09.929Z",
+  "accepted_prs_observed_at": "2026-11-10T01:03:52.946Z",
   "acceptance_model": "A verified merge accepts the PR. Full work-package scope completion and production deployment are separately tracked and cannot revoke acceptance of already merged PRs.",
   "implemented_software_packages": 59,
-  "progress_evidence_note": "Source-reviewed software implementation: 59/72; distinct fully scoped, release-evidenced accepted packages: 13/72. PR acceptance uses mergedAt for all 134 merged PRs. Yellow depicts accepted contributions to packages without full-scope acceptance, not unwritten software. Open production and protected-data gates remain separate. See docs/evidence/ROADMAP_RECONCILIATION_20261101.md."
+  "progress_evidence_note": "Source-reviewed software implementation: 59/72; distinct fully scoped, release-evidenced accepted packages: 13/72. PR acceptance uses mergedAt for all 137 merged PRs. Yellow depicts accepted contributions to packages without full-scope acceptance, not unwritten software. Open production and protected-data gates remain separate. See docs/evidence/ROADMAP_RECONCILIATION_20261101.md.",
+  "connected_account_deployment": {
+    "observed_at": "2026-11-10T01:03:00Z",
+    "workspace_id": "tea-dbl0kcbm8hqs738ptf3g",
+    "website_service_id": "srv-dbp6n18m7kps73a0kpsg",
+    "website_url": "https://galinsky2028-website.onrender.com",
+    "portal_service_id": "srv-dbp6n661egvs73b7pspg",
+    "portal_url": "https://galinsky2028-volunteers.onrender.com",
+    "neon_project_id": "calm-moon-73214448",
+    "neon_primary_branch_id": "br-damp-heart-bexv8utq",
+    "database_name": "galinsky2028",
+    "fresh_database": true,
+    "old_data_migrated": false,
+    "private_access_verified": true,
+    "hosted_passkey_roundtrip_verified": true,
+    "account_export_and_closure_verified": true,
+    "verified_runtime_commit": "96de2bdc315057896ed8d4247b0647c597bafafd",
+    "final_link_update_pr": 151,
+    "handoff": "docs/operations/CONNECTED_WORKSPACE_20261109.md"
+  }
 }
