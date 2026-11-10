@@ -217,7 +217,7 @@
     "completed": 13,
     "in_progress": 6,
     "not_started": 0,
-    "observed_merged_prs": 142,
+    "observed_merged_prs": 143,
     "observed_closed_unmerged_prs": 8,
     "ci_run_id": 41359919156,
     "ci_conclusion": "success",
@@ -230,8 +230,8 @@
     "implemented": 53,
     "software_review_report": "docs/evidence/CURRENT_IMPLEMENTATION_REVIEW.md"
   },
-  "accepted_merged_prs": 142,
-  "accepted_prs_observed_at": "2026-11-10T07:15:42.259Z",
+  "accepted_merged_prs": 143,
+  "accepted_prs_observed_at": "2026-11-10T09:13:36.720Z",
   "acceptance_model": "A verified merge accepts the PR. Full work-package scope completion and production deployment are separately tracked and cannot revoke acceptance of already merged PRs.",
   "implemented_software_packages": 66,
   "progress_evidence_note": "Source-reviewed software implementation: 66/72; full-scope release-evidenced accepted packages: 13/72. Treasury/outreach additions are source-tested; protected ratcheted protocol and recurring enforcement remain real software gaps. Every verified merged PR is accepted separately from package scope and deployment.",
@@ -273,5 +273,6 @@
       "portal": 23
     },
     "current_authenticated_browser_rehearsal": "Not repeated on this release; prior authenticated hosted workflow evidence is retained separately. Actual current loopback HTTP/config/readiness/assets and external unauthenticated private-gate checks passed."
-  }
+  },
+  "protected_integration_review": "docs/security/RATCHETED_PROTECTED_INTEGRATION.md"
 }

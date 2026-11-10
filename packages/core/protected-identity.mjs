@@ -218,3 +218,16 @@ export async function applyProtectedIdentityEvent(state, event, rootSignature, d
   await currentState(next);
   return next;
 }
+
+export async function protectedIdentityKeyClaims(state) {
+  const { root } = await currentState(state);
+  return [
+    { keyId: root.signingId, subjectId: state.identityId, generation: 1, kind: 'root-signing' },
+    { keyId: root.agreementId, subjectId: state.identityId, generation: 1, kind: 'root-agreement' },
+    ...state.devices.flatMap((d) => [
+      { keyId: d.signingId, subjectId: d.id, generation: d.generation, kind: 'device-signing' },
+      { keyId: d.agreementId, subjectId: d.id, generation: d.generation, kind: 'device-agreement' },
+      { keyId: d.mlsSigningId, subjectId: d.id, generation: d.generation, kind: 'mls-signing' },
+    ]),
+  ];
+}

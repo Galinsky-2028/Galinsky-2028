@@ -1,3 +1,4 @@
+import {registerProtectedMls} from './protected-mls-routes.mjs';
 import {registerProtected} from './protected-routes.mjs';
 import {registerTreasuryWorkflow} from './treasury-workflow-routes.mjs';
 import {registerTreasuryExports} from './treasury-export.mjs';
@@ -34,14 +35,15 @@ export function createApp({store,config,clock=()=>Date.now(),webauthn,financeTra
  app.register(registerMailEvents,{store,config});
  registerOperations(app,{store,config,account,writeSession,clock});
  registerTreasuryExports(app,{store,config,writeSession,clock});
- registerProtected(app,{store,config,account,writeSession,clock});
+ if(config.legacyProtectedTests){if(config.production)throw Error('Legacy protected tests cannot run in production.');registerProtected(app,{store,config,account,writeSession,clock});}
+ registerProtectedMls(app,{store,config,account,writeSession,clock});
  registerTreasuryWorkflow(app,{store,config,writeSession,clock,transport:financeTransport});
  const cookieName=config.production?'__Host-g28':'g28-local';const bindingCookie=config.production?'__Host-g28-login':'g28-local-login';
  app.addHook('onRequest',async(req,reply)=>{
   reply.header('Cache-Control','no-store').header('X-Content-Type-Options','nosniff').header('Referrer-Policy','no-referrer').header('X-Frame-Options','DENY');
   reply.header('Content-Security-Policy',"default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self'; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'self'; frame-ancestors 'none'");
   if(config.production)reply.header('Strict-Transport-Security','max-age=31536000');
-  if(req.url.startsWith('/api/protected/')&&!config.protectedContent||req.url.startsWith('/api/payments/')||(req.url.startsWith('/api/admin/')&&!/^\/api\/admin\/(settings(?:\/bank|\/providers\/[a-z-]+)?|grants(?:\/revoke)?|operations|visitors)($|\?)/.test(req.url)))return reply.code(503).send({error:'release_unavailable',message:'This function is not released. No submission has been stored.'});
+  if(req.url.startsWith('/api/protected/')&&!config.protectedContent&&!(config.protectedMls&&config.protectedSetup&&/^\/api\/protected\/v2\/(?:identity|directory|identities\/[a-f0-9-]{36}|devices\/[a-f0-9-]{36}\/(?:approve|quarantine)|key-packages|lifecycle\/purge|records\/[a-f0-9-]{36}\/hold)(?:$|\?)/.test(req.url))||req.url.startsWith('/api/payments/')||(req.url.startsWith('/api/admin/')&&!/^\/api\/admin\/(settings(?:\/bank|\/providers\/[a-z-]+)?|grants(?:\/revoke)?|operations|visitors)($|\?)/.test(req.url)))return reply.code(503).send({error:'release_unavailable',message:'This function is not released. No submission has been stored.'});
   if(!['GET','HEAD','OPTIONS'].includes(req.method)&&req.url!=='/api/mail/events'){
    assert(req.headers.origin===config.portalOrigin,'origin_mismatch','Open this action in the volunteer application.',403);
    assert(!req.headers['sec-fetch-site']||['same-origin','none'].includes(req.headers['sec-fetch-site']),'cross_site','Cross-site actions are not accepted.',403);
@@ -54,7 +56,7 @@ export function createApp({store,config,clock=()=>Date.now(),webauthn,financeTra
  app.get('/healthz',async()=>({ok:true,service:'galinsky-2028-api',version:'0.1.0',commit:config.commit??null}));
  app.get('/readyz',async(req,reply)=>{try{await store.healthy();return {ready:true};}catch{return reply.code(503).send({ready:false});}});
  registerVolunteerPasskeys(app,{store,config,clock,webauthn,account,writeSession});
- app.get('/api/config',async()=>({publicOrigin:config.publicOrigin,signupEnabled:config.signup,passkeyEnabled:config.volunteerPasskeys===true,features:{coordination:config.coordination===true,helpRequests:config.helpRequests===true,materials:true,worksheets:true,protectedSubmissions:config.protectedContent===true,staff:config.staffIdentity===true,operationalTasks:config.staffIdentity===true&&typeof store.withOperationTask==='function',payments:false,treasurySetup:config.adminLoginReady===true,campaignEditor:config.campaignEditorEnabled===true},adminLoginEnabled:config.adminLoginReady===true,notice:config.signup?null:config.volunteerPasskeys===true?'Email-link sign-in is not active; volunteers can register securely with a device passkey.':config.adminLoginReady?'Private staff sign-in is available by verified email invitation. Public volunteer registration remains closed.':'Account registration opens when verified email delivery is connected.'}));
+ app.get('/api/config',async()=>({publicOrigin:config.publicOrigin,signupEnabled:config.signup,passkeyEnabled:config.volunteerPasskeys===true,features:{coordination:config.coordination===true,helpRequests:config.helpRequests===true,materials:true,worksheets:true,protectedSubmissions:config.protectedContent===true,protectedSetup:config.protectedMls===true&&config.protectedSetup===true,staff:config.staffIdentity===true,operationalTasks:config.staffIdentity===true&&typeof store.withOperationTask==='function',payments:false,treasurySetup:config.adminLoginReady===true,campaignEditor:config.campaignEditorEnabled===true},adminLoginEnabled:config.adminLoginReady===true,notice:config.signup?null:config.volunteerPasskeys===true?'Email-link sign-in is not active; volunteers can register securely with a device passkey.':config.adminLoginReady?'Private staff sign-in is available by verified email invitation. Public volunteer registration remains closed.':'Account registration opens when verified email delivery is connected.'}));
  app.post('/api/auth/request',async(req,reply)=>{
   assert(config.signup||config.adminLoginReady,'signup_unavailable','Account registration is not open yet. No account has been created.',503);
   const b=exactKeys(req.body,['email','marketing','termsAccepted']);const address=email(b.email);assert(b.termsAccepted===true,'terms_required','Review the participation and privacy notices before continuing.');assert(b.marketing===undefined||typeof b.marketing==='boolean','invalid_consent','Choose whether to receive optional campaign updates.');

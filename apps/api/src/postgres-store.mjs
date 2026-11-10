@@ -1,3 +1,4 @@
+import {postgresProtectedMls} from './protected-mls-store.mjs';
 import {postgresProtected} from './protected-store.mjs';
 import {postgresTreasuryWorkflow} from './treasury-workflow-store.mjs';
 import {postgresTreasuryExport} from './treasury-export.mjs';
@@ -95,7 +96,7 @@ export class PostgresStore{
  }
  async logout(hash){await this.pool.query('DELETE FROM g28.sessions WHERE token_hash=$1',[hash]);}
  async consent(id,marketing){await this.pool.query('UPDATE g28.accounts SET marketing_consent=$1 WHERE id=$2',[marketing,id]);}
- async closeAccount(id){const c=await this.pool.connect();try{await c.query('BEGIN');const a=(await c.query('SELECT email_key FROM g28.accounts WHERE id=$1 FOR UPDATE',[id])).rows[0];if(a){const teams=await c.query('SELECT id,record FROM g28.coordination_teams ORDER BY id FOR UPDATE');for(const row of teams.rows){removeAccountCoordination(row.record,id,a.email_key);await c.query('UPDATE g28.coordination_teams SET record=$2,updated_at=now() WHERE id=$1',[row.id,row.record]);}}await c.query('DELETE FROM g28.login_requests WHERE email_key=(SELECT email_key FROM g28.accounts WHERE id=$1)',[id]);await c.query("DELETE FROM g28.outbox WHERE subject_key=(SELECT email_key FROM g28.accounts WHERE id=$1) AND kind<>'finance_attention'",[id]);await c.query('DELETE FROM g28.accounts WHERE id=$1',[id]);await c.query('COMMIT');}catch(e){await c.query('ROLLBACK');throw e;}finally{c.release();}}
+ async closeAccount(id){const c=await this.pool.connect();try{await c.query('BEGIN');await c.query("SELECT pg_advisory_xact_lock(hashtext('g28-protected-directory'))");const a=(await c.query('SELECT email_key FROM g28.accounts WHERE id=$1 FOR UPDATE',[id])).rows[0];if(a){const teams=await c.query('SELECT id,record FROM g28.coordination_teams ORDER BY id FOR UPDATE');for(const row of teams.rows){removeAccountCoordination(row.record,id,a.email_key);await c.query('UPDATE g28.coordination_teams SET record=$2,updated_at=now() WHERE id=$1',[row.id,row.record]);}}await c.query('DELETE FROM g28.login_requests WHERE email_key=(SELECT email_key FROM g28.accounts WHERE id=$1)',[id]);await c.query("DELETE FROM g28.outbox WHERE subject_key=(SELECT email_key FROM g28.accounts WHERE id=$1) AND kind<>'finance_attention'",[id]);await c.query('DELETE FROM g28.accounts WHERE id=$1',[id]);await c.query('COMMIT');}catch(e){await c.query('ROLLBACK');throw e;}finally{c.release();}}
  async accountActivityExport(id){
   const c=await this.pool.connect();
   try{
@@ -208,3 +209,5 @@ Object.assign(PostgresStore.prototype,postgresOperations);
 Object.assign(PostgresStore.prototype,postgresTreasuryExport);
 Object.assign(PostgresStore.prototype,postgresProtected);
 Object.assign(PostgresStore.prototype,postgresTreasuryWorkflow);
+
+Object.assign(PostgresStore.prototype,postgresProtectedMls);
