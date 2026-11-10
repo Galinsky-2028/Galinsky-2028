@@ -8,7 +8,7 @@ const url=process.env.TEST_DATABASE_URL;
 test('SQL-created application identities allow scoped DML and deny account leakage, DDL, role administration and future-table grants',{skip:!url},async()=>{
  assert(['localhost','127.0.0.1'].includes(new URL(url).hostname));
  const pool=new pg.Pool({connectionString:url}),c=await pool.connect(),suffix=randomBytes(5).toString('hex');
- const profiles=['stripe','portal','portal_preview'],roles=profiles.map(p=>'g28_'+(p==='portal_preview'?'portal':p)+'_runtime_'+suffix+(p==='portal_preview'?'_preview':''));
+ const profiles=['stripe','portal','portal_preview','volunteer'],roles=profiles.map(p=>'g28_'+(['portal_preview','volunteer'].includes(p)?'portal':p)+'_runtime_'+suffix+(p==='portal_preview'?'_preview':p==='volunteer'?'_volunteer':''));
  try{
   for(const name of (await readdir('db/migrations')).filter(f=>f.endsWith('.sql')).sort())await c.query(await readFile('db/migrations/'+name,'utf8'));
   await c.query('BEGIN');
@@ -34,6 +34,12 @@ test('SQL-created application identities allow scoped DML and deny account leaka
   await as(roles[2],'SELECT * FROM g28.campaign_public_releases LIMIT 0');
   for(const table of ['accounts','sessions','staff_security','treasury_secrets','financial_provider_events','content_revisions','outbox'])await as(roles[2],'SELECT * FROM g28.'+table+' LIMIT 0',true);
   await as(roles[2],"INSERT INTO g28.rate_buckets(key,count,expires_at) VALUES('synthetic',1,now())",true);
+  await as(roles[3],'SELECT * FROM g28.accounts LIMIT 0');
+  await as(roles[3],'SELECT * FROM g28.volunteer_passkeys LIMIT 0');
+  await as(roles[3],"UPDATE g28.volunteer_passkeys SET counter=counter WHERE false");
+  for(const table of ['admin_grants','staff_security','treasury_secrets','financial_provider_events','content_revisions'])await as(roles[3],'SELECT * FROM g28.'+table+' LIMIT 0',true);
+  await as(roles[3],"INSERT INTO g28.admin_grants(email_key,role,display_label,granted_by) VALUES('synthetic','owner','synthetic',gen_random_uuid())",true);
+  await as(roles[3],"UPDATE g28.materials SET revision=revision WHERE false",true);
   await as(roles[1],"DELETE FROM g28.schema_migrations WHERE false",true);
   await c.query('CREATE TABLE g28.synthetic_future_permission(id int)');
   for(const role of roles)await as(role,'SELECT * FROM g28.synthetic_future_permission',true);

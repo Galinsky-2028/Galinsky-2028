@@ -8,7 +8,7 @@ permissions:
   contents: read
 jobs:
   verify:
-    if: github.repository == 'neophilism/Galinsky-2028' && github.ref == 'refs/heads/main'
+    if: github.repository == 'Galinsky-2028/Galinsky-2028' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 12
     env:

@@ -22,9 +22,9 @@ test('hero flag animates colliding dots including fifty white dot stars',()=>{
 
 test('the public volunteer site links to the REAL deployed volunteer application',()=>{
  const h=renderPage('volunteer');
- const url='https://galinsky-2028-volunteer-portal.onrender.com/roles';
+ const url='https://galinsky2028-volunteers.onrender.com/roles';
  assert(h.includes(url));
- assert.equal((h.match(/href="https:\/\/galinsky-2028-volunteer-portal\.onrender\.com\/roles\?role=/g)||[]).length,14);
+ assert.equal((h.match(/href="https:\/\/galinsky2028-volunteers\.onrender\.com\/roles\?role=/g)||[]).length,14);
  assert(h.includes(url+'?role=skills'));
  assert(h.includes('data-role-id="13"'));
  assert(h.includes('Passkey account creation is available inside the secure volunteer portal'));

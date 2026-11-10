@@ -2,7 +2,7 @@
   "status": "two_private_services_live_production_release_blocked",
   "full_work_packages_accepted": 13,
   "deployment_verified": true,
-  "repository": "neophilism/Galinsky-2028",
+  "repository": "Galinsky-2028/Galinsky-2028",
   "verified_merges": [
     {
       "pr": 1,
@@ -217,7 +217,7 @@
     "completed": 13,
     "in_progress": 10,
     "not_started": 3,
-    "observed_merged_prs": 134,
+    "observed_merged_prs": 137,
     "observed_closed_unmerged_prs": 8,
     "ci_run_id": 41359919156,
     "ci_conclusion": "success",
@@ -230,8 +230,8 @@
     "implemented": 46,
     "software_review_report": "docs/evidence/CURRENT_IMPLEMENTATION_REVIEW.md"
   },
-  "accepted_merged_prs": 134,
-  "accepted_prs_observed_at": "2026-11-01T23:31:02.606Z",
+  "accepted_merged_prs": 137,
+  "accepted_prs_observed_at": "2026-11-10T00:51:09.929Z",
   "acceptance_model": "A verified merge accepts the PR. Full work-package scope completion and production deployment are separately tracked and cannot revoke acceptance of already merged PRs.",
   "implemented_software_packages": 59,
   "progress_evidence_note": "Source-reviewed software implementation: 59/72; distinct fully scoped, release-evidenced accepted packages: 13/72. PR acceptance uses mergedAt for all 134 merged PRs. Yellow depicts accepted contributions to packages without full-scope acceptance, not unwritten software. Open production and protected-data gates remain separate. See docs/evidence/ROADMAP_RECONCILIATION_20261101.md."

@@ -302,29 +302,14 @@
       "componentId": "analytics"
     },
     {
-      "path": "apps/portal/src/api.ts",
-      "blobSha": "887930ea7253972788f68cef9d89998d5512d5c1",
-      "componentId": "identity"
-    },
-    {
       "path": "apps/portal/src/Coordination.tsx",
       "blobSha": "3c7308fcb01f4e9a58f3e9208dd2aca2d08de666",
       "componentId": "coordination"
     },
     {
-      "path": "apps/portal/src/env.d.ts",
-      "blobSha": "11f02fe2a0061d6e6e1f271b21da95423b448b32",
-      "componentId": "shared"
-    },
-    {
       "path": "apps/portal/src/HelpCenter.tsx",
       "blobSha": "0e912240df12e5df73a3ea0aef7fe43d15b1fc56",
       "componentId": "help"
-    },
-    {
-      "path": "apps/portal/src/main.tsx",
-      "blobSha": "7f8d56aa926ea9738e75ce7e5d45bead033d1e04",
-      "componentId": "identity"
     },
     {
       "path": "apps/portal/src/Operations.tsx",
@@ -345,6 +330,21 @@
       "path": "apps/portal/src/TreasuryExport.tsx",
       "blobSha": "8d9b7a62f5f7c3a9b21003dd7a6862d404a0a37c",
       "componentId": "finance"
+    },
+    {
+      "path": "apps/portal/src/api.ts",
+      "blobSha": "887930ea7253972788f68cef9d89998d5512d5c1",
+      "componentId": "identity"
+    },
+    {
+      "path": "apps/portal/src/env.d.ts",
+      "blobSha": "11f02fe2a0061d6e6e1f271b21da95423b448b32",
+      "componentId": "shared"
+    },
+    {
+      "path": "apps/portal/src/main.tsx",
+      "blobSha": "7f8d56aa926ea9738e75ce7e5d45bead033d1e04",
+      "componentId": "identity"
     },
     {
       "path": "apps/portal/vite.config.ts",
@@ -413,7 +413,7 @@
     },
     {
       "path": "apps/web/review-live-check.mjs",
-      "blobSha": "27b95dd11e33e943fecc62239a8fcb5556c9fcfa",
+      "blobSha": "fd3f6bf83b14c9844dc160df2db4f9a29c14cc3f",
       "componentId": "preview"
     },
     {
@@ -427,13 +427,13 @@
       "componentId": "preview"
     },
     {
-      "path": "apps/web/src/pages/[...route].astro",
-      "blobSha": "b1eaf087982431060ae7b3893f49e77ef5013605",
+      "path": "apps/web/src/pages/404.astro",
+      "blobSha": "958888f8a371f971a1a2e311ca22169fc7de2f04",
       "componentId": "public"
     },
     {
-      "path": "apps/web/src/pages/404.astro",
-      "blobSha": "958888f8a371f971a1a2e311ca22169fc7de2f04",
+      "path": "apps/web/src/pages/[...route].astro",
+      "blobSha": "b1eaf087982431060ae7b3893f49e77ef5013605",
       "componentId": "public"
     },
     {
@@ -908,7 +908,7 @@
     },
     {
       "path": "scripts/refresh-pr-snapshot.mjs",
-      "blobSha": "871ce7ca514f89d740890ce5d46800bc2d0ca8a3",
+      "blobSha": "d23009f3d560fcfa6b2fa6e4e505920c70310c8c",
       "componentId": "operator"
     },
     {
@@ -937,13 +937,18 @@
       "componentId": "operator"
     },
     {
+      "path": "scripts/retire-old-render.mjs",
+      "blobSha": "763af89839313c7401b397dd3cf1dd61962c73ba",
+      "componentId": "operator"
+    },
+    {
       "path": "scripts/run-review-browser-suite.mjs",
       "blobSha": "cb2674664592de6d5d2dfb3273614a96b468aca9",
       "componentId": "operator"
     },
     {
       "path": "scripts/runtime-role-permissions.mjs",
-      "blobSha": "1aefe339eac9d80190b1d6cae4fe5f3dcd7d6ae3",
+      "blobSha": "ab75259b1d2dcde9af286e5c1fc65f7e71d65822",
       "componentId": "operator"
     },
     {
@@ -962,11 +967,6 @@
       "componentId": "operator"
     },
     {
-      "path": "scripts/validate_e2eesa_status.py",
-      "blobSha": "42057c0eaa93ca40f945aa46f7c7c0bf85932ca9",
-      "componentId": "operator"
-    },
-    {
       "path": "scripts/validate-pr-registry.mjs",
       "blobSha": "2d7d068e7d6abda9ffcea499f1618937df6a6c3b",
       "componentId": "operator"
@@ -977,8 +977,13 @@
       "componentId": "operator"
     },
     {
+      "path": "scripts/validate_e2eesa_status.py",
+      "blobSha": "42057c0eaa93ca40f945aa46f7c7c0bf85932ca9",
+      "componentId": "operator"
+    },
+    {
       "path": "scripts/verify-live-volunteer-entry.mjs",
-      "blobSha": "fad4dc91609637d12fbf1ee57ad43f69a70ebee3",
+      "blobSha": "eef967d523ebca87c2debda345efb6c536618fd6",
       "componentId": "operator"
     },
     {
@@ -988,7 +993,7 @@
     },
     {
       "path": "scripts/verify-real-volunteer-portal.mjs",
-      "blobSha": "a22c55ee207908b3d15ae733aaa3b47fce34e480",
+      "blobSha": "4ee4894a7a878415540422719d34747ba17cd69f",
       "componentId": "operator"
     },
     {

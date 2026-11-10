@@ -2,13 +2,13 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {withObservedPullRequests,fetchObservedPullRequests} from '../scripts/refresh-pr-snapshot.mjs';
 const observed='2026-10-12T14:00:00.000Z';
-const previous=()=>({schemaVersion:1,repository:'neophilism/Galinsky-2028',
+const previous=()=>({schemaVersion:1,repository:'Galinsky-2028/Galinsky-2028',
  roadmapVersion:1,planVerified:true,plannedPrCount:2,observedAt:'2026-10-11T12:00:00.000Z',
  units:[{id:'G28-001',title:'Identity',origin:'original',prs:[]},
   {id:'G28-002',title:'Approved exact task',origin:'original',prs:[5]}],
  pullRequests:[]});
 const pr=(number,overrides={})=>({
- id:100000+number,number,title:'Actual PR #'+number,html_url:'https://github.com/neophilism/Galinsky-2028/pull/'+number,
+ id:100000+number,number,title:'Actual PR #'+number,html_url:'https://github.com/Galinsky-2028/Galinsky-2028/pull/'+number,
  state:'closed',draft:false,created_at:'2026-10-11T12:00:00Z',
  updated_at:'2026-10-12T12:00:00Z',closed_at:'2026-10-12T12:00:00Z',
  merged_at:'2026-10-12T12:00:00Z',head:{sha:'a'.repeat(40)},base:{ref:'main'},
@@ -38,7 +38,7 @@ test('paginated private-repo fetch refuses unauthenticated and non-JSON response
  const data=await fetchObservedPullRequests({token:'private-fixture-access-token',
   fetchImpl:async(url,opts)=>{
    called++;
-   assert.match(url,/api.github.com\/repos\/neophilism\/Galinsky-2028\/pulls/);
+   assert.match(url,/api.github.com\/repos\/Galinsky-2028\/Galinsky-2028\/pulls/);
    assert.equal(opts.headers.Authorization,'Bearer private-fixture-access-token');
    return {ok:true,json:async()=>[pr(5)]};
   }});

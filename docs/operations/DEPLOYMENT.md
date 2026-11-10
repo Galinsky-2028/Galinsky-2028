@@ -1,5 +1,7 @@
 # Deployment and operator runbook
 
+**Current placement:** the owner authorized connected-account migration on 9 November 2026. Use [the current resources and handoff](CONNECTED_WORKSPACE_20261109.md). Exact-project IDs and creation instructions below describe the superseded account; do not provision there.
+
 ## Resource placement
 
 The user's designated Render project is `prj-db57fnm7bikc739783q0`; the assigned Neon project is `soft-bread-25523698`. These are identifiers, not passwords. The Render create-service connector accepts only a workspace and cannot assign an environment, so do not use it for this campaign. Instead use the official Render REST API through the reviewed manual GitHub Actions workflow in `docs/operations/RENDER_EXACT_PROJECT.md`. It verifies the exact project ID and the environment's matching projectId before any create request and supplies the password secret atomically. A Render project belongs to a workspace, but the service must be created in the actual project's environment, never left unassigned in workspace root. Both approved preview services have already been deployed in the designated project; verify their current live state before creating new services. Never substitute another project's database.

@@ -1,3 +1,7 @@
+## Connected-account migration — 9 November 2026
+
+The owner explicitly directs using connected Render workspace `tea-dbl0kcbm8hqs738ptf3g` and the connected Neon account, creating a fresh campaign database and deleting the old deployments/database if accessible. This supersedes the older existing-service-only placement restriction for this migration. Current resources and access limits are in `docs/operations/CONNECTED_WORKSPACE_20261109.md`. Keep private access, transaction controls and no-paid-plan limits; never claim the fresh database migrated inaccessible old records.
+
 ## Owner acceptance and completion directive — 18 October 2026
 
 The owner grants this conversation authority to accept verified work in every repository. Finish Galinsky 2028 first, then apply the same source/test review to the remaining portfolio excluding the four oldest repositories. Inspect every planned unit against current code and tests; finish actual software gaps and accept verified changes without another owner ceremony. Do not convert missing deployment observations, final videos, domains, provider credentials or deferred external human review into claims that implemented PRs are partially written. Keep software implementation, accepted PR merges, current deployment and external activation facts separate. This authority does not fabricate missing features or authorize actual financial transactions or disclosure of private records.
