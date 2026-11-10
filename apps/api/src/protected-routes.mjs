@@ -16,6 +16,7 @@ export function registerProtected(app,{store,config,account,writeSession,clock})
   ready();const s=await writeSession(req),b=exactKeys(req.body,['id','publicKey','label','signature']);protectedId(b.id);
   assert(typeof b.label==='string'&&b.label.trim().length>=2&&b.label.length<=60&&!/[\x00-\x1f]/.test(b.label),'invalid_device_label','Choose a short device label.');
   const info=await publicProtectedKey(b.publicKey),proof={action:'enroll',accountId:s.account.id,id:b.id,fingerprint:info.fingerprint};
+  assert(info.key.getUserIDs().length===1&&info.key.getUserIDs()[0]===s.account.id,'protected_key_identity','The public key must contain only this account identifier, without email addresses or other personal metadata.');
   assert(await verifyProtected(proof,b.signature,info.key),'device_proof_required','Proof of the device private key is required.',403);
   return store.withProtected(async tx=>{
    assert(tx.devices.length<2000&&tx.devices.filter(d=>d.accountId===s.account.id&&d.state!=='revoked').length<8,'protected_device_limit','Remove an unused device before adding another.',409);

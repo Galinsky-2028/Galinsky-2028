@@ -7,6 +7,7 @@ import {join} from 'node:path';
 import pg from 'pg';
 import {backupDatabase,restoreDatabase} from '../../scripts/database-recovery.mjs';
 import {newProtectedKey,unlockProtectedKey,encryptProtected,decryptProtected,publicProtectedKey,PROTECTED_PROFILE} from '../../packages/core/protected-crypto.mjs';
+import {sealFinanceIdentity,openFinanceIdentity,sealFinanceEvidence,openFinanceEvidence} from '../../packages/core/treasury-private.mjs';
 const base=process.env.TEST_DATABASE_URL;
 test('complete encrypted PostgreSQL recovery is authenticated, isolated, atomic and preserves durable application records',{skip:!base},async()=>{
  assert(['localhost','127.0.0.1'].includes(new URL(base).hostname),'Synthetic drill uses local Postgres only.');
@@ -25,8 +26,12 @@ test('complete encrypted PostgreSQL recovery is authenticated, isolated, atomic 
   const recipient=randomUUID(),device=randomUUID(),protectedId=randomUUID(),pair=await newProtectedKey(recipient,'synthetic separate recovery passphrase'),privateKey=await unlockProtectedKey(pair.privateKey,'synthetic separate recovery passphrase'),info=await publicProtectedKey(pair.publicKey);
   await source.query("INSERT INTO g28.accounts(id,email_key,delivery_envelope,verified_at,terms_version) VALUES($1,$2,'synthetic',now(),'synthetic')",[recipient,'f'.repeat(64)]);
   await source.query("INSERT INTO g28.protected_devices(id,account_id,fingerprint,public_key,label,state,generation) VALUES($1,$2,$3,$4,'Synthetic recovery device','enrolled',1)",[device,recipient,info.fingerprint,pair.publicKey]);
-  const protectedMessage=await encryptProtected({profile:PROTECTED_PROFILE,recordId:protectedId,sequence:1,kind:'incident',sender:device,recipients:[device],generation:1},{text:'PROTECTED_RECOVERY_CANARY'},[pair],privateKey);
+  const secondDevice=randomUUID(),secondPair=await newProtectedKey(recipient,'synthetic separate recovery passphrase'),secondInfo=await publicProtectedKey(secondPair.publicKey);await source.query("INSERT INTO g28.protected_devices(id,account_id,fingerprint,public_key,label,state,generation) VALUES($1,$2,$3,$4,'Synthetic second recovery device','enrolled',1)",[secondDevice,recipient,secondInfo.fingerprint,secondPair.publicKey]);
+  const protectedMessage=await encryptProtected({profile:PROTECTED_PROFILE,recordId:protectedId,sequence:1,kind:'incident',sender:device,recipients:[device,secondDevice].sort(),generation:1},{text:'PROTECTED_RECOVERY_CANARY'},[pair,secondPair],privateKey);
   await source.query("INSERT INTO g28.protected_records(id,author_id,participants,document,version,retain_until,legal_hold) VALUES($1,$2,$3,$4,1,now()+interval '90 days',true)",[protectedId,recipient,[recipient],{messages:[protectedMessage]}]);
+  const financeKey=randomBytes(32).toString('base64'),donorId=randomUUID(),evidenceId=randomUUID(),identity={name:'FINANCE_RECOVERY_CANARY'},document={text:'PRIVATE_EVIDENCE_RECOVERY_CANARY'};
+  await source.query("INSERT INTO g28.treasury_donors(id,encrypted_envelope,evidence_digest,version) VALUES($1,$2,$3,1)",[donorId,sealFinanceIdentity(donorId,1,identity,financeKey),'a'.repeat(64)]);
+  await source.query("INSERT INTO g28.treasury_evidence(id,digest,byte_count,encrypted_envelope,created_by) VALUES($1,$2,42,$3,'synthetic')",[evidenceId,'a'.repeat(64),sealFinanceEvidence(evidenceId,document,financeKey)]);
   const result=await backupDatabase({url:sourceURL.href,key,file});assert(result.bytes>1000);assert(result.durationMs>=0);
   assert.equal((await stat(file)).mode&0o777,0o600);
   const bytes=await readFile(file);assert(!bytes.includes('synthetic-recovery-only'));assert(!bytes.includes(sourceName));assert(!bytes.includes(Buffer.from(key)));
@@ -45,6 +50,11 @@ test('complete encrypted PostgreSQL recovery is authenticated, isolated, atomic 
   assert(recoveredProtected.legal_hold);assert(!JSON.stringify(recoveredProtected).includes('PROTECTED_RECOVERY_CANARY'));
   assert.equal((await decryptProtected(recoveredProtected.document.messages[0],privateKey,pair)).text,'PROTECTED_RECOVERY_CANARY');
   assert.equal((await target.query('SELECT generation,fingerprint FROM g28.protected_devices WHERE id=$1',[device])).rows[0].fingerprint,info.fingerprint);
+  const donorEnvelope=(await target.query('SELECT encrypted_envelope FROM g28.treasury_donors WHERE id=$1',[donorId])).rows[0].encrypted_envelope;
+  assert(!donorEnvelope.includes(identity.name));assert.deepEqual(openFinanceIdentity(donorId,1,donorEnvelope,financeKey),identity);
+  assert.throws(()=>openFinanceIdentity(donorId,1,donorEnvelope,key));
+  const evidenceEnvelope=(await target.query('SELECT encrypted_envelope FROM g28.treasury_evidence WHERE id=$1',[evidenceId])).rows[0].encrypted_envelope;
+  assert(!evidenceEnvelope.includes(document.text));assert.deepEqual(openFinanceEvidence(evidenceId,evidenceEnvelope,financeKey),document);
   for(const name of ['accounts','outbox','activity_modules','financial_provider_events','staff_security','encrypted_records']){
    assert((await target.query('SELECT to_regclass($1) AS found',['g28.'+name])).rows[0].found,name+' survives complete restore');
   }

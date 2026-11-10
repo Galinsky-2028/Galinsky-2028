@@ -1,4 +1,8 @@
+import {runtimeProbe} from '../../packages/core/runtime-probe.mjs';
 import {createServer} from 'node:http';
+import {DONOR_COOKIE,donorCapability,donorAuthority,donorCookie,donorCsrf,validDonorCsrf,stripeDonorRecord,stripeDonorPortal,donorManagementHtml} from '../../packages/core/stripe-donor-service.mjs';
+import {readCookie} from '../../packages/core/auth.mjs';
+import {validDonationOrigin} from '../../packages/core/stripe-web-checkout.mjs';
 import {readFile,realpath,stat} from 'node:fs/promises';
 import {realpathSync,statSync} from 'node:fs';
 import {extname,resolve,sep} from 'node:path';
@@ -167,6 +171,24 @@ export function createPrivatePreviewServer({directory=resolve('dist/web'),env=pr
   // Stripe's real Checkout checkout is generated server-side only.
   // Payment details are always entered on Stripe; POST data here is only
   // amount, election and eligibility certifications (never card/PII).
+  if(pathname==='/donate/manage'||pathname==='/donate/manage/portal'||pathname==='/donate/manage/forget'){
+   if(!stripeConfig||!liveStripeStore)return send(res,503,'Donor management is not configured. Use your processor-issued receipt or management link.');
+   const capability=readCookie(req.headers.cookie,DONOR_COOKIE),authority=donorAuthority(stripeNonce,capability);
+   try{
+    if(pathname==='/donate/manage/portal'||pathname==='/donate/manage/forget'){
+     if(req.method!=='POST'){res.setHeader('Allow','POST');return send(res,405,'Method not allowed.');}
+     if(!authority||!validDonationOrigin(req,stripeConfig))return send(res,403,'Contribution session or request origin could not be verified.');
+     if(!/^application\/x-www-form-urlencoded(?:;|$)/i.test(req.headers['content-type']||''))return send(res,415,'Use the donor management form.');
+     let raw='';for await(const chunk of req){raw+=chunk.toString('utf8');if(raw.length>1024)return send(res,413,'Form is too large.');}
+     const form=new URLSearchParams(raw);if([...form.keys()].length!==1||form.getAll('form_token').length!==1||!validDonorCsrf(stripeNonce,capability,form.get('form_token')))return send(res,403,'Reload donor management before continuing.');
+     if(pathname==='/donate/manage/forget'){res.writeHead(303,{'Set-Cookie':DONOR_COOKIE+'=; Path=/; HttpOnly; Secure; SameSite=Lax; Max-Age=0',Location:'/donate/manage','Content-Length':'0'});res.end();return;}
+     const destination=await stripeDonorPortal({settings:stripeConfig,authority,store:liveStripeStore,transport:stripeTransport,configuration:env.G28_STRIPE_DONOR_PORTAL_CONFIGURATION});res.writeHead(303,{Location:destination,'Content-Length':'0'});res.end();return;
+    }
+    if(!['GET','HEAD'].includes(req.method)){res.setHeader('Allow','GET, HEAD');return send(res,405,'Method not allowed.');}
+    const record=authority?await stripeDonorRecord({settings:stripeConfig,authority,store:liveStripeStore,transport:stripeTransport}):null;
+    const html=donorManagementHtml({record,csrf:authority?donorCsrf(stripeNonce,capability):'',loginUrl:env.G28_STRIPE_DONOR_PORTAL_LOGIN_URL,available:Boolean(env.G28_STRIPE_DONOR_PORTAL_CONFIGURATION),sandbox:stripeConfig.sandbox});res.statusCode=200;res.setHeader('Content-Type','text/html; charset=utf-8');res.setHeader('Content-Security-Policy',"default-src 'self'; script-src 'none'; style-src 'self' 'unsafe-inline'; form-action 'self' https://billing.stripe.com; base-uri 'none'; frame-ancestors 'none'");res.end(req.method==='HEAD'?undefined:html);return;
+   }catch(e){return send(res,[403,409,503].includes(e.status)?e.status:503,'The processor could not verify or open this contribution. No new payment or subscription was created. Try again later or use the link sent by Stripe.');}
+  }
   if(pathname==='/donate/stripe'||pathname==='/donate/stripe/checkout'){
    if(!stripeConfig)return send(res,503,'Stripe Checkout is not configured. No payment was attempted.');
    if(!liveStripeStore)return send(res,503,'The Stripe ledger is not configured. No payment was attempted.');
@@ -201,6 +223,7 @@ export function createPrivatePreviewServer({directory=resolve('dist/web'),env=pr
      amountCents:created.amountCents,election:created.election,livemode:stripeConfig.live,
      termsVersion:created.termsVersion});
     stage='redirect';
+    res.setHeader('Set-Cookie',donorCookie(donorCapability(stripeNonce,created)));
     res.statusCode=303;res.setHeader('Location',created.hostedCheckoutUrl);
     res.setHeader('Content-Length','0');res.end();return;
    }catch(e){
@@ -377,6 +400,7 @@ if(entry){
   const server=createPrivatePreviewServer({reviewController,campaignRuntime});
   server.listen(port,process.env.HOST||'0.0.0.0',async()=>{
    console.log(JSON.stringify({event:'private_preview_listening',port}));
+   if(process.env.RENDER==='true'){try{console.log(JSON.stringify(await runtimeProbe({port,kind:'web'})));}catch{console.error(JSON.stringify({event:'runtime_application_verification_failed',kind:'web'}));server.close();process.exitCode=1;return;}}
    // An owner-authorized, explicitly flagged integration acceptance run.
    // It never accepts live keys, charges a card or logs sensitive account data.
    // Independent, READ-ONLY inventory of the owner-configured TEST webhook

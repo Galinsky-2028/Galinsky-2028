@@ -1,0 +1,27 @@
+# Treasury, donor self-service and outreach review — 10 November 2026
+
+Owner-authorized implementation and AI source/security review; not an independent human audit, merchant approval, legal opinion or live transaction rehearsal.
+
+The treasury now records source-verified contributor identity as immutable encrypted revisions, private documentary evidence, actual approved policy versions, integer source events, settlements and partial bank deposits/debits. All-channel donor/election aggregates use explicit donor IDs; names and email never silently merge identities. Source history, policy, settlement membership and audit are append-only in the runtime grant profile. Corrections add events. Test/live channels remain separate. Reconciliation exposes unmatched signed provider events and mismatches instead of hiding them.
+
+Exceptions use the actual approved original made/received/case date basis, bounded follow-up and an evidence-backed case history. Generic transactional notifications contain no financial amounts or private documents; delivery rechecks the exact current donor revision, current case/deadline and suppression. Finance records survive ordinary volunteer account closure. Exports require current owner/treasurer, fresh passkey, CSRF, explicit confirmation and an actual approved accounting column mapping; contributor fields require a separate explicit selection. CSV formula injection is neutralized. There is no automatic FEC filing.
+
+Only the installed TEST refund executor can call Stripe. Commands are committed before HTTP; uncertain results are never automatically retried. Exact original checkout/payment/mode/amount and stable idempotency are checked. Signed refund pending/failure/success and dispute outcomes remain distinct; terminal updates use compare-and-set so a late transport error cannot overwrite a signed final outcome. No live executor is installed. The webhook database role and finance staff authority are separate.
+
+Donor receipt and Stripe-managed portal access use an independent original-browser HttpOnly/Secure capability, short-lived CSRF and exact provider/ledger binding. Guessing a checkout ID grants no authority. Stripe's own verified-email portal provides the separate-device path when configured. The user can forget this browser. No volunteer account is required. New recurring commitments remain unavailable because future-charge limit enforcement has not been demonstrated; the portal does not waive that release condition.
+
+Outreach tools require an actual capability/suppression review and an expiring evidenced health state. Unknown, stale, paused or failed-suppression tools stop tasks and handoffs. Manual provider-owned opt-out processing is supported. A tool requiring an uninstalled provider/suppression API cannot be activated; no fictional provider adapter, mass outreach or scraped contact list was added.
+
+Local evidence: unit tests, real isolated PostgreSQL integration, production portal build and real Chromium workflow pass. Integration covers private SQL canaries, identity revisions, mixed channels, signed remedies, partial bank reconciliation, accounting correction, generic mail/stale contact suppression, uncertain command/terminal races, and 106-row pagination preserving PostgreSQL microseconds. The recovery drill includes separately encrypted donor and documentary records, restored using a separately held finance key. These are synthetic local results; GitHub CI, merge and hosted deploy results must be recorded separately.
+
+## Protected-protocol finding
+
+The merged static OpenPGP prototype is not an eligible network-messaging protocol in the pinned E2EESA catalog. ADRs 0005/0006 require a registered ratcheted pairwise or group protocol; static OpenPGP has no forward secrecy or post-compromise recovery. Runtime activation now unconditionally fails. Recipient, submission, recovery and confidential support package status must reflect this implementation gap. Prototype tests passing do not close it. A maintained RFC9420 MLS implementation is being evaluated; it has not been integrated or represented as complete. The owner's authorization replaces external human review, not protocol requirements.
+
+## Actual activation inputs
+
+No real campaign staff mailbox, verified mail sender, approved outreach provider or merchant release/credentials have been supplied in this environment. None is synthesized. Hosted volunteer passkeys and owner-authorized reading release remain separate from staff, financial and confidential-content activation. Keep private access and no paid infrastructure or live transactions.
+
+## Deployment observations
+
+Both Render services perform read-only loopback checks after binding: the existing private credential stays in process memory, unauthenticated health must return 401, the authenticated revision must match the deployed commit, and installed page/assets must resolve. The portal additionally checks database readiness, passkey/signup configuration, disabled protected/payment gates and materials authorization. Only aggregate checks/revision are logged. This is runtime HTTP evidence, not independent browser/TLS verification or a staff-account rehearsal. Failed probes prevent successful startup. No credential rotation or authentication bypass is required.
