@@ -1,43 +1,40 @@
 # Connected-account deployment and handoff
 
-Owner instruction, 9 November 2026 (America/New_York): use the connected Render workspace and connected Neon account; create a fresh database; delete superseded services/database if accessible. This supersedes the historical existing-service-only placement restriction for this migration. It does not authorize charges or fabricated publication/security approvals.
+The owner authorized using the connected Render/Neon accounts, a fresh database and retirement of accessible superseded resources. Private access, free plans, cryptographic requirements and transaction controls remain in force.
 
-## Current resources
+## Current resources and verified release
 
-- Render workspace: `tea-dbl0kcbm8hqs738ptf3g`.
-- Website: `srv-dbp6n18m7kps73a0kpsg`, https://galinsky2028-website.onrender.com.
-- Volunteer API/portal: `srv-dbp6n661egvs73b7pspg`, https://galinsky2028-volunteers.onrender.com.
-- Both are Node web services on the free plan in Ohio; automatic deploy is off. Do not deploy the website as a static site, which bypasses its private gate.
-- New Neon project: `calm-moon-73214448`, database `galinsky2028`, primary branch `br-damp-heart-bexv8utq`. This is a fresh database, with no claim that old accounts/content were migrated.
-- Migration-validation branch: `br-odd-river-bedrj1su`. All 27 checked-in migrations passed there before application to the primary branch.
-- Portal SQL login: `g28_portal_runtime_volunteer`, without inherited roles, DDL, role creation, staff grants, editorial or treasury access. The `volunteer` profile in `scripts/runtime-role-permissions.mjs` is the reproducible grant definition. Materials/modules are read-only; passkey accounts, preferences, task progress, bookmarks and acknowledgments have the scoped DML needed by the application. Account closure/export retain their existing cleanup/read permissions.
+- Render workspace `tea-dbl0kcbm8hqs738ptf3g`.
+- Website `srv-dbp6n18m7kps73a0kpsg`: https://galinsky2028-website.onrender.com.
+- Volunteer API/portal `srv-dbp6n661egvs73b7pspg`: https://galinsky2028-volunteers.onrender.com.
+- Both existing Node web services use the free plan in Ohio. Automatic deploy is off. A public static-site replacement would bypass private access and is not authorized.
+- Both are live on merged PR157, commit `ef307744670ef9c301c58678f10b48ce6946eec9`. Exact-head CI `42791381206` passed on `029bca1bd922244b9e18552c1f6c04639ef4750b`. Exact deployment IDs and observations are in `docs/evidence/CONNECTED_RELEASE_20261110.json`.
+- Startup probes verified installed HTTP/configuration/assets: 69 website checks and 23 portal checks. External unauthenticated health requests returned401. These observations are not an independent authenticated hosted-browser or staff/financial transaction rehearsal.
+- Neon project `calm-moon-73214448`, database `galinsky2028`, primary branch `br-damp-heart-bexv8utq`; migration validation branch `br-odd-river-bedrj1su`.
+- Migration024 passed on validation and primary, bringing recorded migrations to30. Protected identity count was0 at verification. Migration SQL SHA256 is recorded in the release evidence.
 
-The nineteen-guide reading release and temporary YouTube configuration are described in `docs/evidence/VOLUNTEER_MATERIAL_REVIEW_20261109.md`; the owner explicitly approved AI editorial review. The previously reported missing materials were present in the repository and were initially overlooked.
+This is a fresh database; inaccessible old accounts/data were not claimed migrated. The installed login `g28_portal_runtime_volunteer` uses the narrow `volunteer` profile in `scripts/runtime-role-permissions.mjs`, without inherited roles, DDL or role creation. Current permission checks deny protected records, public protected identity tables and treasury donors. Materials/modules are read-only; scoped passkey accounts, preferences, progress, bookmarks and acknowledgements retain their existing permissions.
 
-The original broad portal role was rejected by automatic approval review. It was not installed. A narrower volunteer-only profile was installed and its denied staff/treasury/editorial privileges were verified through PostgreSQL permission checks.
+## Private access and available volunteer functions
 
-## Access and activation
+Both services retain HTTP Basic protection with username `preview`. An authorized owner can retrieve or replace `PREVIEW_ACCESS_PASSWORD` privately in Render. Do not copy it into source, reports, chat or screenshots. This release did not rotate credentials or bypass the gate.
 
-Both services retain HTTP Basic protection, username `preview`. The new high-entropy password is stored only in each service's Render `PREVIEW_ACCESS_PASSWORD` environment variable; an authorized owner can retrieve or replace it in the Render Dashboard. Do not copy it into source, reports or chat. Passkey registration/sign-in is enabled inside the protected volunteer portal. Passkeys are bound to the new portal hostname; old-origin credentials do not silently migrate.
+Passkey registration/sign-in is enabled inside the private volunteer portal. Passkeys are bound to its new hostname. Nineteen source-edition guides were released using the explicitly owner-authorized AI review, with exact record hashes and append-only publication audit. Details: `docs/evidence/VOLUNTEER_MATERIAL_REVIEW_20261109.md`. Materials access does not authorize regulated activities or create verifier approvals.
 
-Email-link signup, staff administration, coordination, help intake, protected narratives/attachments and donations remain disabled. No verified email sender, current approved materials, treasurer/merchant release or installed reviewed protected-content protocol has been invented. These are actual remaining release/software inputs, not a second acceptance ceremony for merged PRs.
+The earlier hosted passkey/material journey at release `4599245d56a43c64653d229ee1e61dcb84bc3a8f` exercised registration, search, filters, downloads, persistent bookmarks/acknowledgements, orientation and closure; its synthetic accounts were removed. The current release has separate exact-source CI and runtime-probe evidence as described above.
 
-The GitHub deployment workflows previously used secrets from the old account. Update their secret configuration privately before relying on the updated live-acceptance workflows against the new services. Old provisioning request files and exact-project scripts remain historical; do not invoke them to recreate services in the superseded account.
+## Remaining activation and software conditions
 
-## Retirement
+Verified email/staff administration requires an actual mailbox, transactional sender, delivery callback secret and operational mail path. No email ownership, staff identity, recipient key, verifier or campaign legal/merchant approval is fabricated. Coordination, regulated tasks, confidential intake and financial processing remain independently gated.
 
-The old Render services were successfully deleted using the GitHub-held credential after the replacement release passed live verification (Actions run `42735201769`). The connected Render account originally returned 404 for both old services; the connected Neon account returns 404 for `soft-bread-25523698`. Absence through these credentials does not prove deletion. A manually dispatched `retire-old-render.yml` can audit then delete only the two exact old campaign services using the existing GitHub-held old Render credential if it still works. It verifies both identities/placements before deletion and cannot select databases, projects or new services. Never use the older portfolio-wide cleanup workflow for this request.
+Ratcheted protected delivery, local encrypted custody and signed device authority are implemented in PR157. The subsequent root/linked-device lifecycle and controlled-export source is covered by `docs/security/RATCHETED_PROTECTED_DEVICE_LIFECYCLE.md`; its merge/deployment is separate from this release. Protected runtime remains disabled pending the pinned hardened-web release, authenticated log/witness/update and transport controls and actual staff/recipient setup. The source no-backup candidate does not silently select an active user recovery policy.
 
-## Verification and remaining work
+Current concrete work and counts are maintained in `registry/prs.json` and `docs/evidence/CURRENT_IMPLEMENTATION_REVIEW.md`. Recurring future-charge enforcement remains separate software work. Actual approved outreach tools and campaign-specific treasurer/merchant release are external inputs. No live processing or paid infrastructure was authorized by these deploys.
 
-Local source checks, unit tests and both production builds were run. Node 24 is supplied by this execution environment; deployed services and GitHub CI use the pinned Node 22.23.3. Browser verification uses Chromium and a synthetic WebAuthn authenticator against the deployed portal, with the environment proxy CA explicitly trusted.
+GitHub deployment/acceptance workflows previously held old-account secrets. Update their configuration privately before using them against these new services; do not replace current preview credentials merely to run a test.
 
-Public launch remains incomplete: final issue videos/captions and canonical destinations, approved current volunteer materials/training, protected recipient/device encryption and recovery, treasury reconciliation/exception/recurring-donor workflows and configured staff/mail delivery remain separately tracked in `registry/prs.json` and `docs/evidence/CURRENT_IMPLEMENTATION_REVIEW.md`. No full-platform completion or public fundraising release is claimed.
+## Retirement and operator constraints
 
-## Final verified release
+The two old Render services were deleted after the replacement release passed verification (Actions run `42735201769`). Old Neon project `soft-bread-25523698` returns404 through the connected account; deletion cannot be claimed. Do not invoke historical provisioning files or portfolio-wide cleanup to recreate/delete unrelated resources.
 
-Both services are live on `4599245d56a43c64653d229ee1e61dcb84bc3a8f`. See `docs/evidence/CONNECTED_RELEASE_20261109.json` for exact deploy IDs, source-bound CI and actual hosted outcomes. Nineteen guides were published with nineteen append-only audit events; all nineteen live body SHA-256 values matched source. Real passkey accounts exercised search, category filters, downloads, persistent bookmarks/acknowledgments, orientation and account closure. Synthetic accounts were removed. No regulated activity module was created.
-
-The initial opaque publication attempt was rejected by automatic approval review. After checking the empty target, publication used an explicit insert-only CTE with `ON CONFLICT DO NOTHING` and append-only audit; no existing record, schema, role or credential was changed by publication. The live exact-body comparison passed.
-
-The preview password generated during this session was refreshed on both new services for final authenticated verification. Retrieve it privately from Render `PREVIEW_ACCESS_PASSWORD`; do not print or commit it. The old Render services were deleted; the old Neon project still returns 404 with connected credentials.
+Host Node24 is used for local engineering; CI/Render use Node22.23.3. Use `ASTRO_TELEMETRY_DISABLED=1` and a writable task-local XDG configuration directory for local builds. Preserve exact deployed source and migration evidence, private credentials and all transaction controls.

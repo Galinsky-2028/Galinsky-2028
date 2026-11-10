@@ -69,11 +69,21 @@ export async function withProtectedLock(account, fn) {
     );
   return navigator.locks.request('g28-protected:' + account, fn);
 }
-export async function deleteProtectedLocalAccount(account) {
+export function lockProtectedLocalAccount(account) {
   if (typeof BroadcastChannel === 'function') {
     const channel = new BroadcastChannel('g28-protected-lock');
     channel.postMessage({ account, action: 'lock' });
     channel.close();
+  }
+}
+export async function deleteProtectedLocalAccount(account) {
+  lockProtectedLocalAccount(account);
+  if (!navigator.locks?.request) {
+    const rows = await protectedLocalList(account);
+    if (!rows.length) return;
+    throw Error(
+      'Local protected keys could not be safely deleted. Clear this site’s browser storage.',
+    );
   }
   return withProtectedLock(account, async () => {
     const rows = await protectedLocalList(account);
