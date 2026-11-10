@@ -48,6 +48,11 @@ test('client vault uses fixed Argon2id/HKDF, fresh per-generation data keys and 
   const tampered = structuredClone(thread);
   tampered.header.generation = 2;
   await assert.rejects(openProtectedThreadVault(session, tampered, { record, minGeneration: 1 }));
+  const copied = { ...session };
+  await assert.rejects(
+    sealProtectedThreadVault(copied, { record, generation: 2, payload: {} }),
+    'copied session objects must not bypass the opaque active-session guard',
+  );
   lockProtectedVault(session);
   assert(session.master.every((x) => x === 0));
   await assert.rejects(openProtectedThreadVault(session, thread, { record, minGeneration: 1 }));

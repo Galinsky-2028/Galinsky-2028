@@ -6,6 +6,12 @@ import { canonical } from './protected-crypto.mjs';
 import { mlsBase64, mlsBytes } from './protected-mls.mjs';
 export const VAULT_PROFILE = 'secret-software-vault@0.1.0';
 export const HISTORY_POLICY = 'backup-none@0.1.0';
+const sessions = new WeakSet();
+const registered = (value) => {
+  sessions.add(value);
+  return value;
+};
+const active = (value) => sessions.has(value) && value.active === true && value.kek;
 const utf8 = new TextEncoder(),
   decode = new TextDecoder('utf-8', { fatal: true }),
   MAX = 24 * 1024 * 1024;
@@ -207,7 +213,15 @@ export async function createProtectedDeviceVault({
   try {
     return {
       envelope: await seal(h, { masterKey: mlsBase64(master), payload }, kek),
-      session: { active: true, account, device, generation, kek, master: master.slice(), payload },
+      session: registered({
+        active: true,
+        account,
+        device,
+        generation,
+        kek,
+        master: master.slice(),
+        payload,
+      }),
     };
   } finally {
     master.fill(0);
@@ -220,7 +234,7 @@ export async function unlockProtectedDeviceVault(value, password, expected) {
     kek = await passwordKey(password, h.kdf, h.account, h.device),
     opened = await open(value, kek);
   exact(opened, ['masterKey', 'payload']);
-  return {
+  return registered({
     active: true,
     account: h.account,
     device: h.device,
@@ -228,7 +242,7 @@ export async function unlockProtectedDeviceVault(value, password, expected) {
     kek,
     master: bytes(opened.masterKey, 32),
     payload: opened.payload,
-  };
+  });
 }
 export async function updateProtectedDeviceVault(value, session, payload) {
   envelope(value);
@@ -238,8 +252,7 @@ export async function updateProtectedDeviceVault(value, session, payload) {
     'device',
   );
   need(
-    session.active === true &&
-      session.kek &&
+    active(session) &&
       session.generation < Number.MAX_SAFE_INTEGER &&
       value.header.generation === session.generation &&
       session.master instanceof Uint8Array &&
@@ -247,13 +260,12 @@ export async function updateProtectedDeviceVault(value, session, payload) {
   );
   const h = { ...value.header, generation: session.generation + 1 };
   const next = await seal(h, { masterKey: mlsBase64(session.master), payload }, session.kek);
-  need(session.active === true);
+  need(active(session));
   return { envelope: next, generation: h.generation };
 }
 async function threadKey(session, record) {
   need(
-    session.active === true &&
-      session.kek &&
+    active(session) &&
       id(record) &&
       session.master instanceof Uint8Array &&
       session.master.length === 32,
@@ -263,7 +275,7 @@ async function threadKey(session, record) {
     utf8.encode(record),
     'G28:thread-vault-KEK:v1:' + session.account + ':' + session.device + ':' + record,
   );
-  need(session.active === true);
+  need(active(session));
   return key;
 }
 export async function sealProtectedThreadVault(session, { record, generation, payload }) {
@@ -285,7 +297,7 @@ export async function sealProtectedThreadVault(session, { record, generation, pa
     generation,
   };
   const result = await seal(h, payload, await threadKey(session, record));
-  need(session.active === true);
+  need(active(session));
   return result;
 }
 export async function openProtectedThreadVault(session, value, expected) {
@@ -301,12 +313,36 @@ export async function openProtectedThreadVault(session, value, expected) {
     'thread',
   );
   const result = await open(value, await threadKey(session, expected.record));
-  need(session.active === true);
+  need(active(session));
   return result;
 }
 export function lockProtectedVault(session) {
+  if (!session) return;
+  sessions.delete(session);
   session.active = false;
   session.master?.fill(0);
   session.kek = null;
   session.payload = null;
+}
+
+export async function resumeProtectedDeviceVault(value, session) {
+  need(active(session));
+  envelope(value);
+  header(
+    value.header,
+    { account: session.account, device: session.device, minGeneration: session.generation },
+    'device',
+  );
+  const opened = await open(value, session.kek);
+  need(active(session));
+  exact(opened, ['masterKey', 'payload']);
+  const master = bytes(opened.masterKey, 32);
+  try {
+    need(mlsBase64(master) === mlsBase64(session.master));
+    session.generation = value.header.generation;
+    session.payload = opened.payload;
+    return session;
+  } finally {
+    master.fill(0);
+  }
 }

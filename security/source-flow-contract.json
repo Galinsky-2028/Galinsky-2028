@@ -130,7 +130,7 @@
     {
       "id": "protected",
       "purpose": "Recipient enrollment, protected reports, attachments, recovery and exports",
-      "trustBoundary": "Unexposed RFC9420 ratcheted candidate and disabled static OpenPGP prototype. Client-held keys and exact identity authority; browser/code publisher trusted. No current network adapter or production conformance claim.",
+      "trustBoundary": "Source RFC9420 v2 HTTP and encrypted browser-vault adapter; production loadConfig still blocks activation. Root/device keys remain client-held; exact original roster, independent manual root comparison and publisher/device trust. No current production E2EE or certification claim.",
       "blocked": true
     },
     {
@@ -171,7 +171,7 @@
     },
     {
       "path": "apps/api/src/app.mjs",
-      "blobSha": "85bdb046a02fb6a6806415b5f90140173d1559f1",
+      "blobSha": "0572a6b211d44bb021abeecbc23a42c5c39ce551",
       "componentId": "identity"
     },
     {
@@ -246,8 +246,18 @@
     },
     {
       "path": "apps/api/src/postgres-store.mjs",
-      "blobSha": "2bbcaa7bd8ca32457ad464f813a39e44a7851323",
+      "blobSha": "aa86fc696db12aba0b455463ddf965e9d262fae2",
       "componentId": "identity"
+    },
+    {
+      "path": "apps/api/src/protected-mls-routes.mjs",
+      "blobSha": "1c9bb230431d760f1ea0b21a6f21acd66e652b33",
+      "componentId": "protected"
+    },
+    {
+      "path": "apps/api/src/protected-mls-store.mjs",
+      "blobSha": "6661a162ec1082ee0be01ab30a5d899028820fbc",
+      "componentId": "protected"
     },
     {
       "path": "apps/api/src/protected-routes.mjs",
@@ -361,7 +371,7 @@
     },
     {
       "path": "apps/portal/src/ProtectedReports.tsx",
-      "blobSha": "d86d5042b710ed4cf12d509a20320a85ddfb3d5e",
+      "blobSha": "6530f164fc338b3ffea34ef90e14b0318b87d7a9",
       "componentId": "protected"
     },
     {
@@ -391,8 +401,23 @@
     },
     {
       "path": "apps/portal/src/main.tsx",
-      "blobSha": "26d24c125fb3481b7645a57194a99d0740002ee6",
+      "blobSha": "303349eaa11e0f1258b51b0689124302360ac61a",
       "componentId": "identity"
+    },
+    {
+      "path": "apps/portal/src/protected-client.mjs",
+      "blobSha": "75e788de1bbeaa3f8949dcbc621be63e3f73a9e5",
+      "componentId": "protected"
+    },
+    {
+      "path": "apps/portal/src/protected-local.mjs",
+      "blobSha": "3a06b77bac79dfb7071555dfe2550bb07f07796b",
+      "componentId": "protected"
+    },
+    {
+      "path": "apps/portal/src/protected-threads.mjs",
+      "blobSha": "40521f159395cabb5ff0425f60d8f3cfb475a97f",
+      "componentId": "protected"
     },
     {
       "path": "apps/portal/vite.config.ts",
@@ -630,6 +655,11 @@
       "componentId": "schema"
     },
     {
+      "path": "db/migrations/024_protected_mls.sql",
+      "blobSha": "7a0fb6f6a5ba5dc216208ea84c86d38ccbb44d09",
+      "componentId": "schema"
+    },
+    {
       "path": "db/migrations/20261016_campaign_public_views.sql",
       "blobSha": "a3df233362d0d131f09d0d0fdb19666916aae352",
       "componentId": "schema"
@@ -831,12 +861,17 @@
     },
     {
       "path": "packages/core/protected-identity.mjs",
-      "blobSha": "bbadbf1614fbccfbecb2ff589835cb9cb32dd5f1",
+      "blobSha": "d8a53a51377a3ee276e214028b0df3f0a953d619",
+      "componentId": "protected"
+    },
+    {
+      "path": "packages/core/protected-mls-envelope.mjs",
+      "blobSha": "fdd3eed09013a222c6cc03c2fa93f6b524e121bd",
       "componentId": "protected"
     },
     {
       "path": "packages/core/protected-mls.mjs",
-      "blobSha": "2b5cab4cadb1a07328fe0e17461adcea75b8bbc9",
+      "blobSha": "1fe5aceece140097d1ffb4fb3f45a399911d0dd7",
       "componentId": "protected"
     },
     {
@@ -851,7 +886,7 @@
     },
     {
       "path": "packages/core/protected-vault.mjs",
-      "blobSha": "cbf20b698695fbaff0048f4b59c321d16bdcbbdb",
+      "blobSha": "ab1bb60dc696248797bac80c0cb406bc4aecad37",
       "componentId": "protected"
     },
     {
@@ -2211,13 +2246,17 @@
         "fingerprint",
         "generation",
         "id",
+        "identity_id",
         "label",
+        "mls_signing_key",
         "public_key",
+        "quarantined",
         "scope",
         "state"
       ],
       "paths": [
-        "db/migrations/022_protected_records.sql"
+        "db/migrations/022_protected_records.sql",
+        "db/migrations/024_protected_mls.sql"
       ],
       "kind": "postgres-table",
       "componentId": "protected",
@@ -2611,6 +2650,142 @@
       "authority": "Unexposed component caller; intended authorized recipient endpoint only after signed device state and independent root verification. No directory/identity login grants decryption.",
       "retention": "Component objects only; no persistent browser/network adapter is installed. Lock helpers erase mutable master/epoch buffers where practical; caller lifetime and remaining JavaScript copies are outside a perfect erasure claim.",
       "disposal": "Retire old epoch keys and drop historical receiver state. Selected backup-none policy prohibits private-key/history recovery exports; browser persistence, atomic locking/invalidation and no-recovery acknowledgement still require integration before activation."
+    },
+    {
+      "id": "g28.protected_identities",
+      "columns": [
+        "account_id",
+        "created_at",
+        "current",
+        "id",
+        "initial_state",
+        "root_fingerprint",
+        "sequence",
+        "state",
+        "state_hash",
+        "updated_at"
+      ],
+      "paths": [
+        "db/migrations/024_protected_mls.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "protected",
+      "classification": "Declared service-readable public cryptographic authority and minimal delivery metadata; no private keys or narrative",
+      "authority": "Signed root/device proof chain; current account routing, current staff role/fresh MFA and exact original device generation where applicable",
+      "retention": "Public proof/key nonreuse histories retained for historical signature validation; single-use package hashes never recycled; public package wire expires; abandoned claims remain tombstones",
+      "disposal": "Expire public package wire and withdraw routing; no invented signed revocation, no account-only restoration of private thread keys"
+    },
+    {
+      "id": "g28.protected_identity_events",
+      "columns": [
+        "created_at",
+        "device_signature",
+        "document",
+        "id",
+        "identity_id",
+        "previous_state_hash",
+        "root_signature",
+        "sequence",
+        "state_hash"
+      ],
+      "paths": [
+        "db/migrations/024_protected_mls.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "protected",
+      "classification": "Declared service-readable public cryptographic authority and minimal delivery metadata; no private keys or narrative",
+      "authority": "Signed root/device proof chain; current account routing, current staff role/fresh MFA and exact original device generation where applicable",
+      "retention": "Public proof/key nonreuse histories retained for historical signature validation; single-use package hashes never recycled; public package wire expires; abandoned claims remain tombstones",
+      "disposal": "Expire public package wire and withdraw routing; no invented signed revocation, no account-only restoration of private thread keys"
+    },
+    {
+      "id": "g28.protected_identity_keys",
+      "columns": [
+        "created_at",
+        "generation",
+        "identity_id",
+        "key_id",
+        "kind",
+        "subject_id"
+      ],
+      "paths": [
+        "db/migrations/024_protected_mls.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "protected",
+      "classification": "Declared service-readable public cryptographic authority and minimal delivery metadata; no private keys or narrative",
+      "authority": "Signed root/device proof chain; current account routing, current staff role/fresh MFA and exact original device generation where applicable",
+      "retention": "Public proof/key nonreuse histories retained for historical signature validation; single-use package hashes never recycled; public package wire expires; abandoned claims remain tombstones",
+      "disposal": "Expire public package wire and withdraw routing; no invented signed revocation, no account-only restoration of private thread keys"
+    },
+    {
+      "id": "g28.protected_key_packages",
+      "columns": [
+        "created_at",
+        "device_id",
+        "expires_at",
+        "generation",
+        "id",
+        "identity_id",
+        "init_sha256",
+        "lease_until",
+        "package_ref",
+        "package_sha256",
+        "record_id",
+        "state",
+        "wire"
+      ],
+      "paths": [
+        "db/migrations/024_protected_mls.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "protected",
+      "classification": "Declared service-readable public cryptographic authority and minimal delivery metadata; no private keys or narrative",
+      "authority": "Signed root/device proof chain; current account routing, current staff role/fresh MFA and exact original device generation where applicable",
+      "retention": "Public proof/key nonreuse histories retained for historical signature validation; single-use package hashes never recycled; public package wire expires; abandoned claims remain tombstones",
+      "disposal": "Expire public package wire and withdraw routing; no invented signed revocation, no account-only restoration of private thread keys"
+    },
+    {
+      "id": "g28.protected_package_claims",
+      "columns": [
+        "account_id",
+        "created_at",
+        "expires_at",
+        "kind",
+        "recipient_devices",
+        "record_id",
+        "sender_device_id"
+      ],
+      "paths": [
+        "db/migrations/024_protected_mls.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "protected",
+      "classification": "Declared service-readable public cryptographic authority and minimal delivery metadata; no private keys or narrative",
+      "authority": "Signed root/device proof chain; current account routing, current staff role/fresh MFA and exact original device generation where applicable",
+      "retention": "Public proof/key nonreuse histories retained for historical signature validation; single-use package hashes never recycled; public package wire expires; abandoned claims remain tombstones",
+      "disposal": "Expire public package wire and withdraw routing; no invented signed revocation, no account-only restoration of private thread keys"
+    },
+    {
+      "id": "protected-browser-vault",
+      "kind": "indexeddb",
+      "componentId": "protected",
+      "classification": "Client-only authenticated ciphertext with public account/device/record identifiers and generation counters",
+      "columns": [
+        "key",
+        "account",
+        "device",
+        "generation",
+        "envelope"
+      ],
+      "paths": [
+        "apps/portal/src/protected-local.mjs",
+        "apps/portal/src/protected-client.mjs",
+        "apps/portal/src/protected-threads.mjs"
+      ],
+      "authority": "Argon2id local unlock plus opaque active master; Web Locks and atomic IndexedDB generation CAS. No browser-storage plaintext private keys or passphrases.",
+      "retention": "Device-local authorized history until explicit browser/account storage deletion; no recovery backup in candidate client. Pending epoch state retired on ACK or operating-client expiry.",
+      "disposal": "Account-scoped deletion and cross-tab lock; browser erase best effort, no remote recall or forensic guarantee"
     }
   ],
   "flows": [
@@ -3449,24 +3624,41 @@
         "Private attachment manifest/key and authenticated encrypted chunks",
         "Argon2id/HKDF-protected local vault generation"
       ],
-      "from": "Unexposed client cryptographic component caller",
+      "from": "Versioned protected client and HTTP adapter under synthetic local tests; production activation blocked",
       "recipients": [
         "Exact authenticated and independently verified recipient devices; integration remains blocked"
       ],
       "storage": [
-        "protected-candidate-volatile-state"
+        "protected-candidate-volatile-state",
+        "g28.protected_devices",
+        "g28.protected_identities",
+        "g28.protected_identity_events",
+        "g28.protected_identity_keys",
+        "g28.protected_key_packages",
+        "g28.protected_lifecycle_events",
+        "g28.protected_package_claims",
+        "g28.protected_records",
+        "protected-browser-vault"
       ],
       "egress": [
-        "None: component tests only; no network or persistent-browser adapter is installed"
+        "Public signed identity/device/package proofs and declared routing metadata; authenticated MLS ciphertext and encrypted chunks only. No confidential plaintext/private keys. Actual deployed protected runtime remains disabled."
       ],
-      "authorization": "Registered candidate profile components and reviewed immutable library pins; exact roster/epoch/sender/AAD checks; root+device proofs; no account/server-only key authority. Runtime remains blocked pending complete directory, client lifecycle and endpoint obligations.",
-      "retention": "Candidate memory lifetime and selected no-backup policy; no software claim of current protected intake or complete recovery/browser integration.",
+      "authorization": "Exact root-certified device roster and independently compared account roots; full signed chains, local monotonic anchors, one-time package claims, original device generation, current role/fresh staff MFA. Registered source pins; no account/server-only cryptographic authority.",
+      "retention": "Source client encrypted vault and authorized local history; pending old epoch keys removed on acknowledgement or 24-hour expiry while operating. Locked/offline storage and authorized copies are not guaranteed forensic erasure. Server ciphertext 90 days unless held.",
       "evidence": [
         "packages/core/protected-mls.mjs",
         "packages/core/protected-attachment.mjs",
         "packages/core/protected-identity.mjs",
         "packages/core/protected-vault.mjs",
-        "packages/core/protected-verification.mjs"
+        "packages/core/protected-verification.mjs",
+        "apps/api/src/protected-mls-routes.mjs",
+        "apps/api/src/protected-mls-store.mjs",
+        "apps/portal/src/protected-client.mjs",
+        "apps/portal/src/protected-local.mjs",
+        "apps/portal/src/protected-threads.mjs",
+        "apps/portal/src/ProtectedReports.tsx",
+        "packages/core/protected-mls-envelope.mjs",
+        "db/migrations/024_protected_mls.sql"
       ],
       "profileDecision": "protected",
       "blocked": true,

@@ -18,7 +18,8 @@ import {
 import { defaultClientConfig } from 'ts-mls/clientConfig.js';
 import { getGroupMembers, getOwnLeafNode } from 'ts-mls/clientState.js';
 import { unprotectPrivateMessage } from 'ts-mls/messageProtection.js';
-import { verifyKeyPackage } from 'ts-mls/keyPackage.js';
+import { verifyKeyPackage, makeKeyPackageRef } from 'ts-mls/keyPackage.js';
+import { verifyLeafNodeSignatureKeyPackage } from 'ts-mls/leafNode.js';
 import { canonical } from './protected-crypto.mjs';
 export const MLS_PROFILE = 'group-mls-rfc9420@0.1.0';
 export const MLS_IMPLEMENTATION = 'ts-mls@1.6.4/g28-fresh-update-path-1';
@@ -115,6 +116,7 @@ function policy(members) {
 function roster(state, members, groupId) {
   need(
     state.groupContext.version === 'mls10' &&
+      state.groupContext.extensions.length === 0 &&
       state.groupContext.cipherSuite === MLS_SUITE &&
       decoder.decode(state.groupContext.groupId) === groupId,
   );
@@ -206,20 +208,16 @@ export async function createProtectedMlsGroup({ groupId, own, others, members, n
     mine = members.find((m) => m.device === own.device);
   need(mine && others.length === members.length - 1);
   const self = await keyPackage(own.package.wire, mine, now, true),
-    state = await createGroup(
-      encoder.encode(groupId),
-      self,
-      privatePackage(own.package.private),
-      [],
-      cs,
-      config,
-    );
+    privateKeys = privatePackage(own.package.private),
+    state = await createGroup(encoder.encode(groupId), self, privateKeys, [], cs, config);
   const adds = await Promise.all(
-    others.map(async (o) => {
-      const m = members.find((m) => m.device === o.device);
-      need(m);
-      return { proposalType: 'add', add: { keyPackage: await keyPackage(o.wire, m, now, true) } };
-    }),
+    [...others]
+      .sort((a, b) => a.device.localeCompare(b.device))
+      .map(async (o) => {
+        const m = members.find((m) => m.device === o.device);
+        need(m);
+        return { proposalType: 'add', add: { keyPackage: await keyPackage(o.wire, m, now, true) } };
+      }),
   );
   const result = await createCommit(
     { state, cipherSuite: cs },
@@ -227,9 +225,12 @@ export async function createProtectedMlsGroup({ groupId, own, others, members, n
   );
   need(result.commit.publicMessage?.content.commit?.path && result.welcome);
   const next = consume(result);
+  retirePrivate(state, next);
+  retireValues(privateKeys, privateParts(next));
   roster(next, members, groupId);
   return {
     state: next,
+    membershipCommit: encode(result.commit),
     welcome: encode({ version: 'mls10', wireformat: 'mls_welcome', welcome: result.welcome }),
   };
 }
@@ -240,21 +241,22 @@ export async function joinProtectedMlsGroup({ groupId, welcome, own, members }) 
   const p = await keyPackage(own.package.wire, m, Date.now(), false),
     w = decode(welcome, 'mls_welcome').welcome;
   need(w.cipherSuite === MLS_SUITE);
-  const state = forgetHistory(
-    await joinGroup(
-      w,
-      p,
-      privatePackage(own.package.private),
-      emptyPskIndex,
-      cs,
-      undefined,
-      undefined,
-      policy(members),
-    ),
-  );
-  roster(state, members, groupId);
-  return state;
+  const privateKeys = privatePackage(own.package.private);
+  let state;
+  try {
+    state = forgetHistory(
+      await joinGroup(w, p, privateKeys, emptyPskIndex, cs, undefined, undefined, policy(members)),
+    );
+    roster(state, members, groupId);
+    retireValues(privateKeys, privateParts(state));
+    return state;
+  } catch (error) {
+    erase(privateKeys);
+    destroyState(state);
+    throw error;
+  }
 }
+
 export function storeMlsState(state) {
   need(state.historicalReceiverData.size === 0);
   return mlsBase64(encodeGroupState(state));
@@ -294,6 +296,43 @@ function senderIs(state, sender, device) {
     ) === device
   );
 }
+function privateParts(state) {
+  return [
+    state.keySchedule,
+    state.secretTree,
+    state.privatePath,
+    state.signaturePrivateKey,
+    ...[...state.historicalReceiverData.values()].flatMap((v) => [
+      v.secretTree,
+      v.senderDataSecret,
+      v.resumptionPsk,
+    ]),
+  ];
+}
+function byteViews(value, out = []) {
+  if (value instanceof Uint8Array) out.push(value);
+  else if (value instanceof Map) for (const v of value.values()) byteViews(v, out);
+  else if (Array.isArray(value)) for (const v of value) byteViews(v, out);
+  else if (value && typeof value === 'object')
+    for (const v of Object.values(value)) byteViews(v, out);
+  return out;
+}
+function retireValues(old, current) {
+  const keep = byteViews(current);
+  for (const v of byteViews(old))
+    if (
+      !keep.some(
+        (k) =>
+          k.buffer === v.buffer &&
+          k.byteOffset < v.byteOffset + v.byteLength &&
+          v.byteOffset < k.byteOffset + k.byteLength,
+      )
+    )
+      v.fill(0);
+}
+function retirePrivate(old, current) {
+  retireValues(privateParts(old), privateParts(current));
+}
 function destroyState(state) {
   if (!state) return;
   erase(state.keySchedule);
@@ -303,6 +342,9 @@ function destroyState(state) {
   forgetHistory(state);
 }
 export async function sealProtectedMls({ state, context, payload, members }) {
+  payload = structuredClone(payload);
+  context = structuredClone(context);
+  members = structuredClone(members);
   boundContext(state, context, members);
   need(decoder.decode(getOwnLeafNode(state).credential.identity) === context.sender);
   let working = cloneState(state, members, context.recordId);
@@ -314,7 +356,9 @@ export async function sealProtectedMls({ state, context, payload, members }) {
         { wireAsPublicMessage: true, authenticatedData: aad },
       );
     need(commit.commit.publicMessage?.content.commit?.path);
+    const previous = working;
     working = consume(commit);
+    retirePrivate(previous, working);
     roster(working, members, context.recordId);
     need(Number(working.groupContext.epoch) === context.epoch);
     const sent = await createApplicationMessage(
@@ -324,6 +368,7 @@ export async function sealProtectedMls({ state, context, payload, members }) {
         aad,
       ),
       next = consume(sent);
+    retirePrivate(working, next);
     const result = {
       state: next,
       commit: encode(commit.commit),
@@ -341,6 +386,8 @@ export async function sealProtectedMls({ state, context, payload, members }) {
   }
 }
 export async function openProtectedMls({ state, context, commit, message, members }) {
+  context = structuredClone(context);
+  members = structuredClone(members);
   boundContext(state, context, members);
   let working = cloneState(state, members, context.recordId);
   try {
@@ -355,7 +402,9 @@ export async function openProtectedMls({ state, context, commit, message, member
         senderIs(working, c.content.sender, context.sender),
     );
     const applied = await processPublicMessage(working, c, emptyPskIndex, cs);
+    const previous = working;
     working = consume(applied);
+    retirePrivate(previous, working);
     roster(working, members, context.recordId);
     need(Number(working.groupContext.epoch) === context.epoch);
     const pm = decode(message, 'mls_private_message').privateMessage;
@@ -383,10 +432,39 @@ export async function openProtectedMls({ state, context, commit, message, member
       newState: { ...working, secretTree: opened.tree },
       consumed: opened.consumed,
     });
+    retirePrivate(working, next);
     destroyState(state);
     return { state: next, payload: body.payload };
   } catch (error) {
     destroyState(working);
     throw error;
   }
+}
+
+export async function protectedMlsKeyPackageMetadata(wire, member, now = Date.now()) {
+  const p = await keyPackage(wire, member, now, true),
+    cs = await impl();
+  need(await verifyLeafNodeSignatureKeyPackage(p.leafNode, cs.signature));
+  need(
+    p.extensions.length === 0 &&
+      p.leafNode.extensions.length === 0 &&
+      canonical(p.leafNode.capabilities) === canonical(capabilities),
+  );
+  const expires = Number(p.leafNode.lifetime.notAfter) * 1000;
+  need(
+    Number.isSafeInteger(expires) &&
+      expires > now &&
+      expires <= now + 7 * 86400000 + 120000 &&
+      p.leafNode.lifetime.notAfter - p.leafNode.lifetime.notBefore <= 604860n,
+  );
+  const digest = async (b) =>
+    Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', b)), (x) =>
+      x.toString(16).padStart(2, '0'),
+    ).join('');
+  return {
+    packageSha256: await digest(mlsBytes(wire)),
+    initSha256: await digest(p.initKey),
+    keyPackageRef: mlsBase64(await makeKeyPackageRef(p, cs.hash)),
+    expiresAt: new Date(expires).toISOString(),
+  };
 }

@@ -281,7 +281,7 @@
           }
         ],
         "softwareGap": null,
-        "activationRequirement": "Protected production profiles, recipient enrollment, independent certification, and runtime E2EESA approval remain separately blocked under G28-021–023 and later protected-flow packages.",
+        "activationRequirement": "Protected production profiles, recipient enrollment, independent certification, and runtime E2EESA approval remain separately blocked under G28-021\u2013023 and later protected-flow packages.",
         "verification": "Merged dedicated PR #144; combined CI 41359919156 success; both password-protected Render preview deployments are live on 6d6c7aab464f89bc716e7a18cdd2227771285c59. This is not a public production activation."
       }
     },
@@ -1061,31 +1061,76 @@
       "contributing_prs": [
         154,
         155,
-        156
+        156,
+        157
       ],
-      "implementation_note": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled.",
+      "implementation_note": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
       "acceptance_review": {
         "status": "in_progress",
         "reviewed_source_sha": "0e70c5cee4b34e5de78aea3b304cbe7aa73c3228",
         "report": "docs/evidence/CURRENT_IMPLEMENTATION_REVIEW.md",
-        "blocker": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled."
+        "blocker": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs."
       },
       "implementation_review": {
         "implementation": "remaining_implementation",
-        "reviewedAt": "2026-11-10T07:15:40.639Z",
+        "reviewedAt": "2026-11-10T09:14:55.784Z",
         "sourceFiles": [
           {
-            "path": "packages/core/protected-identity.mjs",
-            "sha256": "e9a1ac8967ece25b5c4ddc37ccd66020c7f45b99a5af0f91351296e20a557e41"
+            "path": "apps/api/src/protected-mls-routes.mjs",
+            "sha256": "e3a881b4aa69691c0f0fdbbb11265cca053c3b93ef2bdd6d28fe964aec449ae0"
           },
           {
-            "path": "packages/core/protected-verification.mjs",
-            "sha256": "a7e722c5738de93786e77f244d7c4c66f8122d9702a62b7ef6d2c7219f080f42"
+            "path": "apps/api/src/protected-mls-store.mjs",
+            "sha256": "8168359a5aa5137980517a6373d7c8618ea7c00789ac7b44e033ef49a9bb2b59"
+          },
+          {
+            "path": "apps/portal/src/protected-client.mjs",
+            "sha256": "8e01562292c09bf816ac244b6f4589574bea4110267d963ce6ea9c354b480eb1"
+          },
+          {
+            "path": "apps/portal/src/protected-local.mjs",
+            "sha256": "c343b7ac5651bd4433fdf7462291ba4015816582b7f785db3c5abe2490e624f6"
+          },
+          {
+            "path": "apps/portal/src/protected-threads.mjs",
+            "sha256": "7e7ceab2dd62ee393cfdad1b4580f239f93e60e142763ab36edf632e0a6bc8f8"
+          },
+          {
+            "path": "apps/portal/src/ProtectedReports.tsx",
+            "sha256": "95aa99bdc4cadde8af3e8dcd0cd79f1b0fd72a9d8050c064ad6f651bfdee268c"
+          },
+          {
+            "path": "packages/core/protected-mls-envelope.mjs",
+            "sha256": "4c964629cf818c3448d59834da419c1569930e4689ea6ec97e6d07798790de11"
+          },
+          {
+            "path": "packages/core/protected-identity.mjs",
+            "sha256": "8e426451958d7284046758330706a4915a25e9abffd0acbb37356aedeaee12b1"
+          },
+          {
+            "path": "packages/core/protected-vault.mjs",
+            "sha256": "021369cd3e4f49bd70c8725b66a7bb260ed536f93e1b6cc07aa38ced2183ada1"
+          },
+          {
+            "path": "db/migrations/024_protected_mls.sql",
+            "sha256": "b0eac94dca2c1c862c23dedf394d78f1b7f3b55633fe0642ed46052be25a861a"
+          },
+          {
+            "path": "tests/integration/protected-mls-http.test.mjs",
+            "sha256": "4a2cc71a912f9ef8a8b9616f108a27bd9db0b6350dc86ebbb2af313b84198e16"
+          },
+          {
+            "path": "tests/integration/protected-mls-directory.test.mjs",
+            "sha256": "f8e6c455f43e4a8e97b7ddbd93a6cf8df74bfd6e6da7a32ab9342a7c81d17f27"
+          },
+          {
+            "path": "tests/browser/protected-local.mjs",
+            "sha256": "e164cf66b81092de0930fc86f274f33b2636271e050cf31bd3a2e0c864932006"
           }
         ],
-        "softwareGap": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled.",
-        "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
-        "verification": "Component evidence in docs/security/RATCHETED_PROTECTED_FOUNDATION.md; runtime remains blocked and this is not full package acceptance."
+        "softwareGap": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
+        "activationRequirement": "Select no-backup or encrypted-recovery policy; configure actual verified staff and named scoped recipient keys/fingerprints, migration 024 and least-privilege runtime grants; observe hosted TLS/transparency and browser journey. No activation or fabricated staff/mail/merchant inputs.",
+        "verification": "514 unit tests, 93 real PostgreSQL/HTTP integration tests and real Chromium ratcheted browser/UI journey pass locally; see docs/security/RATCHETED_PROTECTED_INTEGRATION.md. Exact CI and deployment remain separately recorded."
       }
     },
     {
@@ -1106,31 +1151,76 @@
       "contributing_prs": [
         154,
         155,
-        156
+        156,
+        157
       ],
-      "implementation_note": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled.",
+      "implementation_note": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
       "acceptance_review": {
         "status": "in_progress",
         "reviewed_source_sha": "0e70c5cee4b34e5de78aea3b304cbe7aa73c3228",
         "report": "docs/evidence/CURRENT_IMPLEMENTATION_REVIEW.md",
-        "blocker": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled."
+        "blocker": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs."
       },
       "implementation_review": {
         "implementation": "remaining_implementation",
-        "reviewedAt": "2026-11-10T07:15:40.639Z",
+        "reviewedAt": "2026-11-10T09:14:55.784Z",
         "sourceFiles": [
           {
-            "path": "packages/core/protected-mls.mjs",
-            "sha256": "9d2ff7793b56e4a92b06821c52f95131c6899fac367236d3a8525651bbbde530"
+            "path": "apps/api/src/protected-mls-routes.mjs",
+            "sha256": "e3a881b4aa69691c0f0fdbbb11265cca053c3b93ef2bdd6d28fe964aec449ae0"
           },
           {
-            "path": "packages/core/protected-attachment.mjs",
-            "sha256": "738594e8a0c45da4f7b60a6c8705206421df2478235eeace9629115b2b1bd41d"
+            "path": "apps/api/src/protected-mls-store.mjs",
+            "sha256": "8168359a5aa5137980517a6373d7c8618ea7c00789ac7b44e033ef49a9bb2b59"
+          },
+          {
+            "path": "apps/portal/src/protected-client.mjs",
+            "sha256": "8e01562292c09bf816ac244b6f4589574bea4110267d963ce6ea9c354b480eb1"
+          },
+          {
+            "path": "apps/portal/src/protected-local.mjs",
+            "sha256": "c343b7ac5651bd4433fdf7462291ba4015816582b7f785db3c5abe2490e624f6"
+          },
+          {
+            "path": "apps/portal/src/protected-threads.mjs",
+            "sha256": "7e7ceab2dd62ee393cfdad1b4580f239f93e60e142763ab36edf632e0a6bc8f8"
+          },
+          {
+            "path": "apps/portal/src/ProtectedReports.tsx",
+            "sha256": "95aa99bdc4cadde8af3e8dcd0cd79f1b0fd72a9d8050c064ad6f651bfdee268c"
+          },
+          {
+            "path": "packages/core/protected-mls-envelope.mjs",
+            "sha256": "4c964629cf818c3448d59834da419c1569930e4689ea6ec97e6d07798790de11"
+          },
+          {
+            "path": "packages/core/protected-identity.mjs",
+            "sha256": "8e426451958d7284046758330706a4915a25e9abffd0acbb37356aedeaee12b1"
+          },
+          {
+            "path": "packages/core/protected-vault.mjs",
+            "sha256": "021369cd3e4f49bd70c8725b66a7bb260ed536f93e1b6cc07aa38ced2183ada1"
+          },
+          {
+            "path": "db/migrations/024_protected_mls.sql",
+            "sha256": "b0eac94dca2c1c862c23dedf394d78f1b7f3b55633fe0642ed46052be25a861a"
+          },
+          {
+            "path": "tests/integration/protected-mls-http.test.mjs",
+            "sha256": "4a2cc71a912f9ef8a8b9616f108a27bd9db0b6350dc86ebbb2af313b84198e16"
+          },
+          {
+            "path": "tests/integration/protected-mls-directory.test.mjs",
+            "sha256": "f8e6c455f43e4a8e97b7ddbd93a6cf8df74bfd6e6da7a32ab9342a7c81d17f27"
+          },
+          {
+            "path": "tests/browser/protected-local.mjs",
+            "sha256": "e164cf66b81092de0930fc86f274f33b2636271e050cf31bd3a2e0c864932006"
           }
         ],
-        "softwareGap": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled.",
-        "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
-        "verification": "Component evidence in docs/security/RATCHETED_PROTECTED_FOUNDATION.md; runtime remains blocked and this is not full package acceptance."
+        "softwareGap": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
+        "activationRequirement": "Select no-backup or encrypted-recovery policy; configure actual verified staff and named scoped recipient keys/fingerprints, migration 024 and least-privilege runtime grants; observe hosted TLS/transparency and browser journey. No activation or fabricated staff/mail/merchant inputs.",
+        "verification": "514 unit tests, 93 real PostgreSQL/HTTP integration tests and real Chromium ratcheted browser/UI journey pass locally; see docs/security/RATCHETED_PROTECTED_INTEGRATION.md. Exact CI and deployment remain separately recorded."
       }
     },
     {
@@ -1151,31 +1241,76 @@
         41,
         154,
         155,
-        156
+        156,
+        157
       ],
-      "implementation_note": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled.",
+      "implementation_note": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
       "acceptance_review": {
         "status": "in_progress",
         "reviewed_source_sha": "0e70c5cee4b34e5de78aea3b304cbe7aa73c3228",
         "report": "docs/evidence/CURRENT_IMPLEMENTATION_REVIEW.md",
-        "blocker": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled."
+        "blocker": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs."
       },
       "implementation_review": {
         "implementation": "remaining_implementation",
-        "reviewedAt": "2026-11-10T07:15:40.639Z",
+        "reviewedAt": "2026-11-10T09:14:55.784Z",
         "sourceFiles": [
           {
-            "path": "packages/core/protected-vault.mjs",
-            "sha256": "13b5c180e292b116012bb832dd07f3fd3215396f759c7b8a7ed52f03ad4b17ab"
+            "path": "apps/api/src/protected-mls-routes.mjs",
+            "sha256": "e3a881b4aa69691c0f0fdbbb11265cca053c3b93ef2bdd6d28fe964aec449ae0"
+          },
+          {
+            "path": "apps/api/src/protected-mls-store.mjs",
+            "sha256": "8168359a5aa5137980517a6373d7c8618ea7c00789ac7b44e033ef49a9bb2b59"
+          },
+          {
+            "path": "apps/portal/src/protected-client.mjs",
+            "sha256": "8e01562292c09bf816ac244b6f4589574bea4110267d963ce6ea9c354b480eb1"
+          },
+          {
+            "path": "apps/portal/src/protected-local.mjs",
+            "sha256": "c343b7ac5651bd4433fdf7462291ba4015816582b7f785db3c5abe2490e624f6"
+          },
+          {
+            "path": "apps/portal/src/protected-threads.mjs",
+            "sha256": "7e7ceab2dd62ee393cfdad1b4580f239f93e60e142763ab36edf632e0a6bc8f8"
+          },
+          {
+            "path": "apps/portal/src/ProtectedReports.tsx",
+            "sha256": "95aa99bdc4cadde8af3e8dcd0cd79f1b0fd72a9d8050c064ad6f651bfdee268c"
+          },
+          {
+            "path": "packages/core/protected-mls-envelope.mjs",
+            "sha256": "4c964629cf818c3448d59834da419c1569930e4689ea6ec97e6d07798790de11"
           },
           {
             "path": "packages/core/protected-identity.mjs",
-            "sha256": "e9a1ac8967ece25b5c4ddc37ccd66020c7f45b99a5af0f91351296e20a557e41"
+            "sha256": "8e426451958d7284046758330706a4915a25e9abffd0acbb37356aedeaee12b1"
+          },
+          {
+            "path": "packages/core/protected-vault.mjs",
+            "sha256": "021369cd3e4f49bd70c8725b66a7bb260ed536f93e1b6cc07aa38ced2183ada1"
+          },
+          {
+            "path": "db/migrations/024_protected_mls.sql",
+            "sha256": "b0eac94dca2c1c862c23dedf394d78f1b7f3b55633fe0642ed46052be25a861a"
+          },
+          {
+            "path": "tests/integration/protected-mls-http.test.mjs",
+            "sha256": "4a2cc71a912f9ef8a8b9616f108a27bd9db0b6350dc86ebbb2af313b84198e16"
+          },
+          {
+            "path": "tests/integration/protected-mls-directory.test.mjs",
+            "sha256": "f8e6c455f43e4a8e97b7ddbd93a6cf8df74bfd6e6da7a32ab9342a7c81d17f27"
+          },
+          {
+            "path": "tests/browser/protected-local.mjs",
+            "sha256": "e164cf66b81092de0930fc86f274f33b2636271e050cf31bd3a2e0c864932006"
           }
         ],
-        "softwareGap": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled.",
-        "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
-        "verification": "Component evidence in docs/security/RATCHETED_PROTECTED_FOUNDATION.md; runtime remains blocked and this is not full package acceptance."
+        "softwareGap": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
+        "activationRequirement": "Select no-backup or encrypted-recovery policy; configure actual verified staff and named scoped recipient keys/fingerprints, migration 024 and least-privilege runtime grants; observe hosted TLS/transparency and browser journey. No activation or fabricated staff/mail/merchant inputs.",
+        "verification": "514 unit tests, 93 real PostgreSQL/HTTP integration tests and real Chromium ratcheted browser/UI journey pass locally; see docs/security/RATCHETED_PROTECTED_INTEGRATION.md. Exact CI and deployment remain separately recorded."
       }
     },
     {
@@ -1692,31 +1827,76 @@
         122,
         154,
         155,
-        156
+        156,
+        157
       ],
-      "implementation_note": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled.",
+      "implementation_note": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
       "acceptance_review": {
         "status": "in_progress",
         "reviewed_source_sha": "42aac8731e222637f5a48a5e1c5940568604ed14",
         "report": "docs/evidence/CURRENT_IMPLEMENTATION_REVIEW.md",
-        "blocker": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled."
+        "blocker": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs."
       },
       "implementation_review": {
         "implementation": "remaining_implementation",
-        "reviewedAt": "2026-11-10T07:15:40.640Z",
+        "reviewedAt": "2026-11-10T09:14:55.784Z",
         "sourceFiles": [
           {
-            "path": "packages/core/protected-mls.mjs",
-            "sha256": "9d2ff7793b56e4a92b06821c52f95131c6899fac367236d3a8525651bbbde530"
+            "path": "apps/api/src/protected-mls-routes.mjs",
+            "sha256": "e3a881b4aa69691c0f0fdbbb11265cca053c3b93ef2bdd6d28fe964aec449ae0"
           },
           {
-            "path": "apps/api/src/protected-routes.mjs",
-            "sha256": "9452d35e8ea2be6d1342cfbcf57e389d51acca1a0a3cd3262d851ffe759e2876"
+            "path": "apps/api/src/protected-mls-store.mjs",
+            "sha256": "8168359a5aa5137980517a6373d7c8618ea7c00789ac7b44e033ef49a9bb2b59"
+          },
+          {
+            "path": "apps/portal/src/protected-client.mjs",
+            "sha256": "8e01562292c09bf816ac244b6f4589574bea4110267d963ce6ea9c354b480eb1"
+          },
+          {
+            "path": "apps/portal/src/protected-local.mjs",
+            "sha256": "c343b7ac5651bd4433fdf7462291ba4015816582b7f785db3c5abe2490e624f6"
+          },
+          {
+            "path": "apps/portal/src/protected-threads.mjs",
+            "sha256": "7e7ceab2dd62ee393cfdad1b4580f239f93e60e142763ab36edf632e0a6bc8f8"
+          },
+          {
+            "path": "apps/portal/src/ProtectedReports.tsx",
+            "sha256": "95aa99bdc4cadde8af3e8dcd0cd79f1b0fd72a9d8050c064ad6f651bfdee268c"
+          },
+          {
+            "path": "packages/core/protected-mls-envelope.mjs",
+            "sha256": "4c964629cf818c3448d59834da419c1569930e4689ea6ec97e6d07798790de11"
+          },
+          {
+            "path": "packages/core/protected-identity.mjs",
+            "sha256": "8e426451958d7284046758330706a4915a25e9abffd0acbb37356aedeaee12b1"
+          },
+          {
+            "path": "packages/core/protected-vault.mjs",
+            "sha256": "021369cd3e4f49bd70c8725b66a7bb260ed536f93e1b6cc07aa38ced2183ada1"
+          },
+          {
+            "path": "db/migrations/024_protected_mls.sql",
+            "sha256": "b0eac94dca2c1c862c23dedf394d78f1b7f3b55633fe0642ed46052be25a861a"
+          },
+          {
+            "path": "tests/integration/protected-mls-http.test.mjs",
+            "sha256": "4a2cc71a912f9ef8a8b9616f108a27bd9db0b6350dc86ebbb2af313b84198e16"
+          },
+          {
+            "path": "tests/integration/protected-mls-directory.test.mjs",
+            "sha256": "f8e6c455f43e4a8e97b7ddbd93a6cf8df74bfd6e6da7a32ab9342a7c81d17f27"
+          },
+          {
+            "path": "tests/browser/protected-local.mjs",
+            "sha256": "e164cf66b81092de0930fc86f274f33b2636271e050cf31bd3a2e0c864932006"
           }
         ],
-        "softwareGap": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled.",
-        "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
-        "verification": "Component evidence in docs/security/RATCHETED_PROTECTED_FOUNDATION.md; runtime remains blocked and this is not full package acceptance."
+        "softwareGap": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
+        "activationRequirement": "Select no-backup or encrypted-recovery policy; configure actual verified staff and named scoped recipient keys/fingerprints, migration 024 and least-privilege runtime grants; observe hosted TLS/transparency and browser journey. No activation or fabricated staff/mail/merchant inputs.",
+        "verification": "514 unit tests, 93 real PostgreSQL/HTTP integration tests and real Chromium ratcheted browser/UI journey pass locally; see docs/security/RATCHETED_PROTECTED_INTEGRATION.md. Exact CI and deployment remain separately recorded."
       }
     },
     {
@@ -1909,31 +2089,76 @@
         131,
         154,
         155,
-        156
+        156,
+        157
       ],
-      "implementation_note": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled.",
+      "implementation_note": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
       "acceptance_review": {
         "status": "in_progress",
         "reviewed_source_sha": "0e70c5cee4b34e5de78aea3b304cbe7aa73c3228",
         "report": "docs/evidence/CURRENT_IMPLEMENTATION_REVIEW.md",
-        "blocker": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled."
+        "blocker": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs."
       },
       "implementation_review": {
         "implementation": "remaining_implementation",
-        "reviewedAt": "2026-11-10T07:15:40.640Z",
+        "reviewedAt": "2026-11-10T09:14:55.784Z",
         "sourceFiles": [
           {
+            "path": "apps/api/src/protected-mls-routes.mjs",
+            "sha256": "e3a881b4aa69691c0f0fdbbb11265cca053c3b93ef2bdd6d28fe964aec449ae0"
+          },
+          {
+            "path": "apps/api/src/protected-mls-store.mjs",
+            "sha256": "8168359a5aa5137980517a6373d7c8618ea7c00789ac7b44e033ef49a9bb2b59"
+          },
+          {
+            "path": "apps/portal/src/protected-client.mjs",
+            "sha256": "8e01562292c09bf816ac244b6f4589574bea4110267d963ce6ea9c354b480eb1"
+          },
+          {
+            "path": "apps/portal/src/protected-local.mjs",
+            "sha256": "c343b7ac5651bd4433fdf7462291ba4015816582b7f785db3c5abe2490e624f6"
+          },
+          {
+            "path": "apps/portal/src/protected-threads.mjs",
+            "sha256": "7e7ceab2dd62ee393cfdad1b4580f239f93e60e142763ab36edf632e0a6bc8f8"
+          },
+          {
             "path": "apps/portal/src/ProtectedReports.tsx",
-            "sha256": "aa5510bb5064100cb3ca5e27e715b31fdfc7a122f2dbe9cf051569d520d7a7a7"
+            "sha256": "95aa99bdc4cadde8af3e8dcd0cd79f1b0fd72a9d8050c064ad6f651bfdee268c"
+          },
+          {
+            "path": "packages/core/protected-mls-envelope.mjs",
+            "sha256": "4c964629cf818c3448d59834da419c1569930e4689ea6ec97e6d07798790de11"
           },
           {
             "path": "packages/core/protected-identity.mjs",
-            "sha256": "e9a1ac8967ece25b5c4ddc37ccd66020c7f45b99a5af0f91351296e20a557e41"
+            "sha256": "8e426451958d7284046758330706a4915a25e9abffd0acbb37356aedeaee12b1"
+          },
+          {
+            "path": "packages/core/protected-vault.mjs",
+            "sha256": "021369cd3e4f49bd70c8725b66a7bb260ed536f93e1b6cc07aa38ced2183ada1"
+          },
+          {
+            "path": "db/migrations/024_protected_mls.sql",
+            "sha256": "b0eac94dca2c1c862c23dedf394d78f1b7f3b55633fe0642ed46052be25a861a"
+          },
+          {
+            "path": "tests/integration/protected-mls-http.test.mjs",
+            "sha256": "4a2cc71a912f9ef8a8b9616f108a27bd9db0b6350dc86ebbb2af313b84198e16"
+          },
+          {
+            "path": "tests/integration/protected-mls-directory.test.mjs",
+            "sha256": "f8e6c455f43e4a8e97b7ddbd93a6cf8df74bfd6e6da7a32ab9342a7c81d17f27"
+          },
+          {
+            "path": "tests/browser/protected-local.mjs",
+            "sha256": "e164cf66b81092de0930fc86f274f33b2636271e050cf31bd3a2e0c864932006"
           }
         ],
-        "softwareGap": "Ratcheted cryptographic components are source-tested. The active app still needs the signed identity-directory API, one-time key-package handling, atomic encrypted browser state/pending-send lifecycle, verification invalidation and explicit no-recovery UX before protected intake can be enabled.",
-        "activationRequirement": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
-        "verification": "Component evidence in docs/security/RATCHETED_PROTECTED_FOUNDATION.md; runtime remains blocked and this is not full package acceptance."
+        "softwareGap": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
+        "activationRequirement": "Select no-backup or encrypted-recovery policy; configure actual verified staff and named scoped recipient keys/fingerprints, migration 024 and least-privilege runtime grants; observe hosted TLS/transparency and browser journey. No activation or fabricated staff/mail/merchant inputs.",
+        "verification": "514 unit tests, 93 real PostgreSQL/HTTP integration tests and real Chromium ratcheted browser/UI journey pass locally; see docs/security/RATCHETED_PROTECTED_INTEGRATION.md. Exact CI and deployment remain separately recorded."
       }
     },
     {
@@ -3534,7 +3759,7 @@
     }
   ],
   "progress_evidence_note": "Source-reviewed software implementation: 67/72; distinct fully scoped, release-evidenced accepted packages: 13/72. Every verified merged PR is accepted; hosted activation and package-scope release evidence remain separate. Protected protocol implementation and tests are in docs/security/PROTECTED_PROFILE.md; current external gates remain enforced. GitHub observation 2026-11-10T04:05:41.133Z: 140 merged/accepted PRs; PR 154 implementation is under CI review.",
-  "accepted_pull_requests": 142,
-  "accepted_prs_observed_at": "2026-11-10T07:15:42.259Z",
+  "accepted_pull_requests": 143,
+  "accepted_prs_observed_at": "2026-11-10T09:22:19.096Z",
   "pull_request_acceptance_rule": "Every real GitHub PR with a verified merged_at is accepted; no further package review is required to accept that PR. Fully complete planned work packages are counted separately."
 }

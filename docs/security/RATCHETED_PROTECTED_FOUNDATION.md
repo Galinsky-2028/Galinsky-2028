@@ -1,6 +1,6 @@
 # Ratcheted protected-content foundation
 
-Status: source implementation under AI-assisted review; not wired into production intake. Protected runtime activation remains unconditionally blocked. This work does not complete the device-directory API, browser persistence/confirmation flows or deployment evidence, and is not an independent human audit or E2EESA certification.
+Foundation merged in PR156. Follow-on directory/browser/message implementation and synthetic evidence are documented in [the integration review](RATCHETED_PROTECTED_INTEGRATION.md). Status: source implementation under AI-assisted review; not wired into production intake. Protected runtime activation remains unconditionally blocked. This work does not complete the device-directory API, browser persistence/confirmation flows or deployment evidence, and is not an independent human audit or E2EESA certification.
 
 ## Exact candidate profiles and libraries
 
