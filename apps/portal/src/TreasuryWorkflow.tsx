@@ -1353,13 +1353,13 @@ export function TreasuryWorkflow({ csrf }: { csrf: string }) {
               })}
             >
               <Input
-                label="Period begins (UTC, inclusive)"
+                label="Accounting period begins (UTC, inclusive)"
                 name="from"
                 type="datetime-local"
                 step="0.001"
               />
               <Input
-                label="Period ends (UTC, exclusive)"
+                label="Accounting period ends (UTC, exclusive)"
                 name="until"
                 type="datetime-local"
                 step="0.001"

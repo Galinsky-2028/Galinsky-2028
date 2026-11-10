@@ -153,10 +153,10 @@ try {
   const report = section('Approved accounting export');
   await report.locator('summary').first().click();
   await report
-    .getByLabel('Period begins (UTC, inclusive)')
+    .getByLabel('Accounting period begins (UTC, inclusive)')
     .fill(new Date(now - 86400000).toISOString().slice(0, -1));
   await report
-    .getByLabel('Period ends (UTC, exclusive)')
+    .getByLabel('Accounting period ends (UTC, exclusive)')
     .fill(new Date(now + 86400000).toISOString().slice(0, -1));
   await report.getByLabel('Explicitly include authorized contributor identity fields').check();
   await report
