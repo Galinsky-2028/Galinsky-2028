@@ -1,6 +1,6 @@
 # Ratcheted protected-content integration review
 
-10 November 2026. Source implementation and synthetic local browser/HTTP evidence only. Production intake and setup remain disabled by `loadConfig`. Migration 024 has not been applied to connected Neon. No production staff keys, private messages, provider credentials or independent audit are claimed.
+10 November 2026. Source implementation and synthetic local browser/HTTP evidence only. Production intake and setup remain disabled by `loadConfig`. The later connected-release observation at `docs/evidence/CONNECTED_RELEASE_20261110.json` records migration 024 applied to its validation and primary databases, with **zero protected identities**; this does not establish operational recipient readiness. No live staff keys, private messages, provider credentials or external audit are claimed. The E2EESA 1.0.0 upstream source/profile lock is now verified in CI, but endpoint code transparency and TLS-only deployment remain separate gates.
 
 The versioned `/api/protected/v2` adapter replaces the static OpenPGP prototype. The prototype is registered only with an explicit nonproduction test flag that deployment configuration cannot produce. Confidential intake is rejected before JSON parsing when closed; a separate narrow metadata allowlist permits future device bootstrap without opening submissions.
 

@@ -171,11 +171,19 @@ export function validateContract(contract, { paths, read }) {
   require(/^[a-f0-9]{40}$/.test(
     contract.sourceCommit,
   ), "immutable source commit required");
-  require(contract.standard?.repository ===
-    "neophilism/End-To-End-Everywhere-Security-Architecture-Standard" &&
-    /^[a-f0-9]{40}$/.test(contract.standard.commit) &&
-    contract.standard.basis ===
-      "development", "pinned development basis required");
+  const lock = JSON.parse(read("security/e2eesa-release-lock.json").toString("utf8"));
+  require(contract.canonicalRepository === "Galinsky-2028/Galinsky-2028" &&
+    contract.standard?.repository ===
+      "neophilism/End-To-End-Everywhere-Security-Architecture-Standard" &&
+    contract.standard.canonicalRepository === lock.standardRepository &&
+    contract.standard.commit === lock.standardCommit &&
+    contract.standard.basis === "production" &&
+    contract.standard.version === "1.0.0" &&
+    contract.standard.version === lock.standardVersion &&
+    contract.standard.releaseTreeDigest === lock.standardTreeDigest &&
+    contract.standard.releaseManifest === lock.standardManifest &&
+    contract.standard.releaseLock === "security/e2eesa-release-lock.json",
+    "pinned published E2EESA 1.0 source and owner identity required");
   require(contract.productionE2eeClaim === false &&
     contract.certificationClaim === false &&
     contract.runtimeCoverageVerified ===
@@ -337,11 +345,18 @@ export function validateRepository(root) {
   const inventory = JSON.parse(
     readFileSync(join(root, "security/e2eesa-inventory.json"), "utf8"),
   );
+  require(status.canonicalRepository === contract.canonicalRepository &&
+    inventory.canonicalRepository === contract.canonicalRepository,
+    "downstream project canonical identity differs");
   for (const basis of [status.standard, inventory.standardBasis])
     require(basis?.repository === contract.standard.repository &&
-      basis?.commit ===
-        contract.standard
-          .commit, "upstream pin differs from canonical inventory/status");
+      basis?.canonicalRepository === contract.standard.canonicalRepository &&
+      basis?.commit === contract.standard.commit &&
+      basis?.basis === "production" &&
+      basis?.version === "1.0.0" &&
+      basis?.releaseTreeDigest === contract.standard.releaseTreeDigest &&
+      basis?.releaseManifest === contract.standard.releaseManifest,
+      "upstream E2EESA 1.0 source differs from canonical inventory/status");
   return validateContract(contract, {
     paths: sourcePaths(root),
     read: (path) => readFileSync(join(root, path)),

@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "title": "Repository E2EESA development-status record",
+  "title": "E2EESA 1.0 source binding and separately evidenced downstream adoption status",
   "type": "object",
   "required": [
     "schemaVersion",
@@ -11,7 +11,8 @@
     "source",
     "implementation",
     "testing",
-    "independentReview"
+    "independentReview",
+    "canonicalRepository"
   ],
   "properties": {
     "schemaVersion": {
@@ -30,7 +31,12 @@
       "required": [
         "repository",
         "commit",
-        "basis"
+        "basis",
+        "canonicalRepository",
+        "version",
+        "releaseManifest",
+        "releaseTreeDigest",
+        "releaseLock"
       ],
       "properties": {
         "repository": {
@@ -41,11 +47,23 @@
           "pattern": "^[a-f0-9]{40}$"
         },
         "basis": {
-          "enum": [
-            "development",
-            "candidate",
-            "production"
-          ]
+          "const": "production"
+        },
+        "canonicalRepository": {
+          "const": "Galinsky-Labs/End-To-End-Everywhere-Security-Architecture-Standard"
+        },
+        "version": {
+          "const": "1.0.0"
+        },
+        "releaseManifest": {
+          "const": "release/1.0.0-manifest.json"
+        },
+        "releaseTreeDigest": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        },
+        "releaseLock": {
+          "const": "security/e2eesa-release-lock.json"
         }
       }
     },
@@ -288,6 +306,9 @@
       "items": {
         "type": "string"
       }
+    },
+    "canonicalRepository": {
+      "const": "Galinsky-2028/Galinsky-2028"
     }
   }
 }

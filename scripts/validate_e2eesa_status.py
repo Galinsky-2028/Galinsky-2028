@@ -42,11 +42,29 @@ def source_fingerprint(root):
 
 def validate(root, status):
     require(type(status.get("schemaVersion")) is int and status["schemaVersion"] == 1, "Unsupported schema version")
-    require(re.fullmatch(r"neophilism/[A-Za-z0-9_.-]+", status.get("repository", "")), "Invalid repository identity")
+    require(status.get("repository") == "neophilism/Galinsky-2028" and
+            status.get("canonicalRepository") == "Galinsky-2028/Galinsky-2028",
+            "Unexpected canonical project identity")
     standard = status.get("standard", {})
-    require(standard.get("repository") == "neophilism/End-To-End-Everywhere-Security-Architecture-Standard", "Wrong upstream standard")
+    require(standard.get("repository") == "neophilism/End-To-End-Everywhere-Security-Architecture-Standard" and
+            standard.get("canonicalRepository") == "Galinsky-Labs/End-To-End-Everywhere-Security-Architecture-Standard",
+            "Wrong upstream standard")
     require(re.fullmatch(r"[a-f0-9]{40}", standard.get("commit", "")), "Pin an exact standard commit")
-    require(standard.get("basis") in ("development", "candidate", "production"), "Unknown standard basis")
+    require(standard.get("basis") == "production" and standard.get("version") == "1.0.0" and
+            standard.get("releaseManifest") == "release/1.0.0-manifest.json" and
+            standard.get("releaseLock") == "security/e2eesa-release-lock.json" and
+            re.fullmatch(r"sha256:[a-f0-9]{64}", standard.get("releaseTreeDigest", "")),
+            "Published E2EESA 1.0 source must be pinned")
+    lock = json.loads((root / standard["releaseLock"]).read_text(encoding="utf-8"))
+    require(lock.get("schemaVersion") == 1 and lock.get("scope") == "source-profile-compatibility-only" and
+            lock.get("standardVersion") == standard["version"] and
+            lock.get("standardRepository") == standard["canonicalRepository"] and
+            lock.get("standardCommit") == standard["commit"] and
+            lock.get("standardManifest") == standard["releaseManifest"] and
+            lock.get("standardTreeDigest") == standard["releaseTreeDigest"] and
+            lock.get("productConformanceClaim") is False and
+            lock.get("protectedRuntime", "").startswith("disabled-"),
+            "E2EESA source lock conflicts with status or improperly asserts conformance")
     datetime.fromisoformat(status["updatedAt"].replace("Z", "+00:00"))
     inventory = status.get("inventory", {})
     require(safe_path(inventory.get("path")) and isinstance(inventory.get("reviewed"), bool), "Invalid inventory reference")

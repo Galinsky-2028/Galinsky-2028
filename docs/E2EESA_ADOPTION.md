@@ -6,9 +6,14 @@ complete testing, and later independent expert review. The canonical record is
 Engine Room reads the default branch through GitHub on manual and background
 refresh. The repository owns its status; no Engine Room snapshot edit is needed.
 
-The initial record leaves all three stages pending. Existing security locks,
-source evidence and approved decisions remain authoritative in their cited files.
-The tracking baseline pin does not upgrade a product's cryptographic profiles.
+The E2EESA **1.0.0 engineering standard is now published**. This repository
+binds its source contract, inventory and status to the exact tagged standard
+commit `b137a3d1cb54900204ff13c7694ed00a50c00141` and SHA-256 source tree via
+`security/e2eesa-release-lock.json`. GitHub CI checks the complete upstream
+source manifest and exact selected profile identities. This is
+**source/profile compatibility, not product conformance**. Implementation,
+runtime evidence and technical testing remain incomplete; independent human
+review remains a separate deferred checkbox under the owner's policy.
 
 ## Scope and prerequisite work
 
@@ -66,9 +71,9 @@ authenticated assessor adapters, signatures, runtime evidence, profile checks
 and conformance verdict. Engine Room checks structure, source drift, evidence
 paths, stage dependencies and freshness. Review identity/authentication and
 cryptographic quality require independent assessment. All three boxes record
-development progress; production certification remains a separate gate. The
-current upstream development basis cannot pass final Candidate or production
-certification.
+development progress; production certification remains a separate gate. The upstream standard is stable at 1.0.0; that does not upgrade an
+implementing product to compliant or certified. Product claims remain blocked
+until source/build/runtime evidence demonstrates the applicable protections.
 
 ## Independent-account continuation
 
@@ -92,3 +97,15 @@ certification.
 High/critical findings require fixes and source-bound retests. Lower-severity
 acceptance follows the standard's independent, scoped, time-limited process.
 Metadata cannot waive an invariant or approval requirement.
+
+## Current automated source binding (10 November 2026)
+
+`node security/verify-e2eesa-release.mjs .e2eesa-upstream` validates every
+content-addressed file in the exact Galinsky-Labs/End-To-End-Everywhere-Security-Architecture-Standard 1.0.0 source commit, verifies the
+manifest digest, checks eight selected profiles in the current catalog and
+matches the MLS source/library pins and local status, inventory and flow map.
+The `Campaign application CI` workflow checks out the exact immutable SHA.
+`node --test tests/e2eesa-release.test.mjs tests/e2eesa-mls-mutational.test.mjs`
+provides negative source/profile/substitution tests and 2,048 bounded parser
+mutations. These checks cannot prove live endpoint security or full conformance;
+see [the current technical assessment](security/E2EESA_1_0_ASSESSMENT.md).

@@ -4,8 +4,13 @@
   "sourceCommit": "72af3e41d0e4d8b969e52d8bf84e2b04b5a78473",
   "standard": {
     "repository": "neophilism/End-To-End-Everywhere-Security-Architecture-Standard",
-    "commit": "8441335f359c6e446f9bfe8b959f9606ce341409",
-    "basis": "development"
+    "commit": "b137a3d1cb54900204ff13c7694ed00a50c00141",
+    "basis": "production",
+    "canonicalRepository": "Galinsky-Labs/End-To-End-Everywhere-Security-Architecture-Standard",
+    "version": "1.0.0",
+    "releaseTreeDigest": "sha256:e0b0390cf6c7e36776b7c4d515742cdda68a0edbf35b7b0d53cb3f599d2becb5",
+    "releaseLock": "security/e2eesa-release-lock.json",
+    "releaseManifest": "release/1.0.0-manifest.json"
   },
   "productionE2eeClaim": false,
   "certificationClaim": false,
@@ -1196,7 +1201,7 @@
     },
     {
       "path": "scripts/validate_e2eesa_status.py",
-      "blobSha": "42057c0eaa93ca40f945aa46f7c7c0bf85932ca9",
+      "blobSha": "94469c21b90fc8ec4f0fffe4fb2aa9761e91f09f",
       "componentId": "operator"
     },
     {
@@ -3927,5 +3932,6 @@
       "blocked": false,
       "plaintextFallback": false
     }
-  ]
+  ],
+  "canonicalRepository": "Galinsky-2028/Galinsky-2028"
 }

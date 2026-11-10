@@ -4,7 +4,7 @@
 
 ## Standard basis
 
-The referenced upstream repository is `neophilism/End-To-End-Everywhere-Security-Architecture-Standard`. The inspected source head was `6ec85d51f9207da31f0e90fd8a7c82ffff8448f6`, development toward 0.9.0-rc.2 after Audit v2. This is an inspected source reference, not an approved production profile or certification. Recheck the corrected component/data-flow contracts and review gates before implementing protected-content adapters.
+The selected standards source is the published **E2EESA 1.0.0** engineering edition in `Galinsky-Labs/End-To-End-Everywhere-Security-Architecture-Standard`, immutable commit `b137a3d1cb54900204ff13c7694ed00a50c00141`. Its exact release digest and chosen profiles are recorded in `security/e2eesa-release-lock.json` and checked by CI. This upgrades the *reference standard*, not the implementing application: the protected client remains gated until authenticated executable updates, independently operated transparency witnesses and actual TLS 1.3-only deployment are proven. No whole-product E2EE or certification claim is made.
 
 ## Data flows
 

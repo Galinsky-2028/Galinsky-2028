@@ -1,3 +1,10 @@
+> **Historical static OpenPGP prototype, still permanently disabled for confidential intake.**
+> The current source also includes a separate RFC 9420 MLS ratcheted adapter
+> (see [ratcheted integration](RATCHETED_PROTECTED_INTEGRATION.md)).
+> E2EESA 1.0 source/profile compatibility is checked in CI, but the runtime
+> remains closed pending independently witnessed web releases, TLS1.3-only
+> transport and live recipient/device authority. Do not re-enable this prototype.
+
 # Protected records: disabled static-encryption prototype
 
 **Do not activate this prototype.** Review of the actual pinned E2EESA catalog and ADRs 0005/0006 found that network messaging requires a registered ratcheted pairwise or group protocol. Static OpenPGP has no forward secrecy or post-compromise recovery and does not satisfy that requirement. `loadConfig` now unconditionally rejects protected intake. The owner authorized AI review instead of external human review; that does not waive cryptographic requirements. The tests below establish prototype behavior, not completion of the required messaging adapter.

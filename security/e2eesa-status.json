@@ -1,11 +1,16 @@
 {
   "schemaVersion": 1,
   "repository": "neophilism/Galinsky-2028",
-  "updatedAt": "2026-10-12T13:18:45.300Z",
+  "updatedAt": "2026-11-10T19:42:00Z",
   "standard": {
     "repository": "neophilism/End-To-End-Everywhere-Security-Architecture-Standard",
-    "commit": "8441335f359c6e446f9bfe8b959f9606ce341409",
-    "basis": "development"
+    "commit": "b137a3d1cb54900204ff13c7694ed00a50c00141",
+    "basis": "production",
+    "canonicalRepository": "Galinsky-Labs/End-To-End-Everywhere-Security-Architecture-Standard",
+    "version": "1.0.0",
+    "releaseTreeDigest": "sha256:e0b0390cf6c7e36776b7c4d515742cdda68a0edbf35b7b0d53cb3f599d2becb5",
+    "releaseLock": "security/e2eesa-release-lock.json",
+    "releaseManifest": "release/1.0.0-manifest.json"
   },
   "inventory": {
     "path": "security/e2eesa-inventory.json",
@@ -21,7 +26,10 @@
     "controls": [],
     "evidence": [],
     "pending": [
-      "Complete and review the component/data-flow inventory and source-bound control assessment."
+      "Complete the 19 source/build-bound E2EESA secure-development control assessments for every applicable component and data flow; document genuine non-applicability.",
+      "Deploy and verify the endpoint executable-manifest, authenticated code-update chain, independently operated transparency witness and TLS 1.3-only transport before protected intake activation.",
+      "Apply migration 024, provision real staff/device identities and independently verified recipients in the connected production environment before any protected message.",
+      "Keep all protected intake and financial live transaction gates closed until concrete deployment and operator observations exist."
     ]
   },
   "testing": {
@@ -29,7 +37,9 @@
     "checks": [],
     "evidence": [],
     "pending": [
-      "Bind all six required checks and applicable integration/runtime tests to the assessed source."
+      "Produce version- and source-bound passing unit, adversarial, fuzz, secret-scanning, dependency-scanning and static-analysis evidence, with concrete tool/configuration/report digests.",
+      "Bind real HTTP, PostgreSQL, browser, provider, crash/retry, key lifecycle, backup/recovery and deployed TLS release tests to exact artifacts and current infrastructure.",
+      "Accept no generic CI-green or source-manifest-only result as complete product E2EESA 1.0 conformance."
     ]
   },
   "independentReview": {
@@ -44,13 +54,22 @@
   },
   "existingSecurityEvidence": [
     "docs/security/BOUNDARIES.md",
-    "docs/security/RELEASE_GATES.md"
+    "docs/security/RELEASE_GATES.md",
+    "security/e2eesa-release-lock.json",
+    "security/source-flow-contract.json",
+    "docs/security/RATCHETED_PROTECTED_FOUNDATION.md",
+    "docs/security/RATCHETED_PROTECTED_INTEGRATION.md",
+    "docs/security/RATCHETED_PROTECTED_DEVICE_LIFECYCLE.md",
+    "docs/security/PROTECTED_PROFILE.md",
+    "tests/protected-mls.test.mjs",
+    "tests/integration/protected-mls-http.test.mjs",
+    "tests/e2eesa-release.test.mjs"
   ],
   "nextActions": [
-    "Read the product plan, AGENTS, current implementation, security pins and the existing evidence listed above; preserve approved scope.",
-    "Complete and independently review the source/build/runtime component and data-flow inventory using the pinned upstream contracts.",
-    "Implement or close unverified protected flows; retain intentional public data and authorized business processing boundaries.",
-    "Verify all six required gates and actual applicable integrations/platforms on the same source, preserving immutable reports.",
-    "Keep the owner-arranged independent expert review unchecked until qualified authenticated review and owner acceptance are recorded."
-  ]
+    "Release binding and source/profile-compatibility validation against exact E2EESA 1.0.0 source: security/e2eesa-release-lock.json and tests/e2eesa-release.test.mjs.",
+    "Close remaining implementation and runtime evidence gaps, including independent code-witness operation, authenticated web updates and TLS1.3-only endpoints.",
+    "Capture all six source/build-bound technical gates and applicable real provider/production integration checks without treating deferred human review as a blocker to engineering.",
+    "Enable protected intake only after cryptographic and operational controls are actually proven; keep the current fail-closed gate."
+  ],
+  "canonicalRepository": "Galinsky-2028/Galinsky-2028"
 }
