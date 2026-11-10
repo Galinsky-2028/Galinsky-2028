@@ -1,3 +1,4 @@
+import {runtimeProbe} from '../../packages/core/runtime-probe.mjs';
 import {createServer} from 'node:http';
 import {DONOR_COOKIE,donorCapability,donorAuthority,donorCookie,donorCsrf,validDonorCsrf,stripeDonorRecord,stripeDonorPortal,donorManagementHtml} from '../../packages/core/stripe-donor-service.mjs';
 import {readCookie} from '../../packages/core/auth.mjs';
@@ -399,6 +400,7 @@ if(entry){
   const server=createPrivatePreviewServer({reviewController,campaignRuntime});
   server.listen(port,process.env.HOST||'0.0.0.0',async()=>{
    console.log(JSON.stringify({event:'private_preview_listening',port}));
+   if(process.env.RENDER==='true'){try{console.log(JSON.stringify(await runtimeProbe({port,kind:'web'})));}catch{console.error(JSON.stringify({event:'runtime_application_verification_failed',kind:'web'}));server.close();process.exitCode=1;return;}}
    // An owner-authorized, explicitly flagged integration acceptance run.
    // It never accepts live keys, charges a card or logs sensitive account data.
    // Independent, READ-ONLY inventory of the owner-configured TEST webhook

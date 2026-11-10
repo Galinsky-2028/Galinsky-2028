@@ -21,3 +21,7 @@ The merged static OpenPGP prototype is not an eligible network-messaging protoco
 ## Actual activation inputs
 
 No real campaign staff mailbox, verified mail sender, approved outreach provider or merchant release/credentials have been supplied in this environment. None is synthesized. Hosted volunteer passkeys and owner-authorized reading release remain separate from staff, financial and confidential-content activation. Keep private access and no paid infrastructure or live transactions.
+
+## Deployment observations
+
+Both Render services perform read-only loopback checks after binding: the existing private credential stays in process memory, unauthenticated health must return 401, the authenticated revision must match the deployed commit, and installed page/assets must resolve. The portal additionally checks database readiness, passkey/signup configuration, disabled protected/payment gates and materials authorization. Only aggregate checks/revision are logged. This is runtime HTTP evidence, not independent browser/TLS verification or a staff-account rehearsal. Failed probes prevent successful startup. No credential rotation or authentication bypass is required.

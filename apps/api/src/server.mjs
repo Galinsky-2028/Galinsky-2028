@@ -1,3 +1,4 @@
+import {runtimeProbe} from '../../../packages/core/runtime-probe.mjs';
 import {loadConfig} from './config.mjs';
 import {createApp} from './app.mjs';
 import {PostgresStore,databasePool} from './postgres-store.mjs';
@@ -41,6 +42,7 @@ async function shutdown(){
 for(const signal of ['SIGTERM','SIGINT'])process.once(signal,shutdown);
 try{
  await app.listen({host:config.host,port:config.port});
+ if(process.env.RENDER==='true')console.log(JSON.stringify(await runtimeProbe({port:config.port,kind:'portal'})));
  console.log(JSON.stringify({event:'api_started',port:config.port,
   signupEnabled:config.signup,adminLoginEnabled:config.adminLoginReady,
   mailDelivery:config.signup||config.adminLoginReady?config.mailDeliveryMode:'disabled'}));

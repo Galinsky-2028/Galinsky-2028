@@ -253,7 +253,7 @@
     },
     {
       "path": "apps/api/src/server.mjs",
-      "blobSha": "93a22697d5ee8e79f23b1e83eacbf8757a1bc2cd",
+      "blobSha": "40a8b1c7a5b321bdaf8253bb67f8aafea6af504a",
       "componentId": "identity"
     },
     {
@@ -332,14 +332,29 @@
       "componentId": "analytics"
     },
     {
+      "path": "apps/portal/src/api.ts",
+      "blobSha": "887930ea7253972788f68cef9d89998d5512d5c1",
+      "componentId": "identity"
+    },
+    {
       "path": "apps/portal/src/Coordination.tsx",
       "blobSha": "3c7308fcb01f4e9a58f3e9208dd2aca2d08de666",
       "componentId": "coordination"
     },
     {
+      "path": "apps/portal/src/env.d.ts",
+      "blobSha": "11f02fe2a0061d6e6e1f271b21da95423b448b32",
+      "componentId": "shared"
+    },
+    {
       "path": "apps/portal/src/HelpCenter.tsx",
       "blobSha": "0e912240df12e5df73a3ea0aef7fe43d15b1fc56",
       "componentId": "help"
+    },
+    {
+      "path": "apps/portal/src/main.tsx",
+      "blobSha": "26d24c125fb3481b7645a57194a99d0740002ee6",
+      "componentId": "identity"
     },
     {
       "path": "apps/portal/src/Operations.tsx",
@@ -372,21 +387,6 @@
       "componentId": "finance"
     },
     {
-      "path": "apps/portal/src/api.ts",
-      "blobSha": "887930ea7253972788f68cef9d89998d5512d5c1",
-      "componentId": "identity"
-    },
-    {
-      "path": "apps/portal/src/env.d.ts",
-      "blobSha": "11f02fe2a0061d6e6e1f271b21da95423b448b32",
-      "componentId": "shared"
-    },
-    {
-      "path": "apps/portal/src/main.tsx",
-      "blobSha": "26d24c125fb3481b7645a57194a99d0740002ee6",
-      "componentId": "identity"
-    },
-    {
       "path": "apps/portal/vite.config.ts",
       "blobSha": "6e58833df28d7fdb5d05ddf7a7714a1db263bb2c",
       "componentId": "shared"
@@ -408,7 +408,7 @@
     },
     {
       "path": "apps/web/private-preview.mjs",
-      "blobSha": "bccc7f62a98fbb0abed27dd557bb260cc2215738",
+      "blobSha": "53d5667aca4c0e89e7898faa1b93b31596943cfc",
       "componentId": "public"
     },
     {
@@ -467,13 +467,13 @@
       "componentId": "preview"
     },
     {
-      "path": "apps/web/src/pages/404.astro",
-      "blobSha": "958888f8a371f971a1a2e311ca22169fc7de2f04",
+      "path": "apps/web/src/pages/[...route].astro",
+      "blobSha": "b1eaf087982431060ae7b3893f49e77ef5013605",
       "componentId": "public"
     },
     {
-      "path": "apps/web/src/pages/[...route].astro",
-      "blobSha": "b1eaf087982431060ae7b3893f49e77ef5013605",
+      "path": "apps/web/src/pages/404.astro",
+      "blobSha": "958888f8a371f971a1a2e311ca22169fc7de2f04",
       "componentId": "public"
     },
     {
@@ -837,6 +837,11 @@
       "componentId": "coordination"
     },
     {
+      "path": "packages/core/runtime-probe.mjs",
+      "componentId": "operator",
+      "blobSha": "aa9d5b6bcad490368dc35d8ad179c705c0bf8dab"
+    },
+    {
       "path": "packages/core/safe-policy-document.mjs",
       "blobSha": "e20cfbdbd33ee7ae322d0821cffa1588f9b99087",
       "componentId": "public"
@@ -1062,6 +1067,11 @@
       "componentId": "operator"
     },
     {
+      "path": "scripts/validate_e2eesa_status.py",
+      "blobSha": "42057c0eaa93ca40f945aa46f7c7c0bf85932ca9",
+      "componentId": "operator"
+    },
+    {
       "path": "scripts/validate-pr-registry.mjs",
       "blobSha": "2d7d068e7d6abda9ffcea499f1618937df6a6c3b",
       "componentId": "operator"
@@ -1069,11 +1079,6 @@
     {
       "path": "scripts/validate.mjs",
       "blobSha": "426017bef9c0981be2cb98b348090c15fa1dd55c",
-      "componentId": "operator"
-    },
-    {
-      "path": "scripts/validate_e2eesa_status.py",
-      "blobSha": "42057c0eaa93ca40f945aa46f7c7c0bf85932ca9",
       "componentId": "operator"
     },
     {
@@ -3293,7 +3298,8 @@
         "scripts/scan-secrets.mjs",
         "scripts/inspect-release.mjs",
         "apps/api/src/server.mjs",
-        "apps/api/src/worker.mjs"
+        "apps/api/src/worker.mjs",
+        "packages/core/runtime-probe.mjs"
       ],
       "profileDecision": "server",
       "blocked": false,
