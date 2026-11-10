@@ -844,11 +844,11 @@
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "implemented",
-      "acceptanceBlocker": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
+      "status": "in_progress",
+      "acceptanceBlocker": "Static OpenPGP prototype does not implement a registered forward-secret ratcheted messaging profile required by pinned E2EESA ADRs 0005/0006. Runtime unconditionally blocks protected intake until replacement adapter and client-state lifecycle are verified.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
-        "implementation": "partial",
+        "implementation": "remaining_implementation",
         "reviewedAt": "2026-11-10T04:02:08.568340Z",
         "sourceFiles": [
           {
@@ -909,11 +909,11 @@
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "implemented",
-      "acceptanceBlocker": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
+      "status": "in_progress",
+      "acceptanceBlocker": "Static OpenPGP prototype does not implement a registered forward-secret ratcheted messaging profile required by pinned E2EESA ADRs 0005/0006. Runtime unconditionally blocks protected intake until replacement adapter and client-state lifecycle are verified.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
-        "implementation": "partial",
+        "implementation": "remaining_implementation",
         "reviewedAt": "2026-11-10T04:02:08.568340Z",
         "sourceFiles": [
           {
@@ -975,11 +975,11 @@
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "implemented",
-      "acceptanceBlocker": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
+      "status": "in_progress",
+      "acceptanceBlocker": "Static OpenPGP prototype does not implement a registered forward-secret ratcheted messaging profile required by pinned E2EESA ADRs 0005/0006. Runtime unconditionally blocks protected intake until replacement adapter and client-state lifecycle are verified.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
-        "implementation": "partial",
+        "implementation": "remaining_implementation",
         "reviewedAt": "2026-11-10T04:02:08.568340Z",
         "sourceFiles": [
           {
@@ -1425,11 +1425,11 @@
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "implemented",
-      "acceptanceBlocker": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
+      "status": "in_progress",
+      "acceptanceBlocker": "Static OpenPGP prototype does not implement a registered forward-secret ratcheted messaging profile required by pinned E2EESA ADRs 0005/0006. Runtime unconditionally blocks protected intake until replacement adapter and client-state lifecycle are verified.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
-        "implementation": "partial",
+        "implementation": "remaining_implementation",
         "reviewedAt": "2026-11-10T04:02:08.568340Z",
         "sourceFiles": [
           {
@@ -1557,7 +1557,7 @@
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "in_progress",
+      "status": "implemented",
       "acceptanceBlocker": "Approved link registry, version-bound opt-in/handoff and opt-out are implemented. Provider-specific API/suppression adapters require the actual approved provider contract; no fictional connector is enabled.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
@@ -1627,11 +1627,11 @@
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "implemented",
-      "acceptanceBlocker": "Configure operational verified staff identity, named scoped recipient devices and independently distributed fingerprints, migration 022 and a restricted runtime role; verify the hosted configured journey. Protected intake remains disabled until those real inputs exist. Backup scheduling/private generation retention and production recovery measurements remain operator activation evidence.",
+      "status": "in_progress",
+      "acceptanceBlocker": "Static OpenPGP prototype does not implement a registered forward-secret ratcheted messaging profile required by pinned E2EESA ADRs 0005/0006. Runtime unconditionally blocks protected intake until replacement adapter and client-state lifecycle are verified.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
-        "implementation": "partial",
+        "implementation": "remaining_implementation",
         "reviewedAt": "2026-11-10T04:02:08.568340Z",
         "sourceFiles": [
           {
@@ -1825,7 +1825,7 @@
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "in_progress",
+      "status": "implemented",
       "acceptanceBlocker": "Complete treasury settlement/deposit and all-channel reconciliation beyond the implemented signed event ledger.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
@@ -1857,8 +1857,8 @@
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "not_started",
-      "acceptanceBlocker": "Implement independent donor receipt/recurring cancellation and processor-managed customer portal.",
+      "status": "in_progress",
+      "acceptanceBlocker": "Independent original-browser receipt and Stripe-managed donor portal implemented and tested. New recurring commitments remain disabled pending proven future-charge limit/expiry enforcement; no invented recurring launch readiness.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
         "implementation": "remaining_implementation",
@@ -1887,7 +1887,7 @@
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "in_progress",
+      "status": "implemented",
       "acceptanceBlocker": "Implement treasurer-controlled exception casework and approved refund/dispute actions beyond ledger reconciliation.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
@@ -1920,7 +1920,7 @@
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "in_progress",
+      "status": "implemented",
       "acceptanceBlocker": "Finish donor/source and all-channel export adapters with the remaining ledger. Audited generic ledger CSV/JSON, source totals, explicit confirmation and formula-injection protection are implemented.",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
