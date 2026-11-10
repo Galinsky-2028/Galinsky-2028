@@ -1,7 +1,7 @@
 // Real IndexedDB/Web Locks/Argon2 vault against an isolated real HTTP/SQL API.
 import assert from 'node:assert/strict';
 import { randomUUID, randomBytes } from 'node:crypto';
-import { readFile, readdir } from 'node:fs/promises';
+import { readFile, readdir, rm } from 'node:fs/promises';
 import { createServer } from 'vite';
 import { chromium } from 'playwright';
 import { createApp } from '../../apps/api/src/app.mjs';
@@ -41,10 +41,28 @@ try {
   vite = await createServer({
     configFile: false,
     root: process.cwd(),
+    cacheDir: '/tmp/' + name + '-vite',
+    optimizeDeps: {
+      noDiscovery: true,
+      include: [
+        'react',
+        'react-dom/client',
+        'react/jsx-dev-runtime',
+        '@noble/hashes/argon2.js',
+        'openpgp',
+        'ts-mls',
+        'ts-mls/clientConfig.js',
+        'ts-mls/clientState.js',
+        'ts-mls/messageProtection.js',
+        'ts-mls/keyPackage.js',
+        'ts-mls/leafNode.js',
+      ],
+    },
     server: {
       host: 'localhost',
       port: 4471,
       strictPort: true,
+      hmr: false,
       proxy: { '/api': { target: apiOrigin } },
     },
     appType: 'custom',
@@ -641,6 +659,7 @@ try {
 } finally {
   await browser?.close();
   await vite?.close();
+  await rm('/tmp/' + name + '-vite', { recursive: true, force: true });
   await app.close();
   await pool.end();
   await admin.query('DROP DATABASE ' + name);

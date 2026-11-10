@@ -1125,7 +1125,7 @@
           },
           {
             "path": "tests/browser/protected-local.mjs",
-            "sha256": "4bcfc8bf3d317b0b3015f385e10136870d005fabb879a530a02c6e523b257764"
+            "sha256": "e9a83c6d81d4cc1339d4abff11bf5679b9c535a7af1189f685ba1b6faac8e25c"
           }
         ],
         "softwareGap": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
@@ -1215,7 +1215,7 @@
           },
           {
             "path": "tests/browser/protected-local.mjs",
-            "sha256": "4bcfc8bf3d317b0b3015f385e10136870d005fabb879a530a02c6e523b257764"
+            "sha256": "e9a83c6d81d4cc1339d4abff11bf5679b9c535a7af1189f685ba1b6faac8e25c"
           }
         ],
         "softwareGap": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
@@ -1305,7 +1305,7 @@
           },
           {
             "path": "tests/browser/protected-local.mjs",
-            "sha256": "4bcfc8bf3d317b0b3015f385e10136870d005fabb879a530a02c6e523b257764"
+            "sha256": "e9a83c6d81d4cc1339d4abff11bf5679b9c535a7af1189f685ba1b6faac8e25c"
           }
         ],
         "softwareGap": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
@@ -1891,7 +1891,7 @@
           },
           {
             "path": "tests/browser/protected-local.mjs",
-            "sha256": "4bcfc8bf3d317b0b3015f385e10136870d005fabb879a530a02c6e523b257764"
+            "sha256": "e9a83c6d81d4cc1339d4abff11bf5679b9c535a7af1189f685ba1b6faac8e25c"
           }
         ],
         "softwareGap": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
@@ -2153,7 +2153,7 @@
           },
           {
             "path": "tests/browser/protected-local.mjs",
-            "sha256": "4bcfc8bf3d317b0b3015f385e10136870d005fabb879a530a02c6e523b257764"
+            "sha256": "e9a83c6d81d4cc1339d4abff11bf5679b9c535a7af1189f685ba1b6faac8e25c"
           }
         ],
         "softwareGap": "Ratcheted v2 directory, one-time packages, encrypted browser vault, signed device linking, manual trust invalidation and crash-safe message/reply lifecycle are implemented and locally tested. Remaining software: complete root-authorized rotation/revocation/replacement and controlled-export UI, endpoint transparency monitoring and activation guards. Policy selection and actual staff/hosted evidence remain separate activation inputs.",
