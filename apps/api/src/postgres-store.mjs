@@ -1,3 +1,4 @@
+import {postgresProtected} from './protected-store.mjs';
 import {postgresTreasuryExport} from './treasury-export.mjs';
 import {postgresOperations} from './operations-store.mjs';
 import {prepareAccountNotice} from './mail-notices.mjs';
@@ -204,3 +205,4 @@ Object.assign(PostgresStore.prototype, postgresMail);
 Object.assign(PostgresStore.prototype,postgresOperations);
 
 Object.assign(PostgresStore.prototype,postgresTreasuryExport);
+Object.assign(PostgresStore.prototype,postgresProtected);

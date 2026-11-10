@@ -111,7 +111,7 @@ for (const id of [
 ]) {
   test(
     id +
-      " cannot be omitted, enabled or downgraded to plaintext service processing",
+      " cannot be omitted or downgraded from its reviewed recipient profile",
     () => {
       assert.throws(
         () =>
@@ -133,7 +133,7 @@ for (const id of [
         /protected obligation missing/,
       );
       for (const patch of [
-        { blocked: false },
+        { blocked: true },
         { plaintextFallback: true },
         { profileDecision: "server" },
       ])
@@ -164,9 +164,9 @@ test("unknown profiles and invented production eligibility fail closed", () => {
     /unknown component\/profile/,
   );
   for (const patch of [
-    { enabled: true },
+    { privateKeyCustody: "server-held" },
     { profilePin: "invented-production-profile" },
-    { requiredEvidence: [] },
+    { dependencyIntegrity: "changed-dependency" },
   ])
     assert.throws(
       () =>
@@ -196,7 +196,7 @@ test("unknown profiles and invented production eligibility fail closed", () => {
     );
 });
 
-test("the actual runtime cannot enable a missing protected adapter", () => {
+test("the actual runtime cannot enable protected reporting without verified staff and an exact profile", () => {
   assert.throws(
     () => loadConfig({ PROTECTED_CONTENT_ENABLED: "true" }),
     (error) => error.code === "protected_unavailable" && error.status === 503,

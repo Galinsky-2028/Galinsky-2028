@@ -29,16 +29,19 @@
     },
     {
       "id": "protected",
-      "mode": "protected-blocked",
-      "rationale": "No exact reviewed production profile or recipient adapter installed; never infer eligibility from a pinned development standard",
-      "enabled": false,
-      "profilePin": null,
+      "mode": "protected-client-encrypted",
+      "rationale": "RFC9580 v6 OpenPGP application profile; client-only encrypted private keys, independently verified fingerprints, exact authorized recipients, signed immutable contexts, no plaintext fallback. AI source review; no upstream conformance or certification claim.",
+      "profilePin": "G28-PGP-1/openpgp-6.3.2",
       "requiredEvidence": [
         "exact applicable protocol/profile and upstream remediation pins",
         "authenticated recipient/device authority and host/endpoint obligations",
         "interoperability, adversarial and negative no-fallback tests",
         "source/build/configuration/runtime bound AI security review; independent expert/certification status separately tracked"
-      ]
+      ],
+      "privateKeyCustody": "recipient-device-only",
+      "plaintextFallback": false,
+      "dependencyIntegrity": "sha512-wcZTzHz41LV8Y48zH/JlD1JT8YdNmpWOuMAjQ/podvvCwsjBEU37K3znJh4UQcj3hksE5z9TzvhbUbwzsGvlLQ==",
+      "review": "docs/security/PROTECTED_PROFILE.md"
     }
   ],
   "components": [
@@ -117,8 +120,8 @@
     {
       "id": "protected",
       "purpose": "Recipient enrollment, protected reports, attachments, recovery and exports",
-      "trustBoundary": "No installed reviewed recipient cryptographic adapter; reject protected operations",
-      "blocked": true
+      "trustBoundary": "Browser-owned OpenPGP recipient keys; trusted browser/code publisher, independently checked fingerprints; hosting receives ciphertext and minimal metadata only",
+      "blocked": false
     },
     {
       "id": "recovery",
@@ -158,7 +161,7 @@
     },
     {
       "path": "apps/api/src/app.mjs",
-      "blobSha": "d1e95edf20795a9e1c9398af8f02a9f4c9713a25",
+      "blobSha": "0f7d248785ddf010beea1060bea7475d2c94a5f8",
       "componentId": "identity"
     },
     {
@@ -178,7 +181,7 @@
     },
     {
       "path": "apps/api/src/config.mjs",
-      "blobSha": "63d880c3fa40982e061d5b6560de33c25249ec0a",
+      "blobSha": "fb08100bff4d250b73715037c7faf9111d0ca864",
       "componentId": "identity"
     },
     {
@@ -233,8 +236,18 @@
     },
     {
       "path": "apps/api/src/postgres-store.mjs",
-      "blobSha": "bf55d927d1d5232c61ee79df6542e99fb364a581",
+      "blobSha": "03f804af863a934801a0a215f1394505a2d8de7d",
       "componentId": "identity"
+    },
+    {
+      "path": "apps/api/src/protected-routes.mjs",
+      "blobSha": "dcdcfe911c07b3e9ae13d494ce4e0699b2c41283",
+      "componentId": "protected"
+    },
+    {
+      "path": "apps/api/src/protected-store.mjs",
+      "blobSha": "2dbd4b83fd8085f9607e389ff29543e28afd5de4",
+      "componentId": "protected"
     },
     {
       "path": "apps/api/src/server.mjs",
@@ -322,6 +335,11 @@
       "componentId": "coordination"
     },
     {
+      "path": "apps/portal/src/ProtectedReports.tsx",
+      "blobSha": "6fcb4612cf5f6665bea0d81132c9f949890c9247",
+      "componentId": "protected"
+    },
+    {
       "path": "apps/portal/src/StaffSecurity.tsx",
       "blobSha": "6a10834ae0315d9e62195795d550892221bbfec4",
       "componentId": "staff"
@@ -343,7 +361,7 @@
     },
     {
       "path": "apps/portal/src/main.tsx",
-      "blobSha": "7f8d56aa926ea9738e75ce7e5d45bead033d1e04",
+      "blobSha": "26d24c125fb3481b7645a57194a99d0740002ee6",
       "componentId": "identity"
     },
     {
@@ -567,6 +585,11 @@
       "componentId": "schema"
     },
     {
+      "path": "db/migrations/022_protected_records.sql",
+      "blobSha": "1678e563b3cdf4db04d0305c3094f0eea608313c",
+      "componentId": "schema"
+    },
+    {
       "path": "db/migrations/20261016_campaign_public_views.sql",
       "blobSha": "a3df233362d0d131f09d0d0fdb19666916aae352",
       "componentId": "schema"
@@ -757,6 +780,16 @@
       "componentId": "public"
     },
     {
+      "path": "packages/core/protected-crypto.mjs",
+      "blobSha": "9348a408b7e18ab090c65d4e8be76c290e559135",
+      "componentId": "protected"
+    },
+    {
+      "path": "packages/core/protected-records.mjs",
+      "blobSha": "f902e2c207abf0379ccae2eed9501469bf0b04c9",
+      "componentId": "protected"
+    },
+    {
       "path": "packages/core/release-id.mjs",
       "blobSha": "fcae2af0496f651353df4851321c59909e744762",
       "componentId": "shared"
@@ -778,7 +811,7 @@
     },
     {
       "path": "packages/core/staff-permissions.mjs",
-      "blobSha": "b2ab146662819cf4e17442e213f42d546a203f13",
+      "blobSha": "a9f0d9580f5c1ca4690eecf20d1a9a414553a42e",
       "componentId": "staff"
     },
     {
@@ -953,7 +986,7 @@
     },
     {
       "path": "scripts/runtime-role-permissions.mjs",
-      "blobSha": "ab75259b1d2dcde9af286e5c1fc65f7e71d65822",
+      "blobSha": "a6a87603d8fffcc0e5802ce85fa3c25112c47ed5",
       "componentId": "operator"
     },
     {
@@ -2068,6 +2101,72 @@
       "authority": "Verified device WebAuthn public key; user verification, counter and exact RP/origin required",
       "retention": "Stored while the account remains; public keys are not private authenticator keys",
       "disposal": "Cascade account deletion; enrolled credential access can be revoked after account verification"
+    },
+    {
+      "id": "g28.protected_devices",
+      "columns": [
+        "account_id",
+        "approved_by",
+        "created_at",
+        "fingerprint",
+        "generation",
+        "id",
+        "label",
+        "public_key",
+        "scope",
+        "state"
+      ],
+      "paths": [
+        "db/migrations/022_protected_records.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "protected",
+      "classification": "public-key authority and minimal private lifecycle metadata",
+      "authority": "Current account and exact recipient device; approved current scoped staff role and fresh passkey for staff actions; source-bound signatures and no server recipient keys",
+      "retention": "Ciphertext 90 days unless held; account closure deletes unheld authored ciphertext and revokes devices. Public keys remain for referenced historical signatures; minimal lifecycle tombstones retained for backup recovery.",
+      "disposal": "Serialized legal-hold-aware purge; matching ciphertext/attachment/public-generation DB backup, separately held recipient recovery keys; replay newer hold/deletion events before any old restore is exposed"
+    },
+    {
+      "id": "g28.protected_lifecycle_events",
+      "columns": [
+        "action",
+        "actor_id",
+        "created_at",
+        "evidence_digest",
+        "id",
+        "record_id"
+      ],
+      "paths": [
+        "db/migrations/022_protected_records.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "protected",
+      "classification": "public-key authority and minimal private lifecycle metadata",
+      "authority": "Current account and exact recipient device; approved current scoped staff role and fresh passkey for staff actions; source-bound signatures and no server recipient keys",
+      "retention": "Ciphertext 90 days unless held; account closure deletes unheld authored ciphertext and revokes devices. Public keys remain for referenced historical signatures; minimal lifecycle tombstones retained for backup recovery.",
+      "disposal": "Serialized legal-hold-aware purge; matching ciphertext/attachment/public-generation DB backup, separately held recipient recovery keys; replay newer hold/deletion events before any old restore is exposed"
+    },
+    {
+      "id": "g28.protected_records",
+      "columns": [
+        "author_id",
+        "document",
+        "id",
+        "legal_hold",
+        "participants",
+        "retain_until",
+        "updated_at",
+        "version"
+      ],
+      "paths": [
+        "db/migrations/022_protected_records.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "protected",
+      "classification": "protected ciphertext plus declared service-readable routing metadata",
+      "authority": "Current account and exact recipient device; approved current scoped staff role and fresh passkey for staff actions; source-bound signatures and no server recipient keys",
+      "retention": "Ciphertext 90 days unless held; account closure deletes unheld authored ciphertext and revokes devices. Public keys remain for referenced historical signatures; minimal lifecycle tombstones retained for backup recovery.",
+      "disposal": "Serialized legal-hold-aware purge; matching ciphertext/attachment/public-generation DB backup, separately held recipient recovery keys; replay newer hold/deletion events before any old restore is exposed"
     }
   ],
   "flows": [
@@ -2541,24 +2640,29 @@
         "device public key",
         "key-change authorization"
       ],
-      "from": "future authorized endpoint/device",
+      "from": "authenticated volunteer or scoped staff browser with unlocked recipient key",
       "recipients": [
         "exact independently authenticated intended recipient/device"
       ],
       "storage": [
-        "none"
+        "g28.protected_devices",
+        "g28.protected_records",
+        "g28.protected_lifecycle_events"
       ],
       "egress": [
-        "none; protected service unavailable"
+        "same-origin ciphertext API only; encrypted recovery/downloads explicitly requested on device"
       ],
-      "authorization": "Reject before body parsing; startup rejects PROTECTED_CONTENT_ENABLED=true. Future account login/email recovery must not restore recipient keys or expand access",
-      "retention": "No protected retention/recovery/export authorization exists; production use stays off; revocation cannot recall previously decrypted recipient copies",
+      "authorization": "Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
+      "retention": "90-day encrypted records; legal holds override purge; account closure deletes unheld authored records, revokes devices; recipient downloads are outside recall. Full DB backup includes ciphertext and exact public-key generations; recipient recovery key stays separate.",
       "evidence": [
-        "apps/api/src/app.mjs",
-        "apps/api/src/config.mjs"
+        "packages/core/protected-crypto.mjs",
+        "packages/core/protected-records.mjs",
+        "apps/api/src/protected-routes.mjs",
+        "apps/api/src/protected-store.mjs",
+        "apps/portal/src/ProtectedReports.tsx"
       ],
       "profileDecision": "protected",
-      "blocked": true,
+      "blocked": false,
       "plaintextFallback": false
     },
     {
@@ -2570,24 +2674,30 @@
         "recipient manifest",
         "profile pin"
       ],
-      "from": "future authorized endpoint/device",
+      "from": "authenticated volunteer or scoped staff browser with unlocked recipient key",
       "recipients": [
         "specific named safety recipients authorized by sender"
       ],
       "storage": [
+        "g28.protected_devices",
+        "g28.protected_records",
+        "g28.protected_lifecycle_events",
         "g28.encrypted_records"
       ],
       "egress": [
-        "none; protected service unavailable"
+        "same-origin ciphertext API only; encrypted recovery/downloads explicitly requested on device"
       ],
-      "authorization": "Reject before body parsing; startup rejects PROTECTED_CONTENT_ENABLED=true. Future account login/email recovery must not restore recipient keys or expand access",
-      "retention": "No protected retention/recovery/export authorization exists; production use stays off; revocation cannot recall previously decrypted recipient copies",
+      "authorization": "Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
+      "retention": "90-day encrypted records; legal holds override purge; account closure deletes unheld authored records, revokes devices; recipient downloads are outside recall. Full DB backup includes ciphertext and exact public-key generations; recipient recovery key stays separate.",
       "evidence": [
-        "apps/api/src/app.mjs",
-        "apps/api/src/config.mjs"
+        "packages/core/protected-crypto.mjs",
+        "packages/core/protected-records.mjs",
+        "apps/api/src/protected-routes.mjs",
+        "apps/api/src/protected-store.mjs",
+        "apps/portal/src/ProtectedReports.tsx"
       ],
       "profileDecision": "protected",
-      "blocked": true,
+      "blocked": false,
       "plaintextFallback": false
     },
     {
@@ -2599,24 +2709,29 @@
         "content hash",
         "recipient-bound key reference"
       ],
-      "from": "future authorized endpoint/device",
+      "from": "authenticated volunteer or scoped staff browser with unlocked recipient key",
       "recipients": [
         "same exact authorized report recipient devices"
       ],
       "storage": [
-        "none"
+        "g28.protected_devices",
+        "g28.protected_records",
+        "g28.protected_lifecycle_events"
       ],
       "egress": [
-        "none; protected service unavailable"
+        "same-origin ciphertext API only; encrypted recovery/downloads explicitly requested on device"
       ],
-      "authorization": "Reject before body parsing; startup rejects PROTECTED_CONTENT_ENABLED=true. Future account login/email recovery must not restore recipient keys or expand access",
-      "retention": "No protected retention/recovery/export authorization exists; production use stays off; revocation cannot recall previously decrypted recipient copies",
+      "authorization": "Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
+      "retention": "90-day encrypted records; legal holds override purge; account closure deletes unheld authored records, revokes devices; recipient downloads are outside recall. Full DB backup includes ciphertext and exact public-key generations; recipient recovery key stays separate.",
       "evidence": [
-        "apps/api/src/app.mjs",
-        "apps/api/src/config.mjs"
+        "packages/core/protected-crypto.mjs",
+        "packages/core/protected-records.mjs",
+        "apps/api/src/protected-routes.mjs",
+        "apps/api/src/protected-store.mjs",
+        "apps/portal/src/ProtectedReports.tsx"
       ],
       "profileDecision": "protected",
-      "blocked": true,
+      "blocked": false,
       "plaintextFallback": false
     },
     {
@@ -2628,24 +2743,29 @@
         "key-recovery authorization",
         "revocation and history scope"
       ],
-      "from": "future authorized endpoint/device",
+      "from": "authenticated volunteer or scoped staff browser with unlocked recipient key",
       "recipients": [
         "explicitly reauthorized recipient device, never generic account service"
       ],
       "storage": [
-        "none"
+        "g28.protected_devices",
+        "g28.protected_records",
+        "g28.protected_lifecycle_events"
       ],
       "egress": [
-        "none; protected service unavailable"
+        "same-origin ciphertext API only; encrypted recovery/downloads explicitly requested on device"
       ],
-      "authorization": "Reject before body parsing; startup rejects PROTECTED_CONTENT_ENABLED=true. Future account login/email recovery must not restore recipient keys or expand access",
-      "retention": "No protected retention/recovery/export authorization exists; production use stays off; revocation cannot recall previously decrypted recipient copies",
+      "authorization": "Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
+      "retention": "90-day encrypted records; legal holds override purge; account closure deletes unheld authored records, revokes devices; recipient downloads are outside recall. Full DB backup includes ciphertext and exact public-key generations; recipient recovery key stays separate.",
       "evidence": [
-        "apps/api/src/app.mjs",
-        "apps/api/src/config.mjs"
+        "packages/core/protected-crypto.mjs",
+        "packages/core/protected-records.mjs",
+        "apps/api/src/protected-routes.mjs",
+        "apps/api/src/protected-store.mjs",
+        "apps/portal/src/ProtectedReports.tsx"
       ],
       "profileDecision": "protected",
-      "blocked": true,
+      "blocked": false,
       "plaintextFallback": false
     },
     {
@@ -2657,24 +2777,29 @@
         "export recipient manifest",
         "scope and audit"
       ],
-      "from": "future authorized endpoint/device",
+      "from": "authenticated volunteer or scoped staff browser with unlocked recipient key",
       "recipients": [
         "explicit named export recipient with current cryptographic authority"
       ],
       "storage": [
-        "none"
+        "g28.protected_devices",
+        "g28.protected_records",
+        "g28.protected_lifecycle_events"
       ],
       "egress": [
-        "none; protected service unavailable"
+        "same-origin ciphertext API only; encrypted recovery/downloads explicitly requested on device"
       ],
-      "authorization": "Reject before body parsing; startup rejects PROTECTED_CONTENT_ENABLED=true. Future account login/email recovery must not restore recipient keys or expand access",
-      "retention": "No protected retention/recovery/export authorization exists; production use stays off; revocation cannot recall previously decrypted recipient copies",
+      "authorization": "Current session, CSRF/exact origin; signed device possession, approved current scoped recipient grants, independent fingerprint check, exact recipient/record/sequence/generation binding; staff passkey step-up. No automatic key restoration by email or staff.",
+      "retention": "90-day encrypted records; legal holds override purge; account closure deletes unheld authored records, revokes devices; recipient downloads are outside recall. Full DB backup includes ciphertext and exact public-key generations; recipient recovery key stays separate.",
       "evidence": [
-        "apps/api/src/app.mjs",
-        "apps/api/src/config.mjs"
+        "packages/core/protected-crypto.mjs",
+        "packages/core/protected-records.mjs",
+        "apps/api/src/protected-routes.mjs",
+        "apps/api/src/protected-store.mjs",
+        "apps/portal/src/ProtectedReports.tsx"
       ],
       "profileDecision": "protected",
-      "blocked": true,
+      "blocked": false,
       "plaintextFallback": false
     },
     {

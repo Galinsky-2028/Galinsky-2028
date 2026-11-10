@@ -1,3 +1,5 @@
+> 10 November 2026 source update: protected recipient/device reporting, encrypted attachments/replies, local recovery, exact encrypted export and legal-hold-aware retention are now implemented. See [the reviewed application profile](PROTECTED_PROFILE.md). Hosted activation still requires real staff identity and named recipients; the historical implementation observations below are superseded for these flows.
+
 # Security and privacy boundaries
 
 ## Standard basis

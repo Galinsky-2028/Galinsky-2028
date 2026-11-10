@@ -1,3 +1,4 @@
+import {PROTECTED_PROFILE} from '../../../packages/core/protected-crypto.mjs';
 import {origin,assert} from '../../../packages/core/validation.mjs';
 import {loadPreviewGate} from '../../../packages/core/preview-gate.mjs';
 import {safeReleaseCommit} from '../../../packages/core/release-id.mjs';
@@ -44,9 +45,10 @@ export function loadConfig(env=process.env){
  }
  if(signup){assert(deliveryKey&&Buffer.from(deliveryKey,'base64').length===32&&pepper.length>=32&&mailReady,'signup_unready','Account delivery and authentication configuration are incomplete.',503);}
  // These flags may not bypass missing reviewed adapters or release evidence.
- assert(env.PROTECTED_CONTENT_ENABLED!=='true','protected_unavailable','A reviewed protected-content implementation is not installed.',503);
+ const protectedContent=env.PROTECTED_CONTENT_ENABLED==='true';
+ assert(!protectedContent||(staffIdentity&&adminLoginReady&&Boolean(env.DATABASE_URL)&&env.G28_PROTECTED_PROFILE===PROTECTED_PROFILE),'protected_unavailable','Protected reporting requires current staff identity, database and exact reviewed protocol profile.',503);
  assert(!staffIdentity||adminLoginReady,'staff_unavailable','Staff passkeys require configured verified-email staff access.',503);
  assert(env.DONATIONS_ENABLED!=='true','fundraising_unavailable','A production fundraising adapter and release evidence are not installed.',503);
  if(production)assert(env.DATABASE_URL,'database_required','Production requires the assigned database.',503);
- return {staffIdentity,coordination,helpRequests,campaignEditorEnabled,volunteerPasskeys,production,previewGate,publicOrigin,portalOrigin,deliveryKey,pepper,signup,adminLoginReady,adminOwnerEmailKey,treasuryKey,mailReady,mailDeliveryMode,mailKey:env.RESEND_API_KEY,mailWebhookSecret:env.RESEND_WEBHOOK_SECRET,mailFrom:env.MAIL_FROM,databaseUrl:env.DATABASE_URL,port:Number(env.PORT||4322),host:env.HOST||(production?'0.0.0.0':'127.0.0.1'),commit:safeReleaseCommit(env.RENDER_GIT_COMMIT),termsVersion:'2026-10-10'};
+ return {protectedContent,staffIdentity,coordination,helpRequests,campaignEditorEnabled,volunteerPasskeys,production,previewGate,publicOrigin,portalOrigin,deliveryKey,pepper,signup,adminLoginReady,adminOwnerEmailKey,treasuryKey,mailReady,mailDeliveryMode,mailKey:env.RESEND_API_KEY,mailWebhookSecret:env.RESEND_WEBHOOK_SECRET,mailFrom:env.MAIL_FROM,databaseUrl:env.DATABASE_URL,port:Number(env.PORT||4322),host:env.HOST||(production?'0.0.0.0':'127.0.0.1'),commit:safeReleaseCommit(env.RENDER_GIT_COMMIT),termsVersion:'2026-10-10'};
 }
