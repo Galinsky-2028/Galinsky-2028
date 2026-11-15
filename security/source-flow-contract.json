@@ -301,7 +301,7 @@
     },
     {
       "path": "apps/api/src/static.mjs",
-      "blobSha": "6ccacd823b75e23f1d0bc94fbbe4f1eb97ca406b",
+      "blobSha": "ef4b0fedec0efbba978fa5db2b02d31371552b2f",
       "componentId": "shared"
     },
     {
@@ -343,6 +343,11 @@
       "path": "apps/editor/editor.mjs",
       "blobSha": "bc5989add9a7a0c7d1a24ca2550907fbf9ddd5b5",
       "componentId": "editorial"
+    },
+    {
+      "path": "apps/portal/release-integrity.mjs",
+      "blobSha": "97ba1a118c181807e9dd1678086bda931065bef7",
+      "componentId": "shared"
     },
     {
       "path": "apps/portal/src/ActivityReview.tsx",
@@ -436,7 +441,7 @@
     },
     {
       "path": "apps/portal/vite.config.ts",
-      "blobSha": "65b45b5d98939ed4f41df348fa07f040dd17834c",
+      "blobSha": "0acac8d1c475d82fcf609bb78a4cab26877dc749",
       "componentId": "shared"
     },
     {
