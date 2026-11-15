@@ -19,6 +19,11 @@ import {StripeCampaignStore} from './stripe-campaign-store.mjs';
 import {contributionTermsHtml,CONTRIBUTION_TERMS_PATH} from '../../packages/core/contribution-terms.mjs';
 import {createCampaignRuntime} from './campaign-runtime.mjs';
 import {createVisitorCollector} from './visitor-analytics.mjs';
+import {createMonthlyDonor,monthlyEnabled} from './recurring-donor.mjs';
+import {CardContributionStore} from '../api/src/card-contribution-store.mjs';
+import {RecurringCardService} from '../api/src/card-recurring-service.mjs';
+import {StripeCardSetup} from '../../packages/core/stripe-card-setup.mjs';
+import {StripeManualCapture} from '../../packages/core/stripe-manual-capture.mjs';
 
 const mime={
  '.html':'text/html; charset=utf-8',
@@ -73,7 +78,7 @@ function requestedPath(raw){
 
 // Unlike a static CDN, this Node service authenticates BEFORE reading any file.
 // Use only this web-service entry point for preview hosting.
-export function createPrivatePreviewServer({directory=resolve('dist/web'),env=process.env,rotationStore=null,stripeTransport=fetch,stripeStore=null,reviewController=null,campaignRuntime=null,analyticsStore=null}={}){
+export function createPrivatePreviewServer({directory=resolve('dist/web'),env=process.env,rotationStore=null,stripeTransport=fetch,stripeStore=null,monthlyService=null,reviewController=null,campaignRuntime=null,analyticsStore=null}={}){
  const credentials=loadPreviewGate(env);
  if(env.G28_REVIEW_ACCOUNTS_ENABLED==='true'&&!reviewController)throw Error('Private review accounts require a persistent authentication controller.');
  if(env.G28_CAMPAIGN_PUBLIC_ENABLED==='true'&&!campaignRuntime)throw Error('Published campaign rendering requires its verified runtime.');
@@ -91,6 +96,12 @@ export function createPrivatePreviewServer({directory=resolve('dist/web'),env=pr
  const stripeNonce=checkoutNonceKey(stripeConfig?.secretKey);
  const stripePool=stripeConfig&&env.DATABASE_URL&&!rotationPool&&!stripeStore?databasePool(env.DATABASE_URL):null;
  const liveStripeStore=stripeStore||(stripeConfig&&env.DATABASE_URL?new StripeCampaignStore(rotationPool||stripePool):null);
+ // TEST monthly card schedules: closed unless every TEST flag and a database are present.
+ const monthlyPool=monthlyEnabled(env,stripeConfig)&&!monthlyService&&env.DATABASE_URL?(rotationPool||stripePool):null;
+ const monthly=createMonthlyDonor({env,stripeConfig,nonceKey:stripeNonce,
+  service:monthlyService||(monthlyPool?new RecurringCardService({cards:new CardContributionStore({store:{pool:monthlyPool},config:{staffIdentity:false,adminLoginReady:false}})}):null),
+  setupDriver:monthlyEnabled(env,stripeConfig)?new StripeCardSetup({secretKey:stripeConfig.secretKey,origin:stripeConfig.origin,transport:stripeTransport}):null,
+  captureDriver:monthlyEnabled(env,stripeConfig)?new StripeManualCapture({secretKey:stripeConfig.secretKey,transport:stripeTransport}):null});
  const server=createServer(async(req,res)=>{
   res.setHeader('Cache-Control','private, no-store, max-age=0');
   res.setHeader('X-Robots-Tag',PREVIEW_ROBOTS);
@@ -168,6 +179,7 @@ export function createPrivatePreviewServer({directory=resolve('dist/web'),env=pr
    res.setHeader('Content-Length',Buffer.byteLength(html));
    res.end(req.method==='HEAD'?undefined:html);return;
   }
+  if(pathname==='/donate/monthly'||pathname.startsWith('/donate/monthly/')){if(await monthly.handle(req,res,pathname))return;}
   // Stripe's real Checkout checkout is generated server-side only.
   // Payment details are always entered on Stripe; POST data here is only
   // amount, election and eligibility certifications (never card/PII).

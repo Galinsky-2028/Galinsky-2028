@@ -190,6 +190,22 @@ export class RecurringCardService {
         confirmation: null,
       };
       if (!mandate) return view;
+      view.mandateId = mandate.id;
+      const pending = (
+        await c.query(
+          'SELECT status FROM g28.card_enrollments WHERE replaces_mandate_id=$1 ORDER BY created_at DESC LIMIT 1',
+          [mandate.id],
+        )
+      ).rows[0];
+      if (pending)
+        view.replacement =
+          pending.status === 'cancelled'
+            ? 'withdrawn'
+            : pending.status === 'verified'
+              ? 'card saved, waiting for treasury approval'
+              : pending.status === 'requires_review'
+                ? 'under treasury review'
+                : 'waiting for the new card to be saved';
       const m = mandate.document,
         periods = (
           await c.query(
@@ -322,7 +338,9 @@ export class RecurringCardService {
   }
 
   // ---- Bank confirmation of a staff-prepared first installment -------------------------
-  async confirmationTarget(enrollmentId, clientReference, periodId) {
+  // With returning=true (the donor came back from the bank page) an installment that
+  // is already authorized may be observed again; nothing else changes.
+  async confirmationTarget(enrollmentId, clientReference, periodId, { returning = false } = {}) {
     financeId(periodId);
     return this.tx(async (c) => {
       const { mandate } = await this.#owned(c, enrollmentId, clientReference);
@@ -335,7 +353,7 @@ export class RecurringCardService {
           p &&
           p.mandate_id === mandate.id &&
           p.mandate_version === mandate.version &&
-          p.status === 'requires_action' &&
+          (p.status === 'requires_action' || (returning && p.status === 'authorized')) &&
           p.reservation_active &&
           /^pi_[A-Za-z0-9]{8,100}$/.test(p.provider_payment_id || '') &&
           p.document?.providerApproval?.confirmationMode === 'on_session' &&

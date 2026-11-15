@@ -29,3 +29,39 @@ Stripe's official OpenAPI repository was inspected at immutable commit `f1ec696a
 Unit tests exercise calendar/aggregate/expiry rules, test/live isolation, fixed endpoints, bounded response parsing, metadata/method binding, manual versus automatic capture, first-bank-confirmation separation, lost responses, no retries and secret minimization. The real isolated PostgreSQL/HTTP test runs all migrations and current staff authentication. Six concurrent mandates compete for the same remaining allowance; exactly one reserves it. Later cash posting blocks capture. Cancellation blocks collection. A lost authorization and a lost capture cannot be dispatched twice. Signed callbacks reject mismatches/replays and preserve private canaries; an exact signed journal posting releases the held reservation atomically. Ordinary sessions, missing CSRF, foreign origins and revoked staff sessions fail closed.
 
 This increment does **not** install the prospective public setup form, donor-only recovery/cancellation/payment-method UI, bank-confirmation page, controlled refund adaptation for monthly PI references, staff review UI or an operational due-period worker. Those are real remaining software for G28-044. The former receipt/Stripe-portal implementation remains useful for existing TEST Checkout records. New monthly commitments remain disabled until the complete supported donor path and all command/remedy integration pass end-to-end tests. Actual staff mail, approved treasury/merchant evidence and credentials remain separate activation inputs; no email or financial transaction was performed in this review.
+
+## Monthly donor service — 15 November 2026 addendum
+
+PRs #165 and #166 add the remaining G28-044 software, still **TEST only**. The donor pages appear only when **all** of the following are set: private preview mode, Stripe TEST settings, `G28_TREASURY_SANDBOX_ACTIONS_ENABLED=true`, `G28_RECURRING_TEST_ENABLED=true`, and a database on the website service. No deployed service sets them today.
+
+- **Prospective setup (`/donate/monthly`):**
+  - The page shows the published installment maximum, the general-election cutoff, the five eligibility statements already used for one-time gifts, and the terms version from the current card policy.
+  - Each browser form maps to one deterministic enrollment, so a replayed submission never creates a second commitment.
+  - Card entry happens only on Stripe's hosted setup page, reached through an explicit link. No campaign page loads a script.
+- **Recovery:** each setup shows a 120-bit recovery code once. Only its SHA-256 digest is stored. The donor can recover the schedule from any device without a volunteer account. A replay never shows or binds a new code.
+- **Donor self-service (`/donate/monthly/manage`):** uses an HttpOnly, signed browser link plus a CSRF token.
+  - The page shows the schedule, the next possible gift date and each month's state, never billing identity or processor identifiers.
+  - **Cancellation** is idempotent and stops all future authorizations and captures. Unsent reservations are released. An attempt already at the processor stays reserved until treasury reconciles it exactly.
+  - **Card change** starts a replacement setup bound to the existing schedule. After signed and staff-verified review, `POST /api/staff/finance/card/mandates/:id/replace-method` replaces the saved card. It cannot widen the amount, frequency, election, cutoff or count, and it needs documentary evidence. A replacement setup cannot start a second schedule.
+- **Bank confirmation:** only the staff-prepared on-session first installment can be confirmed. The server confirms that exact intent with a return URL and accepts only a `stripe.com` bank page. Confirmation can at most authorize. A donor return can never record collected funds, and capture remains a separate staff step with fresh checks.
+- **Monthly remedies:**
+  - treasury refunds of a captured installment re-verify the exact TEST intent, period metadata and captured amount before calling the processor;
+  - signed refund and dispute events are matched to the installment;
+  - an over-refund is rejected.
+- **Due-period processing** (`processDue`, a 15-minute loop only where TEST card actions and a database exist):
+  - marks installments due or missed; a missed month is never caught up;
+  - releases expired reservations that were never sent;
+  - completes finished schedules;
+  - shows staff a due queue (`POST /api/staff/finance/card/due`).
+
+  It never contacts the processor. Every authorization and capture still needs owner or treasurer authority and a fresh passkey.
+
+Still external to software:
+- the campaign-approved text of the **monthly contribution terms** (the card policy's `termsVersion` names it; the site does not invent it);
+- the treasurer's card policy;
+- a staff identity with a passkey;
+- `STRIPE_SECRET_KEY` (TEST) with `DATABASE_URL` on the website service;
+- the TEST flags above;
+- migration 026 on the target database.
+
+Live processing remains unavailable.
