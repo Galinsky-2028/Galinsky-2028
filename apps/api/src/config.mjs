@@ -4,6 +4,7 @@ import {safeReleaseCommit} from '../../../packages/core/release-id.mjs';
 import {emailKey} from '../../../packages/core/auth.mjs';
 import {email} from '../../../packages/core/validation.mjs';
 import {treasuryVaultKey} from '../../../packages/core/treasury-vault.mjs';
+import {protectedActivationReadiness} from '../../../packages/core/release-authenticity.mjs';
 export function loadConfig(env=process.env){
  const production=env.NODE_ENV==='production';
  assert(env.RENDER!=='true'||production,'production_runtime','Render API deployments require NODE_ENV=production.',503);
@@ -51,7 +52,12 @@ export function loadConfig(env=process.env){
  // Ratcheted MLS and device lifecycle source/tests are installed. Activation
  // still requires the pinned executable web-release/update/transparency and
  // transport controls; a boolean cannot waive those endpoint obligations.
- assert(!protectedContent,'protected_unavailable','Protected reporting remains unavailable until executable web-release, update, independently witnessed transparency and transport controls are verified.',503);
+ // protectedActivationReadiness verifies a pinned-key signed release of the exact installed
+ // bytes, its inclusion at a log checkpoint cosigned by a quorum of independent witnesses,
+ // a signed TLS 1.3-only observation, verified staff identity and a selected recovery policy.
+ // With no pinned trust roots (security/release-trust.json) it always refuses.
+ const protectedGate=protectedContent?protectedActivationReadiness({env,staffIdentity,publicOrigin:portalOrigin}):null;
+ assert(!protectedContent||protectedGate.ready===true,'protected_unavailable','Protected reporting remains unavailable until a signed, independently witnessed release of the installed bytes, transport, staff and recovery evidence are verified'+(protectedGate?': '+protectedGate.missing.join('; '):'')+'.',503);
  assert(!staffIdentity||adminLoginReady,'staff_unavailable','Staff passkeys require configured verified-email staff access.',503);
  assert(env.DONATIONS_ENABLED!=='true','fundraising_unavailable','A production fundraising adapter and release evidence are not installed.',503);
  if(production)assert(env.DATABASE_URL,'database_required','Production requires the assigned database.',503);

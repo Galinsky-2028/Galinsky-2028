@@ -206,7 +206,7 @@
     },
     {
       "path": "apps/api/src/config.mjs",
-      "blobSha": "ae5d0c77bf94444788551d5b81c36275a295eaa5",
+      "blobSha": "8bc92d9db328ea8dbeb776d6ca7f834964b07775",
       "componentId": "identity"
     },
     {
@@ -932,6 +932,11 @@
     {
       "path": "packages/core/protected-verification.mjs",
       "blobSha": "7b12dd705660036d71d8348837e75d9d3b0c285e",
+      "componentId": "protected"
+    },
+    {
+      "path": "packages/core/release-authenticity.mjs",
+      "blobSha": "3500fd33d7b4689da718f7a54d6850003bcf127c",
       "componentId": "protected"
     },
     {
