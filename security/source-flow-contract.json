@@ -206,7 +206,7 @@
     },
     {
       "path": "apps/api/src/card-recurring-service.mjs",
-      "blobSha": "4ba5c967a1e1c3ffdcbdb7bf792665ca731bf49b",
+      "blobSha": "398191d1d849af92129ca68223eb29093f132dcc",
       "componentId": "finance"
     },
     {
@@ -471,7 +471,7 @@
     },
     {
       "path": "apps/web/private-preview.mjs",
-      "blobSha": "53d5667aca4c0e89e7898faa1b93b31596943cfc",
+      "blobSha": "3bc626c9252a1cdd94c670ff028eef51466a6b00",
       "componentId": "public"
     },
     {
@@ -508,6 +508,11 @@
       "path": "apps/web/public/assets/visitor-insights.js",
       "blobSha": "af3246516bed67766d14b1dae774cfc80730ecd5",
       "componentId": "analytics"
+    },
+    {
+      "path": "apps/web/recurring-donor.mjs",
+      "blobSha": "e4ab493254e87015b4008b90f1b4a2cad7437730",
+      "componentId": "finance"
     },
     {
       "path": "apps/web/review-auth.mjs",
@@ -991,7 +996,7 @@
     },
     {
       "path": "packages/core/stripe-card-setup.mjs",
-      "blobSha": "84461b293579f1785982444982cf608e1a6b0d63",
+      "blobSha": "d7d18e01d25948b9e21a36b5a45b46db490b54fa",
       "componentId": "finance"
     },
     {
