@@ -9,10 +9,10 @@
     ".exechub/approved-pr-mapping.json",
     "docs/PR_REGISTER.json"
   ],
-  "progressEvidenceNote": "Source-reviewed software implementation: 66/72; full-scope release-evidenced accepted packages: 13/72. Treasury/outreach additions are source-tested; protected ratcheted protocol and recurring enforcement remain real software gaps. Every verified merged PR is accepted separately from package scope and deployment.",
+  "progressEvidenceNote": "Source-reviewed software implementation: 71/72; full-scope release-evidenced accepted packages: 13/72. The protected-reporting units now have an evidence-verified activation gate (closed until owner-pinned release, log and witness keys); recurring-donation self-service and due-period processing (G28-044) remain a real software gap. Every verified merged PR is accepted separately from package scope and deployment.",
   "schemaVersion": 1,
   "roadmapVersion": 7,
-  "observedAt": "2026-11-10T11:40:31.719Z",
+  "observedAt": "2026-11-15T18:59:07.000Z",
   "units": [
     {
       "id": "G28-001",
@@ -226,7 +226,7 @@
           }
         ],
         "softwareGap": null,
-        "activationRequirement": "Protected production profiles, recipient enrollment, independent certification, and runtime E2EESA approval remain separately blocked under G28-021\u2013023 and later protected-flow packages.",
+        "activationRequirement": "Protected production profiles, recipient enrollment, independent certification, and runtime E2EESA approval remain separately blocked under G28-021–023 and later protected-flow packages.",
         "verification": "Merged dedicated PR #144; combined CI 41359919156 success; both password-protected Render preview deployments are live on 6d6c7aab464f89bc716e7a18cdd2227771285c59. This is not a public production activation."
       },
       "acceptedAt": "2026-11-01T23:06:20.000Z",
@@ -842,17 +842,19 @@
         154,
         155,
         156,
-        157
+        157,
+        162,
+        163
       ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "in_progress",
-      "acceptanceBlocker": "Ratcheted v2 delivery, encrypted local custody, root-authorized device linking/rotation/revocation/replacement, manual trust invalidation and controlled item export are implemented and browser-tested. Remaining source work: hardened executable-release closure/CSP/SRI, authenticated update/log-witness integration and activation guards. Actual staff, recovery-policy selection and hosted security evidence remain separate inputs.",
+      "status": "implemented",
+      "acceptanceBlocker": "Pin the owner-held Ed25519 release key, the transparency log key and at least two independently operated witness keys in security/release-trust.json; publish signed, logged, witnessed release evidence for the deployed dist/portal (security/release-evidence.mjs) with an actual TLS 1.3-only observation of the portal origin; configure actual verified staff and named scoped recipient keys/fingerprints with least-privilege runtime grants; select G28_PROTECTED_RECOVERY_POLICY (no-backup or encrypted-recovery); then set PROTECTED_CONTENT_ENABLED=true, which startup re-verifies. Residual: a fully compromised origin needs an out-of-band verifier (documented).",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
-        "implementation": "remaining_implementation",
-        "reviewedAt": "2026-11-10T09:54:08.362Z",
+        "implementation": "implemented",
+        "reviewedAt": "2026-11-15T18:58:30.562Z",
         "sourceFiles": [
           {
             "path": "apps/api/src/protected-mls-routes.mjs",
@@ -909,11 +911,47 @@
           {
             "path": "apps/portal/src/main.tsx",
             "sha256": "fe19f4a6aa62f3e0ee2426aaea9b260e346c42a2620981483fd42351a7359aad"
+          },
+          {
+            "path": "packages/core/release-authenticity.mjs",
+            "sha256": "e82ba8bdb38b87528e8d28b923ba7a559d4ead87b2754934b15f570887d87f7d"
+          },
+          {
+            "path": "security/release-trust.json",
+            "sha256": "c2531a7049d0c2797a5a87946b0fbe0d6a78df9fd74000a814e003331261d813"
+          },
+          {
+            "path": "security/release-evidence.mjs",
+            "sha256": "fe0eee47ebe8626d60e84b2a7a7150a6508bb60c4a440a20ad31ccfb35cbad1e"
+          },
+          {
+            "path": "apps/portal/release-integrity.mjs",
+            "sha256": "77dcc2c36d9bc5f6fd180ca4253d527e3bc5dbeb77787088df4f6c4708c109f2"
+          },
+          {
+            "path": "apps/api/src/static.mjs",
+            "sha256": "5b352ec20d7ae4ca9c4664a407bf59bf5fa8d3e8f7f6313a61ad890b7df3efd9"
+          },
+          {
+            "path": "apps/api/src/config.mjs",
+            "sha256": "6b2134bcba3caa17ecc602b46e3ce3c8445beea7526906fc0a70146735d5b630"
+          },
+          {
+            "path": "tests/release-authenticity.test.mjs",
+            "sha256": "bc657336a6224fab30b7ac97f6b766c4125f7243ded7fe300559da3a9c726b64"
+          },
+          {
+            "path": "tests/portal-release-integrity.test.mjs",
+            "sha256": "7bfa9bebf609f928852ff554228f8218d395eee408cf4a3f7c12ffd080b79091"
+          },
+          {
+            "path": "docs/security/PROTECTED_RELEASE_AUTHENTICITY.md",
+            "sha256": "320d85d895612511a221f64cc29f6fdf95ff87c51941c3963d235320b38f3f72"
           }
         ],
-        "softwareGap": "Ratcheted v2 delivery, encrypted local custody, root-authorized device linking/rotation/revocation/replacement, manual trust invalidation and controlled item export are implemented and browser-tested. Remaining source work: hardened executable-release closure/CSP/SRI, authenticated update/log-witness integration and activation guards. Actual staff, recovery-policy selection and hosted security evidence remain separate inputs.",
-        "activationRequirement": "Select no-backup or encrypted-recovery policy; configure actual verified staff and named scoped recipient keys/fingerprints, migration 024 and least-privilege runtime grants; observe hosted TLS/transparency and browser journey. No activation or fabricated staff/mail/merchant inputs.",
-        "verification": "Real Chromium/API/SQL lifecycle journey now covers root/linked rotation, stale public-request refresh, explicit pending-key disposal, signed revocation/lost-ACK retry, replacement without inherited trust/history, and audited UI ciphertext export, plus PR157 message/attachment/concurrency/rollback/egress tests. See docs/security/RATCHETED_PROTECTED_DEVICE_LIFECYCLE.md; CI/deployment separately recorded."
+        "softwareGap": null,
+        "activationRequirement": "Pin the owner-held Ed25519 release key, the transparency log key and at least two independently operated witness keys in security/release-trust.json; publish signed, logged, witnessed release evidence for the deployed dist/portal (security/release-evidence.mjs) with an actual TLS 1.3-only observation of the portal origin; configure actual verified staff and named scoped recipient keys/fingerprints with least-privilege runtime grants; select G28_PROTECTED_RECOVERY_POLICY (no-backup or encrypted-recovery); then set PROTECTED_CONTENT_ENABLED=true, which startup re-verifies. Residual: a fully compromised origin needs an out-of-band verifier (documented).",
+        "verification": "AI-reviewed source and tests (PRs 162, 163): portal SRI/import-map integrity and hash-bound CSP; signed, anti-rollback, transparency-logged and witness-quorum release verification of the installed bytes enforced at startup; gate closed until trust roots are pinned. Not an independent audit or conformance claim."
       }
     },
     {
@@ -925,17 +963,19 @@
         154,
         155,
         156,
-        157
+        157,
+        162,
+        163
       ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "in_progress",
-      "acceptanceBlocker": "Ratcheted v2 delivery, encrypted local custody, root-authorized device linking/rotation/revocation/replacement, manual trust invalidation and controlled item export are implemented and browser-tested. Remaining source work: hardened executable-release closure/CSP/SRI, authenticated update/log-witness integration and activation guards. Actual staff, recovery-policy selection and hosted security evidence remain separate inputs.",
+      "status": "implemented",
+      "acceptanceBlocker": "Pin the owner-held Ed25519 release key, the transparency log key and at least two independently operated witness keys in security/release-trust.json; publish signed, logged, witnessed release evidence for the deployed dist/portal (security/release-evidence.mjs) with an actual TLS 1.3-only observation of the portal origin; configure actual verified staff and named scoped recipient keys/fingerprints with least-privilege runtime grants; select G28_PROTECTED_RECOVERY_POLICY (no-backup or encrypted-recovery); then set PROTECTED_CONTENT_ENABLED=true, which startup re-verifies. Residual: a fully compromised origin needs an out-of-band verifier (documented).",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
-        "implementation": "remaining_implementation",
-        "reviewedAt": "2026-11-10T09:54:08.362Z",
+        "implementation": "implemented",
+        "reviewedAt": "2026-11-15T18:58:30.562Z",
         "sourceFiles": [
           {
             "path": "apps/api/src/protected-mls-routes.mjs",
@@ -992,11 +1032,47 @@
           {
             "path": "apps/portal/src/main.tsx",
             "sha256": "fe19f4a6aa62f3e0ee2426aaea9b260e346c42a2620981483fd42351a7359aad"
+          },
+          {
+            "path": "packages/core/release-authenticity.mjs",
+            "sha256": "e82ba8bdb38b87528e8d28b923ba7a559d4ead87b2754934b15f570887d87f7d"
+          },
+          {
+            "path": "security/release-trust.json",
+            "sha256": "c2531a7049d0c2797a5a87946b0fbe0d6a78df9fd74000a814e003331261d813"
+          },
+          {
+            "path": "security/release-evidence.mjs",
+            "sha256": "fe0eee47ebe8626d60e84b2a7a7150a6508bb60c4a440a20ad31ccfb35cbad1e"
+          },
+          {
+            "path": "apps/portal/release-integrity.mjs",
+            "sha256": "77dcc2c36d9bc5f6fd180ca4253d527e3bc5dbeb77787088df4f6c4708c109f2"
+          },
+          {
+            "path": "apps/api/src/static.mjs",
+            "sha256": "5b352ec20d7ae4ca9c4664a407bf59bf5fa8d3e8f7f6313a61ad890b7df3efd9"
+          },
+          {
+            "path": "apps/api/src/config.mjs",
+            "sha256": "6b2134bcba3caa17ecc602b46e3ce3c8445beea7526906fc0a70146735d5b630"
+          },
+          {
+            "path": "tests/release-authenticity.test.mjs",
+            "sha256": "bc657336a6224fab30b7ac97f6b766c4125f7243ded7fe300559da3a9c726b64"
+          },
+          {
+            "path": "tests/portal-release-integrity.test.mjs",
+            "sha256": "7bfa9bebf609f928852ff554228f8218d395eee408cf4a3f7c12ffd080b79091"
+          },
+          {
+            "path": "docs/security/PROTECTED_RELEASE_AUTHENTICITY.md",
+            "sha256": "320d85d895612511a221f64cc29f6fdf95ff87c51941c3963d235320b38f3f72"
           }
         ],
-        "softwareGap": "Ratcheted v2 delivery, encrypted local custody, root-authorized device linking/rotation/revocation/replacement, manual trust invalidation and controlled item export are implemented and browser-tested. Remaining source work: hardened executable-release closure/CSP/SRI, authenticated update/log-witness integration and activation guards. Actual staff, recovery-policy selection and hosted security evidence remain separate inputs.",
-        "activationRequirement": "Select no-backup or encrypted-recovery policy; configure actual verified staff and named scoped recipient keys/fingerprints, migration 024 and least-privilege runtime grants; observe hosted TLS/transparency and browser journey. No activation or fabricated staff/mail/merchant inputs.",
-        "verification": "Real Chromium/API/SQL lifecycle journey now covers root/linked rotation, stale public-request refresh, explicit pending-key disposal, signed revocation/lost-ACK retry, replacement without inherited trust/history, and audited UI ciphertext export, plus PR157 message/attachment/concurrency/rollback/egress tests. See docs/security/RATCHETED_PROTECTED_DEVICE_LIFECYCLE.md; CI/deployment separately recorded."
+        "softwareGap": null,
+        "activationRequirement": "Pin the owner-held Ed25519 release key, the transparency log key and at least two independently operated witness keys in security/release-trust.json; publish signed, logged, witnessed release evidence for the deployed dist/portal (security/release-evidence.mjs) with an actual TLS 1.3-only observation of the portal origin; configure actual verified staff and named scoped recipient keys/fingerprints with least-privilege runtime grants; select G28_PROTECTED_RECOVERY_POLICY (no-backup or encrypted-recovery); then set PROTECTED_CONTENT_ENABLED=true, which startup re-verifies. Residual: a fully compromised origin needs an out-of-band verifier (documented).",
+        "verification": "AI-reviewed source and tests (PRs 162, 163): portal SRI/import-map integrity and hash-bound CSP; signed, anti-rollback, transparency-logged and witness-quorum release verification of the installed bytes enforced at startup; gate closed until trust roots are pinned. Not an independent audit or conformance claim."
       }
     },
     {
@@ -1009,17 +1085,19 @@
         154,
         155,
         156,
-        157
+        157,
+        162,
+        163
       ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "in_progress",
-      "acceptanceBlocker": "Ratcheted v2 delivery, encrypted local custody, root-authorized device linking/rotation/revocation/replacement, manual trust invalidation and controlled item export are implemented and browser-tested. Remaining source work: hardened executable-release closure/CSP/SRI, authenticated update/log-witness integration and activation guards. Actual staff, recovery-policy selection and hosted security evidence remain separate inputs.",
+      "status": "implemented",
+      "acceptanceBlocker": "Pin the owner-held Ed25519 release key, the transparency log key and at least two independently operated witness keys in security/release-trust.json; publish signed, logged, witnessed release evidence for the deployed dist/portal (security/release-evidence.mjs) with an actual TLS 1.3-only observation of the portal origin; configure actual verified staff and named scoped recipient keys/fingerprints with least-privilege runtime grants; select G28_PROTECTED_RECOVERY_POLICY (no-backup or encrypted-recovery); then set PROTECTED_CONTENT_ENABLED=true, which startup re-verifies. Residual: a fully compromised origin needs an out-of-band verifier (documented).",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
-        "implementation": "remaining_implementation",
-        "reviewedAt": "2026-11-10T09:54:08.362Z",
+        "implementation": "implemented",
+        "reviewedAt": "2026-11-15T18:58:30.562Z",
         "sourceFiles": [
           {
             "path": "apps/api/src/protected-mls-routes.mjs",
@@ -1076,11 +1154,47 @@
           {
             "path": "apps/portal/src/main.tsx",
             "sha256": "fe19f4a6aa62f3e0ee2426aaea9b260e346c42a2620981483fd42351a7359aad"
+          },
+          {
+            "path": "packages/core/release-authenticity.mjs",
+            "sha256": "e82ba8bdb38b87528e8d28b923ba7a559d4ead87b2754934b15f570887d87f7d"
+          },
+          {
+            "path": "security/release-trust.json",
+            "sha256": "c2531a7049d0c2797a5a87946b0fbe0d6a78df9fd74000a814e003331261d813"
+          },
+          {
+            "path": "security/release-evidence.mjs",
+            "sha256": "fe0eee47ebe8626d60e84b2a7a7150a6508bb60c4a440a20ad31ccfb35cbad1e"
+          },
+          {
+            "path": "apps/portal/release-integrity.mjs",
+            "sha256": "77dcc2c36d9bc5f6fd180ca4253d527e3bc5dbeb77787088df4f6c4708c109f2"
+          },
+          {
+            "path": "apps/api/src/static.mjs",
+            "sha256": "5b352ec20d7ae4ca9c4664a407bf59bf5fa8d3e8f7f6313a61ad890b7df3efd9"
+          },
+          {
+            "path": "apps/api/src/config.mjs",
+            "sha256": "6b2134bcba3caa17ecc602b46e3ce3c8445beea7526906fc0a70146735d5b630"
+          },
+          {
+            "path": "tests/release-authenticity.test.mjs",
+            "sha256": "bc657336a6224fab30b7ac97f6b766c4125f7243ded7fe300559da3a9c726b64"
+          },
+          {
+            "path": "tests/portal-release-integrity.test.mjs",
+            "sha256": "7bfa9bebf609f928852ff554228f8218d395eee408cf4a3f7c12ffd080b79091"
+          },
+          {
+            "path": "docs/security/PROTECTED_RELEASE_AUTHENTICITY.md",
+            "sha256": "320d85d895612511a221f64cc29f6fdf95ff87c51941c3963d235320b38f3f72"
           }
         ],
-        "softwareGap": "Ratcheted v2 delivery, encrypted local custody, root-authorized device linking/rotation/revocation/replacement, manual trust invalidation and controlled item export are implemented and browser-tested. Remaining source work: hardened executable-release closure/CSP/SRI, authenticated update/log-witness integration and activation guards. Actual staff, recovery-policy selection and hosted security evidence remain separate inputs.",
-        "activationRequirement": "Select no-backup or encrypted-recovery policy; configure actual verified staff and named scoped recipient keys/fingerprints, migration 024 and least-privilege runtime grants; observe hosted TLS/transparency and browser journey. No activation or fabricated staff/mail/merchant inputs.",
-        "verification": "Real Chromium/API/SQL lifecycle journey now covers root/linked rotation, stale public-request refresh, explicit pending-key disposal, signed revocation/lost-ACK retry, replacement without inherited trust/history, and audited UI ciphertext export, plus PR157 message/attachment/concurrency/rollback/egress tests. See docs/security/RATCHETED_PROTECTED_DEVICE_LIFECYCLE.md; CI/deployment separately recorded."
+        "softwareGap": null,
+        "activationRequirement": "Pin the owner-held Ed25519 release key, the transparency log key and at least two independently operated witness keys in security/release-trust.json; publish signed, logged, witnessed release evidence for the deployed dist/portal (security/release-evidence.mjs) with an actual TLS 1.3-only observation of the portal origin; configure actual verified staff and named scoped recipient keys/fingerprints with least-privilege runtime grants; select G28_PROTECTED_RECOVERY_POLICY (no-backup or encrypted-recovery); then set PROTECTED_CONTENT_ENABLED=true, which startup re-verifies. Residual: a fully compromised origin needs an out-of-band verifier (documented).",
+        "verification": "AI-reviewed source and tests (PRs 162, 163): portal SRI/import-map integrity and hash-bound CSP; signed, anti-rollback, transparency-logged and witness-quorum release verification of the installed bytes enforced at startup; gate closed until trust roots are pinned. Not an independent audit or conformance claim."
       }
     },
     {
@@ -1477,17 +1591,19 @@
         154,
         155,
         156,
-        157
+        157,
+        162,
+        163
       ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "in_progress",
-      "acceptanceBlocker": "Ratcheted v2 delivery, encrypted local custody, root-authorized device linking/rotation/revocation/replacement, manual trust invalidation and controlled item export are implemented and browser-tested. Remaining source work: hardened executable-release closure/CSP/SRI, authenticated update/log-witness integration and activation guards. Actual staff, recovery-policy selection and hosted security evidence remain separate inputs.",
+      "status": "implemented",
+      "acceptanceBlocker": "Pin the owner-held Ed25519 release key, the transparency log key and at least two independently operated witness keys in security/release-trust.json; publish signed, logged, witnessed release evidence for the deployed dist/portal (security/release-evidence.mjs) with an actual TLS 1.3-only observation of the portal origin; configure actual verified staff and named scoped recipient keys/fingerprints with least-privilege runtime grants; select G28_PROTECTED_RECOVERY_POLICY (no-backup or encrypted-recovery); then set PROTECTED_CONTENT_ENABLED=true, which startup re-verifies. Residual: a fully compromised origin needs an out-of-band verifier (documented).",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
-        "implementation": "remaining_implementation",
-        "reviewedAt": "2026-11-10T09:54:08.362Z",
+        "implementation": "implemented",
+        "reviewedAt": "2026-11-15T18:58:30.562Z",
         "sourceFiles": [
           {
             "path": "apps/api/src/protected-mls-routes.mjs",
@@ -1544,11 +1660,47 @@
           {
             "path": "apps/portal/src/main.tsx",
             "sha256": "fe19f4a6aa62f3e0ee2426aaea9b260e346c42a2620981483fd42351a7359aad"
+          },
+          {
+            "path": "packages/core/release-authenticity.mjs",
+            "sha256": "e82ba8bdb38b87528e8d28b923ba7a559d4ead87b2754934b15f570887d87f7d"
+          },
+          {
+            "path": "security/release-trust.json",
+            "sha256": "c2531a7049d0c2797a5a87946b0fbe0d6a78df9fd74000a814e003331261d813"
+          },
+          {
+            "path": "security/release-evidence.mjs",
+            "sha256": "fe0eee47ebe8626d60e84b2a7a7150a6508bb60c4a440a20ad31ccfb35cbad1e"
+          },
+          {
+            "path": "apps/portal/release-integrity.mjs",
+            "sha256": "77dcc2c36d9bc5f6fd180ca4253d527e3bc5dbeb77787088df4f6c4708c109f2"
+          },
+          {
+            "path": "apps/api/src/static.mjs",
+            "sha256": "5b352ec20d7ae4ca9c4664a407bf59bf5fa8d3e8f7f6313a61ad890b7df3efd9"
+          },
+          {
+            "path": "apps/api/src/config.mjs",
+            "sha256": "6b2134bcba3caa17ecc602b46e3ce3c8445beea7526906fc0a70146735d5b630"
+          },
+          {
+            "path": "tests/release-authenticity.test.mjs",
+            "sha256": "bc657336a6224fab30b7ac97f6b766c4125f7243ded7fe300559da3a9c726b64"
+          },
+          {
+            "path": "tests/portal-release-integrity.test.mjs",
+            "sha256": "7bfa9bebf609f928852ff554228f8218d395eee408cf4a3f7c12ffd080b79091"
+          },
+          {
+            "path": "docs/security/PROTECTED_RELEASE_AUTHENTICITY.md",
+            "sha256": "320d85d895612511a221f64cc29f6fdf95ff87c51941c3963d235320b38f3f72"
           }
         ],
-        "softwareGap": "Ratcheted v2 delivery, encrypted local custody, root-authorized device linking/rotation/revocation/replacement, manual trust invalidation and controlled item export are implemented and browser-tested. Remaining source work: hardened executable-release closure/CSP/SRI, authenticated update/log-witness integration and activation guards. Actual staff, recovery-policy selection and hosted security evidence remain separate inputs.",
-        "activationRequirement": "Select no-backup or encrypted-recovery policy; configure actual verified staff and named scoped recipient keys/fingerprints, migration 024 and least-privilege runtime grants; observe hosted TLS/transparency and browser journey. No activation or fabricated staff/mail/merchant inputs.",
-        "verification": "Real Chromium/API/SQL lifecycle journey now covers root/linked rotation, stale public-request refresh, explicit pending-key disposal, signed revocation/lost-ACK retry, replacement without inherited trust/history, and audited UI ciphertext export, plus PR157 message/attachment/concurrency/rollback/egress tests. See docs/security/RATCHETED_PROTECTED_DEVICE_LIFECYCLE.md; CI/deployment separately recorded."
+        "softwareGap": null,
+        "activationRequirement": "Pin the owner-held Ed25519 release key, the transparency log key and at least two independently operated witness keys in security/release-trust.json; publish signed, logged, witnessed release evidence for the deployed dist/portal (security/release-evidence.mjs) with an actual TLS 1.3-only observation of the portal origin; configure actual verified staff and named scoped recipient keys/fingerprints with least-privilege runtime grants; select G28_PROTECTED_RECOVERY_POLICY (no-backup or encrypted-recovery); then set PROTECTED_CONTENT_ENABLED=true, which startup re-verifies. Residual: a fully compromised origin needs an out-of-band verifier (documented).",
+        "verification": "AI-reviewed source and tests (PRs 162, 163): portal SRI/import-map integrity and hash-bound CSP; signed, anti-rollback, transparency-logged and witness-quorum release verification of the installed bytes enforced at startup; gate closed until trust roots are pinned. Not an independent audit or conformance claim."
       }
     },
     {
@@ -1697,17 +1849,19 @@
         154,
         155,
         156,
-        157
+        157,
+        162,
+        163
       ],
       "dependsOn": [],
       "externalDependencies": [],
       "externalPrerequisites": [],
-      "status": "in_progress",
-      "acceptanceBlocker": "Ratcheted v2 delivery, encrypted local custody, root-authorized device linking/rotation/revocation/replacement, manual trust invalidation and controlled item export are implemented and browser-tested. Remaining source work: hardened executable-release closure/CSP/SRI, authenticated update/log-witness integration and activation guards. Actual staff, recovery-policy selection and hosted security evidence remain separate inputs.",
+      "status": "implemented",
+      "acceptanceBlocker": "Pin the owner-held Ed25519 release key, the transparency log key and at least two independently operated witness keys in security/release-trust.json; publish signed, logged, witnessed release evidence for the deployed dist/portal (security/release-evidence.mjs) with an actual TLS 1.3-only observation of the portal origin; configure actual verified staff and named scoped recipient keys/fingerprints with least-privilege runtime grants; select G28_PROTECTED_RECOVERY_POLICY (no-backup or encrypted-recovery); then set PROTECTED_CONTENT_ENABLED=true, which startup re-verifies. Residual: a fully compromised origin needs an out-of-band verifier (documented).",
       "acceptanceReport": "docs/evidence/ACCEPTANCE_AUDIT_20261013.md",
       "implementationReview": {
-        "implementation": "remaining_implementation",
-        "reviewedAt": "2026-11-10T09:54:08.362Z",
+        "implementation": "implemented",
+        "reviewedAt": "2026-11-15T18:58:30.562Z",
         "sourceFiles": [
           {
             "path": "apps/api/src/protected-mls-routes.mjs",
@@ -1764,11 +1918,47 @@
           {
             "path": "apps/portal/src/main.tsx",
             "sha256": "fe19f4a6aa62f3e0ee2426aaea9b260e346c42a2620981483fd42351a7359aad"
+          },
+          {
+            "path": "packages/core/release-authenticity.mjs",
+            "sha256": "e82ba8bdb38b87528e8d28b923ba7a559d4ead87b2754934b15f570887d87f7d"
+          },
+          {
+            "path": "security/release-trust.json",
+            "sha256": "c2531a7049d0c2797a5a87946b0fbe0d6a78df9fd74000a814e003331261d813"
+          },
+          {
+            "path": "security/release-evidence.mjs",
+            "sha256": "fe0eee47ebe8626d60e84b2a7a7150a6508bb60c4a440a20ad31ccfb35cbad1e"
+          },
+          {
+            "path": "apps/portal/release-integrity.mjs",
+            "sha256": "77dcc2c36d9bc5f6fd180ca4253d527e3bc5dbeb77787088df4f6c4708c109f2"
+          },
+          {
+            "path": "apps/api/src/static.mjs",
+            "sha256": "5b352ec20d7ae4ca9c4664a407bf59bf5fa8d3e8f7f6313a61ad890b7df3efd9"
+          },
+          {
+            "path": "apps/api/src/config.mjs",
+            "sha256": "6b2134bcba3caa17ecc602b46e3ce3c8445beea7526906fc0a70146735d5b630"
+          },
+          {
+            "path": "tests/release-authenticity.test.mjs",
+            "sha256": "bc657336a6224fab30b7ac97f6b766c4125f7243ded7fe300559da3a9c726b64"
+          },
+          {
+            "path": "tests/portal-release-integrity.test.mjs",
+            "sha256": "7bfa9bebf609f928852ff554228f8218d395eee408cf4a3f7c12ffd080b79091"
+          },
+          {
+            "path": "docs/security/PROTECTED_RELEASE_AUTHENTICITY.md",
+            "sha256": "320d85d895612511a221f64cc29f6fdf95ff87c51941c3963d235320b38f3f72"
           }
         ],
-        "softwareGap": "Ratcheted v2 delivery, encrypted local custody, root-authorized device linking/rotation/revocation/replacement, manual trust invalidation and controlled item export are implemented and browser-tested. Remaining source work: hardened executable-release closure/CSP/SRI, authenticated update/log-witness integration and activation guards. Actual staff, recovery-policy selection and hosted security evidence remain separate inputs.",
-        "activationRequirement": "Select no-backup or encrypted-recovery policy; configure actual verified staff and named scoped recipient keys/fingerprints, migration 024 and least-privilege runtime grants; observe hosted TLS/transparency and browser journey. No activation or fabricated staff/mail/merchant inputs.",
-        "verification": "Real Chromium/API/SQL lifecycle journey now covers root/linked rotation, stale public-request refresh, explicit pending-key disposal, signed revocation/lost-ACK retry, replacement without inherited trust/history, and audited UI ciphertext export, plus PR157 message/attachment/concurrency/rollback/egress tests. See docs/security/RATCHETED_PROTECTED_DEVICE_LIFECYCLE.md; CI/deployment separately recorded."
+        "softwareGap": null,
+        "activationRequirement": "Pin the owner-held Ed25519 release key, the transparency log key and at least two independently operated witness keys in security/release-trust.json; publish signed, logged, witnessed release evidence for the deployed dist/portal (security/release-evidence.mjs) with an actual TLS 1.3-only observation of the portal origin; configure actual verified staff and named scoped recipient keys/fingerprints with least-privilege runtime grants; select G28_PROTECTED_RECOVERY_POLICY (no-backup or encrypted-recovery); then set PROTECTED_CONTENT_ENABLED=true, which startup re-verifies. Residual: a fully compromised origin needs an out-of-band verifier (documented).",
+        "verification": "AI-reviewed source and tests (PRs 162, 163): portal SRI/import-map integrity and hash-bound CSP; signed, anti-rollback, transparency-logged and witness-quorum release verification of the installed bytes enforced at startup; gate closed until trust roots are pinned. Not an independent audit or conformance claim."
       }
     },
     {
@@ -3030,6 +3220,81 @@
     }
   ],
   "pullRequests": [
+    {
+      "id": 5325999514,
+      "number": 163,
+      "title": "Gate protected reporting on a signed, witnessed release of the installed bytes",
+      "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/163",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-11-15T18:53:17Z",
+      "updatedAt": "2026-11-15T18:58:06Z",
+      "closedAt": "2026-11-15T18:58:06Z",
+      "mergedAt": "2026-11-15T18:58:06Z",
+      "headSha": "e045883915fe4bc98f6ff1065424c75769507ef6",
+      "baseRef": "main",
+      "mergeCommitSha": "9fb1120dc463fe784de24bb19925192d4390c16b"
+    },
+    {
+      "id": 5325801276,
+      "number": 162,
+      "title": "Current Render config, Astro patch, portal SRI/CSP and chunk split, CI PostgreSQL 16 client",
+      "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/162",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-11-15T18:30:15Z",
+      "updatedAt": "2026-11-15T18:52:45Z",
+      "closedAt": "2026-11-15T18:52:44Z",
+      "mergedAt": "2026-11-15T18:52:44Z",
+      "headSha": "1323ea230abab2ec4dad621b745ac3e93f06d91a",
+      "baseRef": "main",
+      "mergeCommitSha": "22c91248fc715a1995ffa74f6ec669b0d21a714e"
+    },
+    {
+      "id": 5247920670,
+      "number": 161,
+      "title": "E2EESA client hardening: deterministic full web and portal executable closure",
+      "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/161",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-11-10T19:55:44Z",
+      "updatedAt": "2026-11-10T20:07:14Z",
+      "closedAt": "2026-11-10T20:07:14Z",
+      "mergedAt": "2026-11-10T20:07:14Z",
+      "headSha": "662639a2eae06a4a9401c857d54a678be45182d4",
+      "baseRef": "main",
+      "mergeCommitSha": "0e1244e5c51d931ef1eed1d0d44f12698fbe3696"
+    },
+    {
+      "id": 5247863199,
+      "number": 160,
+      "title": "E2EESA 1.0 integration: exact release binding, MLS adversarial checks, truthful protected-content gates",
+      "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/160",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-11-10T19:51:40Z",
+      "updatedAt": "2026-11-10T19:57:53Z",
+      "closedAt": "2026-11-10T19:57:53Z",
+      "mergedAt": "2026-11-10T19:57:53Z",
+      "headSha": "6c5ae2fc9981817b53a3b80561b36419876149c1",
+      "baseRef": "main",
+      "mergeCommitSha": "9d9f6b0e122df73a0ed63ca6f04eaa64e5fa4cd8"
+    },
+    {
+      "id": 5240676569,
+      "number": 159,
+      "title": "Enforce one-shot TEST card capture and block unsafe live Checkout",
+      "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/159",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-11-10T11:43:40Z",
+      "updatedAt": "2026-11-10T11:49:09Z",
+      "closedAt": "2026-11-10T11:49:09Z",
+      "mergedAt": "2026-11-10T11:49:09Z",
+      "headSha": "b3d24ff827c5cd9cde4a252b963f58818b5783d5",
+      "baseRef": "main",
+      "mergeCommitSha": "7b7e88e475407210697708c6b8d58f3d82343891"
+    },
     {
       "id": 5239505073,
       "number": 158,
@@ -4548,7 +4813,7 @@
     {
       "id": 4829596446,
       "number": 54,
-      "title": "SUPERSEDED: four-processor handoff already updated in merged PRs #55\u201357",
+      "title": "SUPERSEDED: four-processor handoff already updated in merged PRs #55–57",
       "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/54",
       "state": "closed",
       "draft": false,
@@ -4578,7 +4843,7 @@
     {
       "id": 4829483935,
       "number": 52,
-      "title": "Recover September 2026 Kirk\u2013Evers legislation source for private editorial review",
+      "title": "Recover September 2026 Kirk–Evers legislation source for private editorial review",
       "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/52",
       "state": "closed",
       "draft": false,
@@ -4608,7 +4873,7 @@
     {
       "id": 4829439565,
       "number": 48,
-      "title": "SUPERSEDED / PROHIBITED \u2014 do not use Stripe for campaign payments",
+      "title": "SUPERSEDED / PROHIBITED — do not use Stripe for campaign payments",
       "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/48",
       "state": "closed",
       "draft": false,
@@ -5148,7 +5413,7 @@
     {
       "id": 4817446915,
       "number": 12,
-      "title": "Publish Kirk\u2013Evers documents only with independent review and verified asset hashes",
+      "title": "Publish Kirk–Evers documents only with independent review and verified asset hashes",
       "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/12",
       "state": "closed",
       "draft": false,
