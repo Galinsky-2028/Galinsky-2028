@@ -6,6 +6,8 @@ import {MemoryStore} from './memory-store.mjs';
 import {registerPortal} from './static.mjs';
 import {registerCampaignEditor} from './campaign-routes.mjs';
 import {runMailQueueLoop} from './worker.mjs';
+import {CardContributionStore} from './card-contribution-store.mjs';
+import {RecurringCardService,runDueLoop} from './card-recurring-service.mjs';
 const config=loadConfig();
 const store=config.databaseUrl?new PostgresStore(databasePool(config.databaseUrl)):new MemoryStore();
 const app=createApp({store,config});
@@ -25,12 +27,19 @@ if(config.production&&(config.signup||config.adminLoginReady)&&config.mailDelive
  await store.healthy();
  mailLoop=runMailQueueLoop({store,config,signal:mailController.signal});
 }
+// Due-installment processing for TEST monthly schedules runs only where TEST card
+// actions are explicitly enabled with a real database. It never contacts the processor.
+const dueController=new AbortController();
+const dueLoop=config.treasurySandboxActions===true&&/^sk_test_/.test(config.stripeTestKey||'')&&store.pool
+ ?runDueLoop({service:new RecurringCardService({cards:new CardContributionStore({store,config})}),signal:dueController.signal})
+ :null;
 let closing=false;
 async function shutdown(){
  if(closing)return;closing=true;
- mailController.abort();
+ mailController.abort();dueController.abort();
  try{
   if(mailLoop)await mailLoop;
+  if(dueLoop)await dueLoop;
   await app.close();
   await store.close();
   process.exit(0);

@@ -20,7 +20,10 @@ import {
   openFinanceEvidence,
 } from '../../../packages/core/treasury-private.mjs';
 import { csvCell } from '../../../packages/core/treasury-export.mjs';
-import { requestStripeTestRefund } from '../../../packages/core/stripe-treasury-actions.mjs';
+import {
+  requestStripeTestRefund,
+  requestStripeTestCardRefund,
+} from '../../../packages/core/stripe-treasury-actions.mjs';
 const sha = (value) =>
   createHash('sha256')
     .update(typeof value === 'string' ? value : canonical(value))
@@ -705,25 +708,52 @@ export const postgresTreasuryWorkflow = {
         'Reconcile the existing provider command for this gift before another request.',
         409,
       );
-      const source = (
-        await c.query(
-          'SELECT client_reference,amount_cents,livemode FROM g28.stripe_checkout_intents WHERE session_id=$1',
-          [gift.providerPaymentId],
-        )
-      ).rows[0];
-      assert(
-        source && !source.livemode && Number(source.amount_cents) === gift.grossCents,
-        'sandbox_payment_mismatch',
-        'The original recorded test checkout is required.',
-        409,
-      );
-      const doc = {
-        request: b,
-        giftId: gift.id,
-        sessionId: gift.providerPaymentId,
-        clientReference: source.client_reference,
-        originalAmountCents: gift.grossCents,
-      };
+      let doc;
+      if (/^pi_[A-Za-z0-9]{8,100}$/.test(gift.providerPaymentId || '')) {
+        // A captured monthly card installment: bound to its exact period and intent.
+        const period = (
+          await c.query(
+            "SELECT id,amount_cents,environment,status FROM g28.card_periods WHERE provider_payment_id=$1 AND status IN ('captured_unposted','posted')",
+            [gift.providerPaymentId],
+          )
+        ).rows[0];
+        assert(
+          period &&
+            period.environment === 'test' &&
+            Number(period.amount_cents) === gift.grossCents,
+          'sandbox_payment_mismatch',
+          'The original captured test installment is required.',
+          409,
+        );
+        doc = {
+          request: b,
+          giftId: gift.id,
+          sessionId: gift.providerPaymentId,
+          paymentIntentId: gift.providerPaymentId,
+          periodId: period.id,
+          originalAmountCents: gift.grossCents,
+        };
+      } else {
+        const source = (
+          await c.query(
+            'SELECT client_reference,amount_cents,livemode FROM g28.stripe_checkout_intents WHERE session_id=$1',
+            [gift.providerPaymentId],
+          )
+        ).rows[0];
+        assert(
+          source && !source.livemode && Number(source.amount_cents) === gift.grossCents,
+          'sandbox_payment_mismatch',
+          'The original recorded test checkout is required.',
+          409,
+        );
+        doc = {
+          request: b,
+          giftId: gift.id,
+          sessionId: gift.providerPaymentId,
+          clientReference: source.client_reference,
+          originalAmountCents: gift.grossCents,
+        };
+      }
       await c.query(
         "INSERT INTO g28.treasury_commands(id,case_id,document,status) VALUES($1,$2,$3,'processing')",
         [b.id, b.caseId, doc],
@@ -734,15 +764,25 @@ export const postgresTreasuryWorkflow = {
     if (prepared.duplicate) return prepared;
     let result;
     try {
-      result = await requestStripeTestRefund({
-        secretKey,
-        sessionId: prepared.sessionId,
-        clientReference: prepared.clientReference,
-        originalAmountCents: prepared.originalAmountCents,
-        amountCents: b.amountCents,
-        commandId: b.id,
-        transport,
-      });
+      result = prepared.paymentIntentId
+        ? await requestStripeTestCardRefund({
+            secretKey,
+            paymentIntentId: prepared.paymentIntentId,
+            periodId: prepared.periodId,
+            originalAmountCents: prepared.originalAmountCents,
+            amountCents: b.amountCents,
+            commandId: b.id,
+            transport,
+          })
+        : await requestStripeTestRefund({
+            secretKey,
+            sessionId: prepared.sessionId,
+            clientReference: prepared.clientReference,
+            originalAmountCents: prepared.originalAmountCents,
+            amountCents: b.amountCents,
+            commandId: b.id,
+            transport,
+          });
     } catch {
       const current = await this.financeTransaction(async (c) => {
         await c.query(

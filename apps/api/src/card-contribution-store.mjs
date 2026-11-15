@@ -361,6 +361,12 @@ export class CardContributionStore {
         'Verify the actual card setup first.',
         409,
       );
+      assert(
+        !e.replaces_mandate_id,
+        'card_replacement_setup',
+        'A replacement-card setup updates its existing schedule; it cannot start another one.',
+        409,
+      );
       await proof(c, b.identityEvidenceDigest);
       const donor = (
         await c.query('SELECT version FROM g28.treasury_donors WHERE id=$1', [b.donorId])
