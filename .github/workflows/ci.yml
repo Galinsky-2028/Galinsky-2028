@@ -10,7 +10,9 @@ permissions:
   contents: read
 jobs:
   application:
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-latest moved to 26.04 in November 2026, whose default PostgreSQL
+    # client (18) writes archives a PostgreSQL 16 server cannot restore.
+    runs-on: ubuntu-24.04
     timeout-minutes: 35
     services:
       postgres:
@@ -50,11 +52,12 @@ jobs:
         run: npm run check && npm run lint && npm run format:check && npm run secrets:check && npm run typecheck
       - name: Unit tests
         run: npm test
-      # The runner's default PostgreSQL client can be newer than the PostgreSQL 16 service
-      # (and the PostgreSQL 16 Neon database). pg_dump 17+ archives contain settings such as
-      # transaction_timeout that a 16 server rejects, so the recovery drill uses the 16 client.
+      # The recovery drill must use the client major version of the PostgreSQL 16 service
+      # (and the PostgreSQL 16 Neon database): pg_dump 17+ archives set transaction_timeout,
+      # which a 16 server rejects.
       - name: PostgreSQL 16 client tools matching the service
         run: |
+          sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends postgresql-client-16
           echo /usr/lib/postgresql/16/bin >> "$GITHUB_PATH"
       - name: HTTP, worker and PostgreSQL integration
