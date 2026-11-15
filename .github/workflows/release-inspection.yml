@@ -21,6 +21,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 22.23.3
+          node-version: 22.23.4
       - name: Read only exact service placement, secret presence, runtime role and protected health
         run: node scripts/inspect-release.mjs

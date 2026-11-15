@@ -47,7 +47,7 @@ export function createPreviewSpec(ownerId,environmentId,password){
   branch:'main',
   autoDeployTrigger:'off',
   envVars:[
-   {key:'NODE_VERSION',value:'22.23.3'},
+   {key:'NODE_VERSION',value:'22.23.4'},
    {key:'G28_PUBLIC_MODE',value:'preview'},
    {key:'PREVIEW_ACCESS_USER',value:'preview'},
    {key:'PREVIEW_ACCESS_PASSWORD',value:password}

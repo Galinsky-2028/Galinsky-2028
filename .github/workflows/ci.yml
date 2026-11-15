@@ -10,7 +10,9 @@ permissions:
   contents: read
 jobs:
   application:
-    runs-on: ubuntu-latest
+    # Pinned: ubuntu-latest moved to 26.04 in November 2026, whose default PostgreSQL
+    # client is newer than 16 and writes archives a PostgreSQL 16 server cannot restore.
+    runs-on: ubuntu-24.04
     timeout-minutes: 35
     services:
       postgres:
@@ -31,7 +33,7 @@ jobs:
       - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
       - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
-          node-version: 22.23.3
+          node-version: 22.23.4
           cache: npm
       - name: Install dependencies from committed lockfile
         run: npm ci --no-fund
@@ -50,8 +52,16 @@ jobs:
         run: npm run check && npm run lint && npm run format:check && npm run secrets:check && npm run typecheck
       - name: Unit tests
         run: npm test
+      # The recovery drill must use the client major version of the PostgreSQL 16 service
+      # (and the PostgreSQL 16 Neon database): pg_dump 17+ archives set transaction_timeout,
+      # which a 16 server rejects.
+      - name: PostgreSQL 16 client tools matching the service
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends postgresql-client-16
+          echo /usr/lib/postgresql/16/bin >> "$GITHUB_PATH"
       - name: HTTP, worker and PostgreSQL integration
-        run: npm run test:api
+        run: pg_dump --version && pg_restore --version && npm run test:api
       - name: Build Astro and React applications
         run: npm run build
       - name: Generate complete unsigned web/portal executable closure
