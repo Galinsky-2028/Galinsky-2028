@@ -6,7 +6,7 @@
   "plan_status": "implementation_started",
   "design_status": "approved_with_issue_video_amendment",
   "planned_work_packages": 72,
-  "implemented_packages": 71,
+  "implemented_packages": 72,
   "merged_packages": 13,
   "deployed_packages": 12,
   "note": "Source-reviewed software implementation: 66/72; full-scope release-evidenced accepted packages: 13/72. Treasury/outreach additions are source-tested; protected ratcheted protocol and recurring enforcement remain real software gaps. Every verified merged PR is accepted separately from package scope and deployment.",
@@ -2601,25 +2601,27 @@
         "G28-43",
         "G28-24"
       ],
-      "status": "in_progress",
+      "status": "implemented",
       "github_prs": [],
       "scope": "Connect the processor donor portal or supported API for receipts, recurring schedule visibility, cancellation and supported payment-method updates. Keep donor and volunteer accounts independent; an optional explicit link must be verified. Disclose frequency, next charge and cancellation effect and respect provider authority for final state.",
       "acceptance": "A donor can cancel through the documented working path without joining the volunteer system. Replayed clicks do not create new commitments. Recurring limits/expiry rules apply before future charges through a proven provider mechanism; unavailable enforcement is a launch gap, not hidden behavior.",
       "evidence": "Create/renew/cancel/retry sandbox scenarios, receipt accuracy and unauthorized donor-portal access tests.",
       "external_inputs": "None beyond the listed dependencies.",
       "contributing_prs": [
-        155
+        155,
+        165,
+        166
       ],
-      "implementation_note": "TEST manual-capture backend, all-channel reservations, one-shot dispatch/reconciliation, signed callbacks and exact journal release are source-tested. Complete the public prospective setup/bank-confirmation and donor-only recovery/cancellation/payment-method UI, controlled monthly PI remedy integration and operational due-period processing before new recurring commitments can open.",
+      "implementation_note": "Working source implementation reviewed individually. Owner/treasurer inputs only: approve the monthly contribution terms text named by the card policy termsVersion; publish the documentary card policy; set STRIPE_SECRET_KEY (sk_test_), G28_STRIPE_TEST_ENABLED, G28_TREASURY_SANDBOX_ACTIONS_ENABLED, G28_RECURRING_TEST_ENABLED and DATABASE_URL on the website service and the TEST flags/staff identity on the volunteers service; apply migration 026 to the Neon database; then rehearse setup, signed callback, staff verification, mandate, due queue, bank confirmation, capture, refund and donor cancellation in TEST. Live recurring processing remains separately unavailable pending treasurer release and campaign-specific underwriting.",
       "acceptance_review": {
-        "status": "in_progress",
+        "status": "implemented",
         "reviewed_source_sha": "0e70c5cee4b34e5de78aea3b304cbe7aa73c3228",
         "report": "docs/evidence/CURRENT_IMPLEMENTATION_REVIEW.md",
-        "blocker": "TEST manual-capture backend, all-channel reservations, one-shot dispatch/reconciliation, signed callbacks and exact journal release are source-tested. Complete the public prospective setup/bank-confirmation and donor-only recovery/cancellation/payment-method UI, controlled monthly PI remedy integration and operational due-period processing before new recurring commitments can open."
+        "blocker": "Owner/treasurer inputs only: approve the monthly contribution terms text named by the card policy termsVersion; publish the documentary card policy; set STRIPE_SECRET_KEY (sk_test_), G28_STRIPE_TEST_ENABLED, G28_TREASURY_SANDBOX_ACTIONS_ENABLED, G28_RECURRING_TEST_ENABLED and DATABASE_URL on the website service and the TEST flags/staff identity on the volunteers service; apply migration 026 to the Neon database; then rehearse setup, signed callback, staff verification, mandate, due queue, bank confirmation, capture, refund and donor cancellation in TEST. Live recurring processing remains separately unavailable pending treasurer release and campaign-specific underwriting."
       },
       "implementation_review": {
-        "implementation": "remaining_implementation",
-        "reviewedAt": "2026-11-10T11:40:31.719Z",
+        "implementation": "implemented",
+        "reviewedAt": "2026-11-15T19:34:22.072Z",
         "sourceFiles": [
           {
             "path": "packages/core/card-mandates.mjs",
@@ -2627,15 +2629,15 @@
           },
           {
             "path": "packages/core/stripe-manual-capture.mjs",
-            "sha256": "019b416954ff113d9b421534c7f7053a1e3776b54574a71356b32b795bfdbcfa"
+            "sha256": "102c81dc06fabac9346931f7cccf959a0a467dadf06aa9a1c7d994d03b8e3c98"
           },
           {
             "path": "packages/core/stripe-card-setup.mjs",
-            "sha256": "dd54a593f79c57358ea098cb168a056ada35547558c77abed034d1b47c59fa0e"
+            "sha256": "e59a6a9eb17f1092baee845f5d9e20271a4471974c472e4f694c811b73757b04"
           },
           {
             "path": "apps/api/src/card-contribution-store.mjs",
-            "sha256": "3d8731c853465ed687cb00c392774597a6994cc6c453ae36c3b227a692168eb4"
+            "sha256": "9e85c0f4742e6df9f21169694dd3fa6d64bb168b3b3d4df72b054625d6e50aca"
           },
           {
             "path": "apps/web/card-signed-webhook.mjs",
@@ -2644,11 +2646,43 @@
           {
             "path": "tests/integration/card-contributions.test.mjs",
             "sha256": "ad4480ed86ebd796858b08660daa37b9b8bf0196129e7ac98a11fca5a760f47d"
+          },
+          {
+            "path": "apps/api/src/card-recurring-service.mjs",
+            "sha256": "2872af7ca90e9c71cda0b045d14e22da3cb52bb80dcdb612836a5dabb3695c97"
+          },
+          {
+            "path": "apps/web/recurring-donor.mjs",
+            "sha256": "bbe6e232ba3d322ce4580db75d4098d523a26884d75b864f881a51c31ad36972"
+          },
+          {
+            "path": "db/migrations/026_recurring_donor_service.sql",
+            "sha256": "427f861f2afbc7598894dfdedfaf9a942319949533c41aadfe20927bd8cf080a"
+          },
+          {
+            "path": "packages/core/stripe-treasury-actions.mjs",
+            "sha256": "43eff931d815911bb5314d648bea3fb7a4759288de2ab9c75d995bc0a44ec4d3"
+          },
+          {
+            "path": "apps/web/stripe-remedies.mjs",
+            "sha256": "c89ae4ce639cc36ea5efed14ba3147169865362b7ccea04d7730ee2b0bdbc887"
+          },
+          {
+            "path": "tests/integration/card-recurring.test.mjs",
+            "sha256": "b7f103019ce24ec1762aaee0ea3c5f0bf5ed34e41c8a7780f1c6aef85f94f0af"
+          },
+          {
+            "path": "tests/recurring-donor-http.test.mjs",
+            "sha256": "037afb0d9d82ab14a6bb4a6b7df15a0badfba55d1470ffa0120ad525896f16a0"
+          },
+          {
+            "path": "tests/card-recurring-adapters.test.mjs",
+            "sha256": "ed5aa00bd7bfc2348b1189a693342f66e8985d324a25de5db1e7ce6fb1676d2f"
           }
         ],
-        "softwareGap": "TEST manual-capture backend, all-channel reservations, one-shot dispatch/reconciliation, signed callbacks and exact journal release are source-tested. Complete the public prospective setup/bank-confirmation and donor-only recovery/cancellation/payment-method UI, controlled monthly PI remedy integration and operational due-period processing before new recurring commitments can open.",
-        "activationRequirement": "Actual staff mailbox and verified sender; source-verified current treasury/merchant release and credentials, separately from software completion. No real transaction is authorized.",
-        "verification": "AI source review, isolated PostgreSQL/HTTP and injected-provider negative tests. See docs/security/CARD_MANUAL_CAPTURE_REVIEW.md; exact-head CI and merged/deployed facts remain separate."
+        "softwareGap": null,
+        "activationRequirement": "Owner/treasurer inputs only: approve the monthly contribution terms text named by the card policy termsVersion; publish the documentary card policy; set STRIPE_SECRET_KEY (sk_test_), G28_STRIPE_TEST_ENABLED, G28_TREASURY_SANDBOX_ACTIONS_ENABLED, G28_RECURRING_TEST_ENABLED and DATABASE_URL on the website service and the TEST flags/staff identity on the volunteers service; apply migration 026 to the Neon database; then rehearse setup, signed callback, staff verification, mandate, due queue, bank confirmation, capture, refund and donor cancellation in TEST. Live recurring processing remains separately unavailable pending treasurer release and campaign-specific underwriting.",
+        "verification": "AI-reviewed source and tests (PRs 165, 166): donor setup/recovery/manage/cancel/card-change/bank-confirmation pages, replacement-card staff approval, monthly installment refund re-verification and signed remedy mapping, due-installment processing; real-PostgreSQL integration and provider-free HTTP/adapter tests. TEST only; disabled on deployed services."
       }
     },
     {
@@ -3988,8 +4022,8 @@
       }
     }
   ],
-  "progress_evidence_note": "Source-reviewed software implementation: 71/72; full-scope release-evidenced accepted packages: 13/72. The protected-reporting units now have an evidence-verified activation gate (closed until owner-pinned release, log and witness keys); recurring-donation self-service and due-period processing (G28-044) remain a real software gap. Every verified merged PR is accepted separately from package scope and deployment.",
-  "accepted_pull_requests": 150,
-  "accepted_prs_observed_at": "2026-11-15T18:59:07.000Z",
+  "progress_evidence_note": "Source-reviewed software implementation: 72/72; full-scope release-evidenced accepted packages: 13/72. No unit has a known remaining software gap; the remaining work is owner/treasurer activation input, hosted rehearsal and live release evidence (protected reporting gate closed until trust roots are pinned; monthly giving TEST-only and disabled). Every verified merged PR is accepted separately from package scope and deployment.",
+  "accepted_pull_requests": 153,
+  "accepted_prs_observed_at": "2026-11-15T19:34:32.000Z",
   "pull_request_acceptance_rule": "Every real GitHub PR with a verified merged_at is accepted; no further package review is required to accept that PR. Fully complete planned work packages are counted separately."
 }
