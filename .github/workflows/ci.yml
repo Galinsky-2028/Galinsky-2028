@@ -11,7 +11,7 @@ permissions:
 jobs:
   application:
     # Pinned: ubuntu-latest moved to 26.04 in November 2026, whose default PostgreSQL
-    # client (18) writes archives a PostgreSQL 16 server cannot restore.
+    # client is newer than 16 and writes archives a PostgreSQL 16 server cannot restore.
     runs-on: ubuntu-24.04
     timeout-minutes: 35
     services:
