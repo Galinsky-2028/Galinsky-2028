@@ -122,9 +122,13 @@ export function verifyProjectBindings(projectRoot, lock) {
     typeof packageLock.packages['node_modules/' + lock.mlsPackage].integrity === 'string',
     'installed MLS package is not pinned to the reviewed library');
   const config = readFileSync(join(projectRoot, 'apps/api/src/config.mjs'), 'utf8');
-  check(config.includes("assert(!protectedContent,'protected_unavailable'"),
+  check(config.includes("assert(!protectedContent||protectedGate.ready===true,'protected_unavailable'") &&
+    config.includes('protectedActivationReadiness({env,staffIdentity,publicOrigin:portalOrigin})'),
     'protected intake fail-closed activation guard was removed');
-  return { project: status.canonicalRepository, runtime: 'protected-intake-blocked' };
+  const trust = readJson(join(projectRoot, 'security/release-trust.json'));
+  const runtime = trust.releaseKeys.length && trust.logKey && trust.witnessKeys.length >= trust.witnessQuorum
+    ? 'protected-intake-evidence-gated' : 'protected-intake-blocked';
+  return { project: status.canonicalRepository, runtime };
 }
 
 export function verifyRelease({ projectRoot, standardRoot, observedCommit }) {

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": 1,
+  "project": "Galinsky-2028/Galinsky-2028",
+  "note": "Trust roots for protected-reporting activation (packages/core/release-authenticity.mjs). Empty means the protected runtime stays closed. Only the owner may add keys: a campaign release signing key (Ed25519 SPKI, base64 DER) held outside GitHub and Render, the transparency log key and at least witnessQuorum keys of independently operated witnesses. keyId is the SHA-256 hex of the DER key. Raising minimumSequence prevents rollback to older signed releases.",
+  "releaseKeys": [],
+  "logOrigin": "unconfigured",
+  "logKey": null,
+  "witnessKeys": [],
+  "witnessQuorum": 2,
+  "minimumSequence": 0
+}
