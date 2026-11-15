@@ -1141,12 +1141,12 @@
     },
     {
       "path": "scripts/render-portal-request.mjs",
-      "blobSha": "c9ed346fba326162b817bb1cc21555d1570a169f",
+      "blobSha": "9a9631c27c6a8c45856b73360cd47dfeec667d2b",
       "componentId": "operator"
     },
     {
       "path": "scripts/render-project-preview.mjs",
-      "blobSha": "4e125916f5a6643945f2707bdddb5b1d6e579a16",
+      "blobSha": "ab2f3fc5e7df193d1c835071136e78ed892ef508",
       "componentId": "operator"
     },
     {

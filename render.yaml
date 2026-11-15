@@ -22,7 +22,7 @@ services:
     startCommand: npm run preview:serve
     envVars:
       - key: NODE_VERSION
-        value: 22.23.3
+        value: 22.23.4
       - key: NODE_ENV
         value: production
       - key: ASTRO_TELEMETRY_DISABLED
@@ -46,7 +46,7 @@ services:
     startCommand: npm start
     envVars:
       - key: NODE_VERSION
-        value: 22.23.3
+        value: 22.23.4
       - key: NODE_ENV
         value: production
       - key: PUBLIC_ORIGIN

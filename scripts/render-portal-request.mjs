@@ -33,7 +33,7 @@ export function createSpec(password){
   type:'web_service',name:PORTAL_NAME,repo:REPO,branch:'main',
   ownerId:OWNER_ID,environmentId:ENVIRONMENT_ID,autoDeployTrigger:'off',
   envVars:[
-   {key:'NODE_VERSION',value:'22.23.3'},
+   {key:'NODE_VERSION',value:'22.23.4'},
    {key:'NODE_ENV',value:'production'},
    {key:'PUBLIC_ORIGIN',value:PUBLIC_URL},
    {key:'PORTAL_ORIGIN',value:PORTAL_URL},

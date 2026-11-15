@@ -20,6 +20,6 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '22.23.3'
+          node-version: '22.23.4'
       - name: Validate five exact IDs and retained services; then perform requested operation
         run: node scripts/render-workspace-cleanup.mjs
