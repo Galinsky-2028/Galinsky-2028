@@ -3,11 +3,13 @@ import { financeId } from '../../../packages/core/treasury-workflow.mjs';
 import { StripeManualCapture } from '../../../packages/core/stripe-manual-capture.mjs';
 import { StripeCardSetup } from '../../../packages/core/stripe-card-setup.mjs';
 import { CardContributionStore } from './card-contribution-store.mjs';
+import { RecurringCardService } from './card-recurring-service.mjs';
 export function registerCardContributions(
   app,
   { store, config, writeSession, clock, transport = fetch },
 ) {
   const cards = new CardContributionStore({ store, config, clock });
+  const recurring = new RecurringCardService({ cards, clock });
   async function actor(req) {
     assert(
       config.staffIdentity && config.adminLoginReady && store.pool,
@@ -74,6 +76,19 @@ export function registerCardContributions(
     return cards.cancelMandate(staff, financeId(req.params.id), b.version);
   });
   route('periods', async (req, staff) => cards.reservePeriod(staff, req.body));
+  route('mandates/:id/replace-method', async (req, staff) => {
+    const b = exactKeys(req.body, [
+      'mandateVersion',
+      'enrollmentId',
+      'identityEvidenceDigest',
+      'confirm',
+    ]);
+    return recurring.approveMethodChange(staff, { ...b, mandateId: financeId(req.params.id) });
+  });
+  route('due', async (req, staff) => {
+    exactKeys(req.body, []);
+    return recurring.dueQueue(staff);
+  });
   route('commands', async (req, staff) => cards.prepareCommand(staff, req.body));
   route('commands/:id/perform-test', async (req, staff) => {
     const b = exactKeys(req.body, ['confirm']);

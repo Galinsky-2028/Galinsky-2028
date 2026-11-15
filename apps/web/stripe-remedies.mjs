@@ -48,13 +48,24 @@ export async function recordStripeRemedy(pool, event, raw) {
         [event.paymentIntentId, event.livemode],
       )
     ).rows[0];
-    if (!identity || !['paid', 'requires_review'].includes(identity.payment_state)) {
+    let identityRow = identity;
+    if (!identityRow && !event.livemode) {
+      // A captured monthly card installment: the intent itself is the payment reference.
+      const period = (
+        await c.query(
+          "SELECT provider_payment_id FROM g28.card_periods WHERE provider_payment_id=$1 AND environment='test' AND status IN ('captured_unposted','posted') FOR UPDATE",
+          [event.paymentIntentId],
+        )
+      ).rows[0];
+      if (period) identityRow = { session_id: period.provider_payment_id, payment_state: 'paid' };
+    }
+    if (!identityRow || !['paid', 'requires_review'].includes(identityRow.payment_state)) {
       await c.query('ROLLBACK');
       return { status: 422, outcome: 'unmatched_remedy_requires_reconciliation' };
     }
     const inserted = await c.query(
       'INSERT INTO g28.stripe_webhook_receipts(event_id,event_sha256,session_id,livemode,event_type) VALUES($1,$2,$3,$4,$5) ON CONFLICT(event_id) DO NOTHING RETURNING event_id',
-      [event.id, digest, identity.session_id, event.livemode, event.type],
+      [event.id, digest, identityRow.session_id, event.livemode, event.type],
     );
     if (!inserted.rowCount) {
       const previous = (
@@ -70,7 +81,7 @@ export async function recordStripeRemedy(pool, event, raw) {
       'INSERT INTO g28.stripe_remedy_events(event_id,session_id,provider_reference,command_id,kind,amount_cents,event_sha256,occurred_at,livemode) VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9)',
       [
         event.id,
-        identity.session_id,
+        identityRow.session_id,
         r.reference,
         r.commandId,
         kind,
@@ -90,7 +101,7 @@ export async function recordStripeRemedy(pool, event, raw) {
         ).rows[0];
       if (previous) {
         if (
-          previous.payment_id !== identity.session_id ||
+          previous.payment_id !== identityRow.session_id ||
           Number(previous.amount_cents) !== r.amountCents ||
           (kind === 'refund'
             ? !['partially_refunded', 'refunded'].includes(previous.event_kind)
@@ -101,7 +112,7 @@ export async function recordStripeRemedy(pool, event, raw) {
         const totals = (
             await c.query(
               "SELECT COALESCE(sum(amount_cents) FILTER(WHERE event_kind='captured'),0)::text AS captured,COALESCE(sum(amount_cents) FILTER(WHERE event_kind IN ('partially_refunded','refunded')),0)::text AS refunded FROM g28.financial_provider_events WHERE provider=$1 AND payment_id=$2",
-              [provider, identity.session_id],
+              [provider, identityRow.session_id],
             )
           ).rows[0],
           remaining = BigInt(totals.captured) - BigInt(totals.refunded);
@@ -118,7 +129,7 @@ export async function recordStripeRemedy(pool, event, raw) {
           [
             provider,
             r.reference,
-            identity.session_id,
+            identityRow.session_id,
             digest,
             financialKind,
             r.amountCents,

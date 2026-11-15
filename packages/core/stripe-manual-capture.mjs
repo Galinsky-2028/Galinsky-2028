@@ -129,7 +129,7 @@ export class StripeManualCapture {
   ) {
     assert(
       typeof path === 'string' &&
-        /^(?:payment_intents|payment_intents\/pi_[A-Za-z0-9]{8,100}(?:\/capture|\/cancel)?|payment_methods\/pm_[A-Za-z0-9]{8,100})$/.test(
+        /^(?:payment_intents|payment_intents\/pi_[A-Za-z0-9]{8,100}(?:\/capture|\/cancel|\/confirm)?|payment_methods\/pm_[A-Za-z0-9]{8,100})$/.test(
           path,
         ),
       'invalid_manual_endpoint',
@@ -269,6 +269,68 @@ export class StripeManualCapture {
       409,
     );
     return { paymentIntentId: id, clientSecret: raw.client_secret };
+  }
+  // Donor-present bank authentication for the first installment, without loading any
+  // third-party script on campaign pages: the processor confirms the existing
+  // manual-capture intent and, when the bank requires it, returns its own hosted
+  // authentication page. Confirmation can at most authorize; capture stays separate.
+  async donorConfirm(input, id, returnUrl) {
+    const p = manualCaptureApproval(input, this.clock(), { allowExpired: true });
+    let target;
+    try {
+      target = new URL(returnUrl);
+    } catch {
+      assert(false, 'card_confirmation_return', 'Use the campaign confirmation page.');
+    }
+    assert(
+      p.environment === 'test' &&
+        p.confirmationMode === 'on_session' &&
+        providerId(id, 'pi') &&
+        target.protocol === 'https:' &&
+        !target.username &&
+        !target.password &&
+        !target.hash,
+      'card_confirmation_unavailable',
+      'Only the first TEST installment can be confirmed by the donor.',
+      409,
+    );
+    const raw = await this.#request('payment_intents/' + id + '/confirm', p, {
+        method: 'POST',
+        body: new URLSearchParams({ return_url: target.href }),
+        idempotency: 'g28-donor-confirm-' + p.attemptId,
+        expectedId: id,
+        rawResult: true,
+      }),
+      seen = observe(raw, p, id);
+    assert(
+      seen.amountReceived === 0 && seen.status !== 'succeeded',
+      'manual_capture_uncertain',
+      'A bank confirmation unexpectedly collected funds. Treasury must reconcile it.',
+      409,
+    );
+    let redirectUrl = null;
+    if (seen.status === 'requires_action') {
+      const next = raw.next_action;
+      let u = null;
+      try {
+        u = next?.type === 'redirect_to_url' ? new URL(next.redirect_to_url?.url) : null;
+      } catch {
+        u = null;
+      }
+      assert(
+        u &&
+          u.protocol === 'https:' &&
+          (u.hostname === 'stripe.com' || u.hostname.endsWith('.stripe.com')) &&
+          !u.username &&
+          !u.password &&
+          !u.port,
+        'card_confirmation_unavailable',
+        'The processor did not provide its own bank authentication page.',
+        409,
+      );
+      redirectUrl = u.href;
+    }
+    return { seen, redirectUrl };
   }
   async inspect(input, id) {
     const p = manualCaptureApproval(input, this.clock(), { allowExpired: true });

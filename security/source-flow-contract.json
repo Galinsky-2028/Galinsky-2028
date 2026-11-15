@@ -196,12 +196,17 @@
     },
     {
       "path": "apps/api/src/card-contribution-routes.mjs",
-      "blobSha": "f41ad4fce7b513f3def88d4f3d36fc0bf3e1749e",
+      "blobSha": "900eeb1fe44c40c35c73e208e135adcffab577f1",
       "componentId": "finance"
     },
     {
       "path": "apps/api/src/card-contribution-store.mjs",
-      "blobSha": "0b816366be8d2062b6f9f2c73cf6754d0c4ce9d9",
+      "blobSha": "63e2d33bf822e905d3bec2f56b673d1c156a2db0",
+      "componentId": "finance"
+    },
+    {
+      "path": "apps/api/src/card-recurring-service.mjs",
+      "blobSha": "4ba5c967a1e1c3ffdcbdb7bf792665ca731bf49b",
       "componentId": "finance"
     },
     {
@@ -286,7 +291,7 @@
     },
     {
       "path": "apps/api/src/server.mjs",
-      "blobSha": "40a8b1c7a5b321bdaf8253bb67f8aafea6af504a",
+      "blobSha": "13ed50df687ea71f129698792f753cfea4452d3a",
       "componentId": "identity"
     },
     {
@@ -321,7 +326,7 @@
     },
     {
       "path": "apps/api/src/treasury-workflow-store.mjs",
-      "blobSha": "b7a643e80a8415e37bb2e4008f9be5a6b583f05b",
+      "blobSha": "f2eda6eaff8d11d051dc47c2732310eaea4eed4d",
       "componentId": "finance"
     },
     {
@@ -541,7 +546,7 @@
     },
     {
       "path": "apps/web/stripe-remedies.mjs",
-      "blobSha": "6e81c111a0af3cea5d01c43df6b1fb459a41fe43",
+      "blobSha": "d96d3988de273eaf6ee926b70068a710db52ba29",
       "componentId": "finance"
     },
     {
@@ -687,6 +692,11 @@
     {
       "path": "db/migrations/025_card_mandates.sql",
       "blobSha": "2638a59867a9d0bd2a7f597626b14283f96c2653",
+      "componentId": "finance"
+    },
+    {
+      "path": "db/migrations/026_recurring_donor_service.sql",
+      "blobSha": "a9f3f5caa09fa73e4fc2cbe8bb8d84080ccb3577",
       "componentId": "finance"
     },
     {
@@ -991,7 +1001,7 @@
     },
     {
       "path": "packages/core/stripe-manual-capture.mjs",
-      "blobSha": "5e24fa6edab1ecc131d13c003cfc8bc0adcbd269",
+      "blobSha": "49f884eaca731d04ad5acd6ae44c3f38b4b0932a",
       "componentId": "finance"
     },
     {
@@ -1001,7 +1011,7 @@
     },
     {
       "path": "packages/core/stripe-treasury-actions.mjs",
-      "blobSha": "db5e6e7149556c8dcdf778e574beb685428c4bbe",
+      "blobSha": "d4ef6b1da26ce2cc246a9396e398bd32c3f3776d",
       "componentId": "finance"
     },
     {
@@ -2892,15 +2902,40 @@
       "disposal": "Private billing is sealed with the dedicated treasury key; no PAN/CVV/client secrets; uncertain commands retain reservations until exact provider reconciliation and signed journal posting."
     },
     {
+      "id": "g28.card_due_installments",
+      "columns": [
+        "created_at",
+        "due_at",
+        "installment",
+        "mandate_id",
+        "mandate_version",
+        "status",
+        "updated_at",
+        "window_ends_at"
+      ],
+      "paths": [
+        "db/migrations/026_recurring_donor_service.sql"
+      ],
+      "kind": "postgres-table",
+      "componentId": "finance",
+      "classification": "financial",
+      "authority": "Current verified owner/treasurer session with fresh passkey; raw-body signed callbacks bound to an already prepared immutable TEST-only attempt. No volunteer access or live execution.",
+      "retention": "Financial source, consent and immutable approval/audit history are separate from volunteer closure; no inferred legal schedule.",
+      "disposal": "Private billing is sealed with the dedicated treasury key; no PAN/CVV/client secrets; uncertain commands retain reservations until exact provider reconciliation and signed journal posting."
+    },
+    {
       "id": "g28.card_enrollments",
       "columns": [
         "client_reference",
         "created_at",
         "customer_id",
+        "donor_cancelled_at",
         "encrypted_details",
         "environment",
         "id",
         "payment_method_id",
+        "recovery_sha256",
+        "replaces_mandate_id",
         "request_document",
         "request_sha256",
         "setup_intent_id",
@@ -2909,7 +2944,8 @@
         "updated_at"
       ],
       "paths": [
-        "db/migrations/025_card_mandates.sql"
+        "db/migrations/025_card_mandates.sql",
+        "db/migrations/026_recurring_donor_service.sql"
       ],
       "kind": "postgres-table",
       "componentId": "finance",
@@ -3920,7 +3956,8 @@
         "g28.treasury_gifts",
         "g28.treasury_donor_revisions",
         "g28.financial_provider_events",
-        "g28.stripe_webhook_receipts"
+        "g28.stripe_webhook_receipts",
+        "g28.card_due_installments"
       ],
       "egress": [
         "explicit TEST setup/card authorization/capture/cancel/GET APIs",
