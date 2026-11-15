@@ -50,8 +50,15 @@ jobs:
         run: npm run check && npm run lint && npm run format:check && npm run secrets:check && npm run typecheck
       - name: Unit tests
         run: npm test
+      # The runner's default PostgreSQL client can be newer than the PostgreSQL 16 service
+      # (and the PostgreSQL 16 Neon database). pg_dump 17+ archives contain settings such as
+      # transaction_timeout that a 16 server rejects, so the recovery drill uses the 16 client.
+      - name: PostgreSQL 16 client tools matching the service
+        run: |
+          sudo apt-get install -y --no-install-recommends postgresql-client-16
+          echo /usr/lib/postgresql/16/bin >> "$GITHUB_PATH"
       - name: HTTP, worker and PostgreSQL integration
-        run: npm run test:api
+        run: pg_dump --version && pg_restore --version && npm run test:api
       - name: Build Astro and React applications
         run: npm run build
       - name: Generate complete unsigned web/portal executable closure
