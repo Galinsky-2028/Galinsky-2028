@@ -12,7 +12,7 @@
   "progressEvidenceNote": "Source-reviewed software implementation: 72/72; full-scope release-evidenced accepted packages: 13/72. No unit has a known remaining software gap; the remaining work is owner/treasurer activation input, hosted rehearsal and live release evidence (protected reporting gate closed until trust roots are pinned; monthly giving TEST-only and disabled). Every verified merged PR is accepted separately from package scope and deployment.",
   "schemaVersion": 1,
   "roadmapVersion": 7,
-  "observedAt": "2026-11-15T19:34:32.000Z",
+  "observedAt": "2026-11-16T19:52:51.000Z",
   "units": [
     {
       "id": "G28-001",
@@ -2135,7 +2135,8 @@
       "contributingPrs": [
         155,
         165,
-        166
+        166,
+        168
       ],
       "dependsOn": [],
       "externalDependencies": [],
@@ -3254,6 +3255,36 @@
     }
   ],
   "pullRequests": [
+    {
+      "id": 5343797982,
+      "number": 168,
+      "title": "Staff monthly-giving screens, outside release verifier, removal of dead old-account workflows",
+      "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/168",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-11-16T19:40:40Z",
+      "updatedAt": "2026-11-16T19:46:41Z",
+      "closedAt": "2026-11-16T19:46:41Z",
+      "mergedAt": "2026-11-16T19:46:41Z",
+      "headSha": "8506cc6ed456aaf87ea2331717f71632ac76308d",
+      "baseRef": "main",
+      "mergeCommitSha": "74a09bab6dff46d93860862a52975124a42572bd"
+    },
+    {
+      "id": 5326439808,
+      "number": 167,
+      "title": "Record G28-044 completion, the evening release and the pending migration 026",
+      "url": "https://github.com/Galinsky-2028/Galinsky-2028/pull/167",
+      "state": "closed",
+      "draft": false,
+      "createdAt": "2026-11-15T19:42:02Z",
+      "updatedAt": "2026-11-15T19:46:18Z",
+      "closedAt": "2026-11-15T19:46:18Z",
+      "mergedAt": "2026-11-15T19:46:18Z",
+      "headSha": "4196f5d966b47b42dc56a391174074f3dfa60b2f",
+      "baseRef": "main",
+      "mergeCommitSha": "7be9d4a34462502ef280b62a564b17c6fb394f01"
+    },
     {
       "id": 5326325268,
       "number": 166,
