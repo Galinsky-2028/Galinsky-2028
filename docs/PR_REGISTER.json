@@ -2610,7 +2610,8 @@
       "contributing_prs": [
         155,
         165,
-        166
+        166,
+        168
       ],
       "implementation_note": "Working source implementation reviewed individually. Owner/treasurer inputs only: approve the monthly contribution terms text named by the card policy termsVersion; publish the documentary card policy; set STRIPE_SECRET_KEY (sk_test_), G28_STRIPE_TEST_ENABLED, G28_TREASURY_SANDBOX_ACTIONS_ENABLED, G28_RECURRING_TEST_ENABLED and DATABASE_URL on the website service and the TEST flags/staff identity on the volunteers service; apply migration 026 to the Neon database; then rehearse setup, signed callback, staff verification, mandate, due queue, bank confirmation, capture, refund and donor cancellation in TEST. Live recurring processing remains separately unavailable pending treasurer release and campaign-specific underwriting.",
       "acceptance_review": {
@@ -4023,7 +4024,7 @@
     }
   ],
   "progress_evidence_note": "Source-reviewed software implementation: 72/72; full-scope release-evidenced accepted packages: 13/72. No unit has a known remaining software gap; the remaining work is owner/treasurer activation input, hosted rehearsal and live release evidence (protected reporting gate closed until trust roots are pinned; monthly giving TEST-only and disabled). Every verified merged PR is accepted separately from package scope and deployment.",
-  "accepted_pull_requests": 153,
-  "accepted_prs_observed_at": "2026-11-15T19:34:32.000Z",
+  "accepted_pull_requests": 155,
+  "accepted_prs_observed_at": "2026-11-16T19:52:51.000Z",
   "pull_request_acceptance_rule": "Every real GitHub PR with a verified merged_at is accepted; no further package review is required to accept that PR. Fully complete planned work packages are counted separately."
 }
