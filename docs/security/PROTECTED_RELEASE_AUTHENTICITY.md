@@ -20,7 +20,28 @@ No environment variable can stand in for a signature, proof, witness or observat
 - Every JS and CSS file is bound by SHA-384 Subresource Integrity. One inline import map carries an `integrity` entry for **every** JavaScript chunk, including lazily imported protected-reports and cryptography chunks (`apps/portal/release-integrity.mjs`). Chromium was verified to refuse a substituted lazy chunk.
 - The document's Content-Security-Policy allows only same-origin scripts plus that exact import map by SHA-256. A document with any other inline script is refused (`apps/api/src/static.mjs`).
 
-**Residual risk (stated honestly):** the import map and CSP arrive with the same HTML document. They protect against a substituted or corrupted chunk and against deploying an unwitnessed build, but not against a fully compromised origin that serves a different document. That class of attack requires an out-of-band verifier, such as a browser extension or a native client, that checks the witnessed log independently. Same-origin code cannot provide that.
+**Residual risk (stated honestly):** the import map and CSP arrive with the same HTML document. They protect against a substituted or corrupted chunk and against deploying an unwitnessed build, but not against a fully compromised origin that serves a different document. Same-origin code cannot defend against that.
+
+## Outside verifier
+
+`tools/release-verifier/verify-published-release.mjs` checks a published release without trusting the server.
+
+**How to run it.** Use your own reviewed checkout and your own copy of the trust policy:
+
+```bash
+node tools/release-verifier/verify-published-release.mjs https://<portal origin> \
+  --trust <your release-trust.json> --user preview --password-env PREVIEW_PASSWORD
+```
+
+**What it does:**
+1. Downloads `/.well-known/g28-release.json`, the evidence that `apps/api/src/static.mjs` publishes from `dist/release-evidence.json`.
+2. Re-downloads every listed portal file and rebuilds the closure digest from the bytes it received.
+3. Verifies the pinned release signature, the anti-rollback floor, log inclusion, the witness quorum, and the freshness and origin of the TLS observation.
+4. Confirms that the page's import-map and SRI table binds every downloaded script and stylesheet.
+
+**Coverage and limits:**
+- `tests/release-verifier.test.mjs` covers an honest release and each tampering case: a changed chunk, a changed page, a rogue-key signature, a missing witness, unsafe paths, rollback and plain HTTP.
+- It verifies what one client downloaded at one time. A browser extension that runs the same checks on every page load remains an optional future step.
 
 ## Operator procedure (owner inputs required)
 
@@ -29,7 +50,7 @@ No environment variable can stand in for a signature, proof, witness or observat
 3. For each release, after `npm run build:portal` on the exact deployed commit:
    - `G28_RELEASE_SIGNING_KEY_FILE=… node security/release-evidence.mjs statement <sequence> transport.json`
    - submit the `leaf` to the log and obtain the proof and the witness-cosigned checkpoint;
-   - `node security/release-evidence.mjs assemble statement.json log-entry.json > dist/release-evidence.json`
+   - `node security/release-evidence.mjs assemble statement.json log-entry.json > dist/release-evidence.json` (the evidence includes the file manifest the outside verifier needs)
    - `node security/release-evidence.mjs verify` must print `"ok": true`.
 4. Only then, with verified staff and a chosen recovery policy, may `PROTECTED_CONTENT_ENABLED=true` be set. Startup re-verifies everything.
 

@@ -201,7 +201,7 @@
     },
     {
       "path": "apps/api/src/card-contribution-store.mjs",
-      "blobSha": "63e2d33bf822e905d3bec2f56b673d1c156a2db0",
+      "blobSha": "2af753c39a0a86be682e27e57b9128f693fedb46",
       "componentId": "finance"
     },
     {
@@ -306,7 +306,7 @@
     },
     {
       "path": "apps/api/src/static.mjs",
-      "blobSha": "ef4b0fedec0efbba978fa5db2b02d31371552b2f",
+      "blobSha": "3a27d5a3be89a4626a990d8e4511a6955dc26d82",
       "componentId": "shared"
     },
     {
@@ -366,7 +366,7 @@
     },
     {
       "path": "apps/portal/src/AdminTreasury.tsx",
-      "blobSha": "6c870d500c257dc4836e0f182fb802530ae9076c",
+      "blobSha": "c31a61a43986e2190e9add23bffbc8ff2e766e76",
       "componentId": "finance"
     },
     {
@@ -383,6 +383,11 @@
       "path": "apps/portal/src/HelpCenter.tsx",
       "blobSha": "0e912240df12e5df73a3ea0aef7fe43d15b1fc56",
       "componentId": "help"
+    },
+    {
+      "path": "apps/portal/src/MonthlyGiving.tsx",
+      "blobSha": "d55e997164e11839d9927b4f34c6e3f86943eac7",
+      "componentId": "finance"
     },
     {
       "path": "apps/portal/src/Operations.tsx",
@@ -1100,11 +1105,6 @@
       "componentId": "operator"
     },
     {
-      "path": "scripts/inspect-release.mjs",
-      "blobSha": "396f949244cf0b9f803d634478eeb836461dc5df",
-      "componentId": "operator"
-    },
-    {
       "path": "scripts/migrate.mjs",
       "blobSha": "71d1b68972b54e991bff0f5d60eec6332f4ee641",
       "componentId": "operator"
@@ -1157,36 +1157,6 @@
     {
       "path": "scripts/refresh-pr-snapshot.mjs",
       "blobSha": "d23009f3d560fcfa6b2fa6e4e505920c70310c8c",
-      "componentId": "operator"
-    },
-    {
-      "path": "scripts/render-portal-request.mjs",
-      "blobSha": "9a9631c27c6a8c45856b73360cd47dfeec667d2b",
-      "componentId": "operator"
-    },
-    {
-      "path": "scripts/render-project-preview.mjs",
-      "blobSha": "ab2f3fc5e7df193d1c835071136e78ed892ef508",
-      "componentId": "operator"
-    },
-    {
-      "path": "scripts/render-project-request.mjs",
-      "blobSha": "83ec4d036e8f5bfe31f90cb2f0a45a6b5cbfcab8",
-      "componentId": "operator"
-    },
-    {
-      "path": "scripts/render-workspace-cleanup.mjs",
-      "blobSha": "db34cb7386d34613488922f3ca868c8c73afbb9e",
-      "componentId": "operator"
-    },
-    {
-      "path": "scripts/render-workspace-inventory.mjs",
-      "blobSha": "0fbb259f49996bd3c8b6a6556e722da8e21fa24a",
-      "componentId": "operator"
-    },
-    {
-      "path": "scripts/retire-old-render.mjs",
-      "blobSha": "763af89839313c7401b397dd3cf1dd61962c73ba",
       "componentId": "operator"
     },
     {
@@ -3808,7 +3778,6 @@
       "retention": "Platform log retention/custody unobserved; publication of artifacts requires separate allowed source and secret checks",
       "evidence": [
         "scripts/scan-secrets.mjs",
-        "scripts/inspect-release.mjs",
         "apps/api/src/server.mjs",
         "apps/api/src/worker.mjs",
         "packages/core/runtime-probe.mjs",
