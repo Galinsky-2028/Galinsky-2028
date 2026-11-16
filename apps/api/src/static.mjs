@@ -14,8 +14,14 @@ export function portalDocumentPolicy(html){
  if(maps.length===1)sources.push(`'sha256-${createHash('sha256').update(maps[0][1],'utf8').digest('base64')}'`);
  return `${PORTAL_CSP_BASE}; script-src ${sources.join(' ')}`;
 }
-export function registerPortal(app,portalOrigin,buildDirectory=resolve('dist/portal')){
+export function registerPortal(app,portalOrigin,buildDirectory=resolve('dist/portal'),evidencePath=resolve(buildDirectory,'..','release-evidence.json')){
  const portal=resolve(buildDirectory);
+ // Published protected-release evidence for outside verifiers. It is untrusted data:
+ // verifiers check it against their own pinned keys (tools/release-verifier).
+ app.get('/.well-known/g28-release.json',async(req,reply)=>{
+  try{const bytes=await readFile(evidencePath);JSON.parse(bytes.toString('utf8'));return reply.type('application/json').send(bytes);}
+  catch{return reply.code(404).type('application/json').send({error:'release_evidence_not_published'});}
+ });
  let documentCache=null;
  async function portalDocument(){
   if(documentCache)return documentCache;

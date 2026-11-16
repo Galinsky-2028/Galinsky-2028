@@ -108,7 +108,7 @@ export class CardContributionStore {
       },
       columns = {
         enrollments:
-          'id,client_reference,request_document,environment,status,setup_session_id,updated_at',
+          'id,client_reference,request_document,environment,status,setup_session_id,replaces_mandate_id,updated_at',
         mandates: 'id,document,status,version,updated_at',
         periods:
           'id,mandate_id,installment,document,environment,status,amount_cents,reservation_active,provider_payment_id,version,updated_at',

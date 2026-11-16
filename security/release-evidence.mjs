@@ -27,12 +27,13 @@ try{
   const keyFile=process.env.G28_RELEASE_SIGNING_KEY_FILE;if(!keyFile)throw Error('Set G28_RELEASE_SIGNING_KEY_FILE to the private release key (never commit it).');
   const key=createPrivateKey(readFileSync(keyFile));if(key.asymmetricKeyType!=='ed25519')throw Error('The release key must be Ed25519.');
   const publicKey=createPublicKey(key).export({format:'der',type:'spki'}).toString('base64');
-  const statement=releaseStatement({closure:buildWebClosure(process.cwd(),commit(),['dist/portal']),sequence:Number(sequence),issuedAt:new Date().toISOString(),transport:JSON.parse(readFileSync(transportPath,'utf8'))});
-  process.stdout.write(JSON.stringify({statement,leaf:Buffer.from(canonicalJson(statement)).toString('base64'),releaseSignature:{keyId:publicKeyId(publicKey),signature:signEd25519(key,canonicalJson(statement))},publicKey},null,2)+'\n');
+  const closure=buildWebClosure(process.cwd(),commit(),['dist/portal']);
+  const statement=releaseStatement({closure,sequence:Number(sequence),issuedAt:new Date().toISOString(),transport:JSON.parse(readFileSync(transportPath,'utf8'))});
+  process.stdout.write(JSON.stringify({statement,closure,leaf:Buffer.from(canonicalJson(statement)).toString('base64'),releaseSignature:{keyId:publicKeyId(publicKey),signature:signEd25519(key,canonicalJson(statement))},publicKey},null,2)+'\n');
  }else if(action==='assemble'){
   const [statementPath,entryPath]=args;
   const s=JSON.parse(readFileSync(statementPath,'utf8')),e=JSON.parse(readFileSync(entryPath,'utf8'));
-  process.stdout.write(JSON.stringify({schema:RELEASE_EVIDENCE_SCHEMA,statement:s.statement,releaseSignature:s.releaseSignature,inclusion:{index:e.index,proof:e.proof},checkpoint:e.checkpoint},null,2)+'\n');
+  process.stdout.write(JSON.stringify({schema:RELEASE_EVIDENCE_SCHEMA,statement:s.statement,closure:s.closure,releaseSignature:s.releaseSignature,inclusion:{index:e.index,proof:e.proof},checkpoint:e.checkpoint},null,2)+'\n');
  }else if(action==='verify'){
   const evidence=JSON.parse(readFileSync(args[0]||'dist/release-evidence.json','utf8'));
   const result=verifyReleaseEvidence({evidence,trust:loadTrustPolicy(),installedClosure:buildWebClosure(process.cwd(),commit(),['dist/portal']),publicOrigin:process.env.PUBLIC_ORIGIN||evidence.statement?.transport?.origin});
